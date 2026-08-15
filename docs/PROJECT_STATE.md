@@ -1,19 +1,8 @@
 # Project State
 
 Date: 2026-08-15
-Milestone: `W0.2 GRAVITY — RECOVERED / HARDENED OWNER REPLAY NEXT`
+Milestone: `W0.2 GRAVITY — VERIFIED / W0.3 METRIC SCALE NEXT`
 Active branch: `agent/w0-2-gravity`
-
-## Recovery checkpoint
-
-After an interrupted session, repository identity was revalidated before continuing:
-
-- accepted `main`: `489cd24d047910de63239c7e22935a3906864fa5` (W0.1);
-- W0.2 remains isolated on `agent/w0-2-gravity` / draft PR #6;
-- no accidental W0.2 merge reached `main`;
-- source roles and F0 hashes remain unchanged.
-
-Recovery did not restart the project. It resumed the already-hardened W0.2 gate and revalidated its actual source tree rather than trusting PR prose.
 
 ## Closed gates
 
@@ -27,100 +16,81 @@ PlayCanvas Engine `2.21.2` is active; Spark remains a validated fallback.
 
 ### W0.1 — VERIFIED
 
-Owner evidence recovered seven foreground probes that remained spatially coherent across materially different camera views. Adaptive constant-screen-size marker hardening was merged with W0.1. Environment remains appearance-only and excluded from calibration authority.
+Owner-device evidence verified stable foreground spatial probes. Environment remains appearance-only and excluded from calibration authority.
 
-## W0.2 owner evidence — 2026-08-15
+### W0.2 — VERIFIED
 
-Five real-world vertical references were collected on the school capture. Reanalysis showed all five strongly agree on one **undirected vertical axis** while two endpoint pairs encode the opposite bottom→top direction.
+W0.2 now has two independent owner-device gravity sampling runs on the exact F0 source.
 
-Reanalyzed evidence:
+First run:
 
-- reference count: `5`;
-- solved baseline up: `[-0.0409047482, 0.9911173886, 0.1265429710]`;
-- tilt from baseline runtime `+Y`: `7.6424°`;
-- axis coherence: `99.939%`;
-- axis residual mean: `1.0751°`;
-- axis residual RMS: `1.4111°`;
-- axis residual median: `0.5149°`;
-- axis residual max: `2.1871°`;
-- endpoint direction consensus: `3 AGREES / 2 REVERSED`.
+- 5 real vertical references;
+- tilt candidate `7.6424°`;
+- axis coherence `99.939%`;
+- axis residual median `0.5149°`;
+- axis residual max `2.1871°`;
+- 3 entered directions agreed and 2 were reversed, which exposed the need to separate physical-axis agreement from endpoint direction semantics.
 
-Technical evidence is stored in `evidence/w0/w0-2-owner-axis-2026-08-15.json`. Owner screenshots/location images are intentionally not committed.
+The implementation was hardened accordingly: `axisResidualDeg` is independent of `directedResidualDeg`; `REVERSED` is explicit; endpoints are never silently swapped/deleted; manual reversal is auditable; preview cannot proceed with unresolved reversed direction evidence.
 
-### Spatial-evidence limitation
+Second independent run after hardening:
 
-The owner screenshot shows the five references concentrated on the main school building. This is strong **local** vertical-axis evidence, but it is not sufficient by itself to exclude reconstruction-orientation drift across the wider capture.
+- 6 freshly collected vertical references;
+- all `6 / 6` bottom→top directions agree;
+- solved baseline up `[-0.0397223372, 0.9894921119, 0.1390233663]`;
+- tilt `8.31336°`;
+- axis coherence `99.906%`;
+- residual mean `1.6225°`, RMS `1.7537°`, median `1.5838°`, max `2.9150°`;
+- level preview applied on owner hardware.
 
-Before accepting a **global** gravity/orientation contract, collect at least one and preferably two trustworthy vertical references on a spatially distant structure or pole. Their purpose is falsification: verify that the same vertical axis survives outside the main-building region. If no distant feature is trustworthy, preserve global orientation as uncertain rather than fabricating diversity.
+The two independently recollected solved UP axes differ by only `0.7243°`; tilt differs by `0.6710°`. This repeatability is stronger evidence than either single fit alone.
 
-## W0.2 model hardening
+Owner-device screenshot after level preview was reviewed and shows no obvious over-correction; main-building verticals remain visually credible. The screenshot/location image is intentionally not committed to this public repository. Exact numeric evidence is stored in `evidence/w0/w0-2-owner-pass-2026-08-15.json`.
 
-- orientation-independent dominant-axis fit;
-- `axisCoherence` and axis residuals separated from directed endpoint residuals;
-- explicit `AGREES` / `REVERSED` classification;
-- explicit owner `Odwróć` action with `manualFlipCount`;
-- no silent endpoint reversal or outlier deletion;
-- level preview blocked while unresolved reversed pairs remain;
-- evidence schema v2 preserves axis, direction and manual-correction provenance;
-- exact owner reference set is covered by deterministic regression tests;
-- no automatic acceptance and no metric scale.
+### Spatial interpretation boundary
 
-## Survey navigation hardening
+W0.2 verifies the gravity/up direction of the current reconstruction coordinate frame. It does **not** claim that every local surface across this imperfect splat is metrically rigid or free of local reconstruction distortion. A distant-structure gravity sample remains a useful later falsification check before broad physical use, but it is no longer a blocker for the coordinate-frame orientation gate.
 
-Survey now prioritizes easy inspection rather than coarse whole-scan orbiting:
+## Survey navigation — OWNER VERIFIED
+
+Recovered Survey controls materially improved close-range inspection:
 
 - `MMB` orbit;
 - `Shift+MMB` view-plane pan;
-- cursor-anchored wheel zoom with faster `Shift+wheel` travel;
-- old initial-radius close/far bounds removed in favor of a tiny numerical floor only;
-- `F` focuses on a verified foreground point under the cursor and changes the orbit pivot without teleporting the camera;
+- cursor-anchored wheel zoom;
+- `Shift+wheel` faster travel;
+- `F` focuses the orbit pivot on the verified foreground point under the cursor without teleporting the camera;
 - `Home` fits the full scan;
 - `R` resets the original view;
-- `LMB` / `RMB` stay free for world interaction;
-- camera near clip remains `0.003` for close inspection.
+- initial-radius near/far navigation limits are removed except for a tiny numerical floor;
+- `LMB` / `RMB` remain free for world interaction.
 
-This is still Survey. It does not claim W0.5 metric human movement.
+Owner feedback explicitly confirmed focus-under-cursor works very well, Shift+wheel works, and approaching/inspecting building surfaces is no longer a fight with the camera. This remains Survey inspection, not W0.5 metric human movement.
 
-## Recovery security hardening
+## Recovery/security state
 
-A security-style diff review treated the local PLY, selected ZIP and loopback server as trust boundaries. Two unnecessary exposures were removed before the next owner package:
+The interrupted W0.2 session was recovered without modifying accepted `main`. Recovery validation repeated source/server/hash checks and hardened the owner LAB:
 
-- loopback HTTP validates `Host` (`127.0.0.1` / `localhost`) to reduce DNS-rebinding exposure of raw capture bytes;
-- malformed URL decoding returns `400` instead of being able to throw through the request handler;
-- responses add `nosniff`, `DENY` framing, no-referrer and same-origin resource policy headers;
-- the Windows launcher validates exact F0 ZIP byte count + SHA-256 before `Expand-Archive` and attempts cleanup on normal exit.
+- loopback-only HTTP;
+- Host allowlist (`127.0.0.1` / `localhost`);
+- malformed paths handled safely;
+- basic no-sniff/no-frame/no-referrer/same-origin response headers;
+- exact known F0 ZIP size + SHA-256 verified before extraction;
+- exact PLY size/hash still verified before serving;
+- temporary extracted capture cleanup attempted on normal launcher exit.
 
-No high-severity security finding remains identified in the W0.2 diff. The pinned CDN module remains an explicit external supply-chain dependency; this is not changed by W0.2.
+Raw/foreground/environment streams continue to reproduce the exact F0 hashes.
 
-## Recovery preflight
+## Next gate — W0.3 METRIC SCALE
 
-The recovered/hardened tree passed:
+W0.3 must infer one metric scale from independently known real-world distances while preserving raw source evidence.
 
-- JS/MJS syntax checks;
-- gravity synthetic + exact owner-evidence regression;
-- W0 static/navigation/security contract;
-- real-source server startup on the exact 263,655,789-byte PLY;
-- HTTP 200 for UI/runtime modules;
-- foreign Host rejected with `403`;
-- malformed encoded URI rejected with `400`;
-- encoded traversal does not expose repository files;
-- raw/foreground/environment streams reproduce exact F0 SHA-256 hashes.
+Planned bounded stages:
 
-Rendered browser QA of the **new** focus/security build remains owner evidence: the execution host has no usable browser automation path to the pinned CDN/runtime, so rendered PASS must not be inferred from static checks.
+1. W0.3a — two-point foreground distance measurement;
+2. W0.3b — explicit entry of known real metres + provenance note;
+3. W0.3c — scale solver with per-measurement implied units/metre and residuals, no silent outlier removal;
+4. W0.3d — repeatability/consistency owner evidence from at least 2 measurements, preferably 3;
+5. only after W0.3 PASS may W0.4 promote a versioned `ScanToWorld`.
 
-## Still required to close W0.2
-
-Use the hardened owner build once more:
-
-1. collect at least three strong verticals, including at least one spatially distant from the main school building if a trustworthy feature exists;
-2. resolve only visibly reversed cyan-bottom / amber-top endpoint pairs using `Odwróć`;
-3. if `REVERSED` remains while the marker roles are physically correct, preserve it as a conflict rather than forcing the solver;
-4. confirm no unresolved direction conflict remains in the intended bottom→top evidence;
-5. apply `Podgląd poziomu`;
-6. visually confirm the ~7.6° candidate corrects the reconstruction tilt without obvious over-correction;
-7. verify the new close-range Survey navigation is materially easier near building surfaces;
-8. copy schema-v2 gravity evidence.
-
-## Next only after W0.2 PASS
-
-W0.3 metric scale from 2–3 independently known real-world distances, reusing `SpatialProbe` and the same explicit evidence/provenance pattern.
+Do not assume standard doors, roads, goals or other nominal dimensions unless their actual dimension for this site is known. No collision, Box3D or metre-valued gameplay tuning before W0.4.
