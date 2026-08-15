@@ -1,8 +1,8 @@
 # Project State
 
 Date: 2026-08-15
-Milestone: `W0.1 SPATIAL PROBE — IMPLEMENTED / OWNER PICK STABILITY NEXT`
-Active branch: `agent/w0-1-spatial-probe`
+Milestone: `W0.1 SPATIAL PROBE — VERIFIED / W0.2 GRAVITY NEXT`
+Active branch: `agent/w0-1-spatial-probe` until W0.1 merge
 
 ## Closed evidence gates
 
@@ -50,10 +50,16 @@ Protocol: `docs/W0_WORLD_GROUNDING.md`.
 - environment HTTP SHA matches F0 environment;
 - no metric scale, gravity solver, collision or Box3D exists in W0.1.
 
-## PENDING owner evidence
+## W0.1 owner evidence — VERIFIED
 
-W0.1 is not closed until several markers are placed on distinct recognisable foreground surfaces and remain visually attached after significant orbit/pan/zoom. Also confirm that environment/background does not produce accepted calibration picks.
+Owner testing produced seven foreground probes and screenshots from materially different camera views. Marker persistence/parallax is consistent with the same recovered surfaces, so the core W0.1 question passes. Screenshot evidence remains outside the public repository because it exposes a real-world location.
 
-## Next only after PASS
+A visualization defect was found: world-unit marker spheres became too large at close range. Adaptive constant-screen-size marker scaling is now part of W0.1 hardening; it changes marker presentation, not recovered coordinates.
+
+Environment pick rejection was not explicitly demonstrated in the supplied owner report. The runtime still excludes environment from the picker contract and this safeguard should be incidentally rechecked in later owner runs.
+
+Evidence: `evidence/w0/w0-1-owner-2026-08-15.json`.
+
+## Next gate
 
 W0.2 gravity/up calibration from multiple known-vertical references. Do not infer level from terrain or manually type a correction angle.
