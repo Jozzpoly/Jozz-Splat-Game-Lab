@@ -21,14 +21,14 @@ Current Git, executable evidence and direct owner validation outrank prose hando
 - Do not modify JV, HomeScan, JURE, VAW or any other repository while working here unless the owner explicitly asks for that separate write.
 - Other repositories may be inspected for verified patterns. Copy only the smallest justified pieces and record provenance when code is actually reused.
 - Do not make this repository depend on another personal project merely because useful code exists there.
-- Do not force-push, rewrite history or silently replace an accepted source line.
+- Keep accepted `main` history stable; use bounded branches and intentional commits for experiments.
 - Do not create GitHub Actions without explicit owner approval.
 
 ## Evidence rules
 
 Classify material claims as `VERIFIED`, `LIKELY`, `UNCERTAIN`, `CONFLICT` or `OWNER_DECISION_REQUIRED` when ambiguity matters.
 
-A build is not runtime evidence. A screenshot is not physics evidence. A generated collision mesh is not automatically geometric truth. Owner playtest evidence is a separate evidence class from automated checks.
+A build is not runtime evidence. A rendered splat is not calibrated geometry. A generated collision mesh is not automatically physical truth. Owner visual/playtest evidence is a separate evidence class from automated checks.
 
 Raw capture assets are immutable inputs. Do not hand-edit them. Large capture files stay outside Git by default and are identified by SHA-256 receipts under `evidence/`.
 
@@ -38,27 +38,32 @@ Every meaningful derived asset must eventually have a receipt containing source 
 
 ### F0 — Evidence Freeze — VERIFIED
 
-The exact first Luma source and deterministic foreground/environment source-coordinate partition are verified. Do not reopen F0 without new contradictory evidence. The 50,000-record shell's **structure** is verified; its semantic interpretation as Luma environment remains `LIKELY`.
+The exact first Luma source and deterministic foreground/environment source-coordinate partition are verified. Do not reopen F0 without new contradictory evidence. The 50,000-record shell's structure is verified; its historical semantic label remains `LIKELY`.
 
-### R0 — Renderer Bake-Off — ACTIVE
+### R0 — Renderer Bake-Off — CLOSED / REOPENABLE
 
-Spark/Three and PlayCanvas are the only active candidates. The R0 LAB is an experiment harness, not accepted game architecture.
+PlayCanvas Engine `2.21.2` is the active runtime. Spark `2.1.0` + Three `0.185.1` is a validated fallback/reference path. Reopen R0 only on material contradictory evidence. Do not maintain a generic renderer abstraction merely to preserve both candidates.
 
-Rules:
+### W0 — World Grounding — ACTIVE
 
-- same exact verified PLY/foreground bytes for both candidates;
-- same source-space Reset camera transformed into each runtime;
-- exact runtime pins; no `latest` aliases;
-- Spark baseline is WebGL2;
-- PlayCanvas baseline is WebGL2, with a separately recorded `Best` mode allowed to try WebGPU then fall back to WebGL2;
-- do not build a renderer-agnostic product abstraction around the two candidates;
-- browser/GPU evidence and owner visual validation are required before selecting a winner;
-- do not silently tune one candidate after looking at the other without recording the asymmetry;
-- the losing active candidate is expected to be frozen/removed after the decision.
+W0 must create one measured world authority and is explicitly staged:
 
-### W0 — World Contract
+1. W0.1 stable foreground picking;
+2. W0.2 gravity/up calibration;
+3. W0.3 metric scale;
+4. W0.4 authoritative `ScanToWorld`;
+5. W0.5 human-scale navigation.
 
-`ScanToWorld` is draft-only until real calibration evidence exists. Do not assume `1 source unit = 1 metre`. Do not tune collision or integrate Box3D against uncalibrated units.
+Do not collapse these stages for convenience. `ScanToWorld` remains `draft` until real orientation and scale evidence pass. Do not tune collision or integrate Box3D against uncalibrated units.
+
+#### W0.1 hard boundaries
+
+- PlayCanvas only;
+- foreground is the only calibration authority;
+- environment may render as appearance but must not be accepted as calibration evidence;
+- persistent markers must remain visually attached to the selected surface under camera movement;
+- preserve both runtime-world and raw source coordinates for every accepted probe;
+- no gravity solver, metric scale, collision or physics in W0.1.
 
 ### Later gates
 
@@ -74,11 +79,11 @@ When owner evidence is genuinely needed, make the requested action small and exp
 
 - Prefer small, falsifiable slices over broad frameworks.
 - Do not create empty future systems, generic plugin architectures or speculative schemas that are not required by the active gate.
-- Pin experimental tool versions. Capture `--version`/`--help` when a CLI contract matters; moving `main` documentation is not a versioned binary contract.
+- Pin experimental tool versions. Capture `--version`/`--help` when a CLI contract matters; moving documentation is not a versioned binary contract.
 - Preserve one canonical world transform. Visual, collision and gameplay layers must not invent independent scale/origin fixes.
 - If required source files cannot be accessed reliably, ask the owner for the exact file/package instead of spending long effort bypassing access limitations.
 - If a check cannot be run, state that explicitly. Never promote `PENDING` to `PASS` by inference.
 
 ## Publish discipline
 
-Use bounded branches and intentional commits. Prefer a draft PR for substantive experiment changes. Keep `main` as accepted source truth. When a local worktree contains unrelated edits, never use broad staging such as `git add .` without confirming scope.
+Use bounded branches and intentional commits. Prefer a draft PR for substantive experiment changes. Keep `main` as accepted source truth. When a local worktree contains unrelated edits, confirm scope before staging or publishing.

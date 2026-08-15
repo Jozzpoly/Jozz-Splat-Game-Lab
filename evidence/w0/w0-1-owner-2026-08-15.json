@@ -1,0 +1,36 @@
+{
+  "gate": "W0.1",
+  "status": "VERIFIED",
+  "recordedAt": "2026-08-15T11:46:23.186Z",
+  "sourceSha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+  "runtime": "PlayCanvas 2.21.2",
+  "backend": "webgl2",
+  "worldCalibration": "DRAFT_UNMEASURED",
+  "ownerEvidence": {
+    "probeCount": 7,
+    "distinctCameraViewsProvided": 2,
+    "markerPersistence": "VERIFIED_BY_OWNER_SCREENSHOTS",
+    "foregroundPickRecovery": "VERIFIED",
+    "environmentPickRejection": "NOT_EXPLICITLY_TESTED_IN_OWNER_REPORT",
+    "screenshotsCommitted": false,
+    "screenshotsPolicy": "not committed because they expose a real-world location"
+  },
+  "probes": [
+    {"id":1,"source":[-1.8100992301344745,1.2795140218197316,-0.14138777816092762],"runtimeWorld":[1.8100992301344743,-1.2795140218197318,-0.14138777816092762]},
+    {"id":2,"source":[3.306782396991524,1.5547534340078948,-2.2754116332723098],"runtimeWorld":[-3.306782396991524,-1.5547534340078943,-2.2754116332723098]},
+    {"id":3,"source":[-0.8478991004372269,1.5362731153745657,-1.3304902685138205],"runtimeWorld":[0.8478991004372267,-1.5362731153745657,-1.3304902685138205]},
+    {"id":4,"source":[-0.16996197760377266,1.3580217796616179,-0.46771610197630875],"runtimeWorld":[0.1699619776037725,-1.3580217796616179,-0.46771610197630875]},
+    {"id":5,"source":[-4.874043644493804,1.179472303593874,0.5218394592185452],"runtimeWorld":[4.874043644493804,-1.1794723035938746,0.5218394592185452]},
+    {"id":6,"source":[-68.65488978351259,-5.895744739980098,1.4843692574099603],"runtimeWorld":[68.65488978351259,5.89574473998009,1.4843692574099603]},
+    {"id":7,"source":[2.0321488114323416,0.6050390322118279,10.1806095921973],"runtimeWorld":[-2.0321488114323416,-0.6050390322118276,10.1806095921973]}
+  ],
+  "observedIssue": {
+    "id": "W0-1-MARKER-WORLD-SCALE",
+    "severity": "UX_VALIDATION_DEFECT",
+    "description": "world-unit sphere markers became extremely large when the camera approached them, obscuring the sampled surface",
+    "impact": "did not invalidate recovered 3D coordinates, but reduced close-range visual precision",
+    "resolution": "adaptive constant-screen-size marker scaling added before W0.1 merge",
+    "revalidation": "static contract PASS; next owner W0.2 run will naturally exercise the corrected markers"
+  },
+  "gateConclusion": "Core picking/persistence evidence passes. Environment rejection remains a contract-level safeguard and should be incidentally rechecked in later owner runs."
+}

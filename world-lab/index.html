@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jozz Splat Game Lab — W0 World Grounding</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "playcanvas": "https://cdn.jsdelivr.net/npm/playcanvas@2.21.2/build/playcanvas.mjs"
+    }
+  }
+  </script>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main id="app" data-state="loading" data-pick-armed="false">
+    <canvas id="viewport"></canvas>
+    <header class="topbar">
+      <div class="brand"><strong>Jozz Splat Game Lab</strong><span>W0 · World Grounding</span></div>
+      <div class="runtime"><span>PlayCanvas 2.21.2</span><span id="backendStatus">—</span><span class="verified">SOURCE VERIFIED</span></div>
+    </header>
+    <aside class="workflow" aria-label="World grounding workflow">
+      <div class="world-state"><span>WORLD</span><strong>DRAFT</strong></div>
+      <ol class="steps">
+        <li class="step active"><span>01</span><div><strong>Picking</strong><small>Stable 3D probes</small></div></li>
+        <li class="step locked"><span>02</span><div><strong>Gravity</strong><small>Locked until W0.1 passes</small></div></li>
+        <li class="step locked"><span>03</span><div><strong>Scale</strong><small>Locked until gravity evidence</small></div></li>
+      </ol>
+      <section class="panel-section">
+        <h2>W0.1 · Spatial Probe</h2>
+        <p id="instruction">Obróć widok. Gdy chcesz wskazać powierzchnię, kliknij „Dodaj punkt”, a potem raz w splat.</p>
+        <button id="armPickButton" class="primary">Dodaj punkt</button>
+        <div class="button-row"><button id="undoButton" disabled>Cofnij</button><button id="clearButton" disabled>Wyczyść</button></div>
+      </section>
+      <section class="panel-section readout">
+        <div><span>Punkty</span><strong id="pointCount">0</strong></div>
+        <div><span>Pick status</span><strong id="pickStatus">IDLE</strong></div>
+        <div><span>World calibration</span><strong>UNMEASURED</strong></div>
+      </section>
+      <section class="panel-section latest">
+        <h2>Ostatni punkt</h2>
+        <div class="coord-block"><span>SOURCE</span><code id="sourceCoords">—</code></div>
+        <div class="coord-block"><span>RUNTIME WORLD</span><code id="worldCoords">—</code></div>
+      </section>
+      <section class="panel-section points-section"><h2>Probes</h2><div id="pointsList" class="points-list"><p class="empty">Brak punktów.</p></div></section>
+      <button id="copyEvidenceButton" class="evidence" disabled>Kopiuj evidence</button>
+    </aside>
+    <div class="modebar"><button class="selected">Survey</button><button disabled title="Walk pojawi się dopiero po W0.4">Walk</button><button id="resetViewButton">Reset view</button></div>
+    <div id="pickHint" class="pick-hint" hidden>W0.1 PICK · kliknij widoczną powierzchnię foreground · Esc anuluje</div>
+    <section id="loadingPanel" class="modal-status"><strong id="loadingTitle">Uruchamiam World Grounding…</strong><span id="loadingDetail">Sprawdzam źródło</span><div class="progress"><div id="progressBar"></div></div></section>
+    <section id="errorPanel" class="modal-status error" hidden><strong>W0.1: FAIL</strong><pre id="errorText"></pre></section>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
