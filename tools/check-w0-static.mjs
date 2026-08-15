@@ -22,7 +22,7 @@ assert(workflow.includes('solveGravity(this.solverRefs())'),'solver wiring missi
 assert(workflow.includes('this.root.setLocalRotation(x,y,z,w)'),'reversible preview missing');
 assert(workflow.includes("worldCalibration:'DRAFT_ORIENTATION_CANDIDATE_NO_SCALE'"),'draft no-scale evidence missing');
 assert(workflow.includes('automaticAcceptance:false'),'owner decision boundary missing');
-assert(workflow.includes('this.verticals.length>=3'),'minimum evidence reference count missing');
+assert(workflow.includes("this.verticals.length>=3"),'minimum evidence reference count missing');
 assert(!workflow.includes('unitsPerMetre'),'W0.2 must not invent metric scale');
 assert(!workflow.includes('Box3D'),'W0.2 must not pull physics forward');
 assert(gravity.includes('automaticAcceptance: false'),'solver must not self-accept');
