@@ -65,6 +65,25 @@ function runtimeInfo() {
   };
 }
 
+function waitForInitialGsplatReady(gsplatSystem, timeoutMs) {
+  return new Promise((resolve) => {
+    let settled = false;
+    let timeout;
+    const finish = (result) => {
+      if (settled) return;
+      settled = true;
+      if (timeout) clearTimeout(timeout);
+      gsplatSystem.off('frame:ready', onReady);
+      resolve(result);
+    };
+    const onReady = (_camera, _layer, ready, loadingCount) => {
+      if (ready && loadingCount === 0) finish('ready');
+    };
+    gsplatSystem.on('frame:ready', onReady);
+    timeout = setTimeout(() => finish('timeout'), timeoutMs);
+  });
+}
+
 async function loadGsplat(name, url, onProgress) {
   const asset = new Asset(name, 'gsplat', { url });
   app.assets.add(asset);
@@ -152,8 +171,6 @@ async function boot() {
   app.scene.gsplat.renderer = GSPLAT_RENDERER_AUTO;
   app.start();
 
-  governor = new RenderGovernor(app, initialProfile);
-
   const camera = new Entity('R1 Survey Camera');
   camera.addComponent('camera', {
     clearColor: new Color(0.025, 0.032, 0.037),
@@ -176,7 +193,6 @@ async function boot() {
   foreground.setLocalEulerAngles(0, 0, 180);
   foreground.addComponent('gsplat', { asset: fgAsset });
   groundingRoot.addChild(foreground);
-  governor.wake(1400, 'foreground-loaded');
 
   loadingTitle.textContent = 'Ładuję environment appearance…';
   const envAsset = await loadGsplat('R1 Environment', '/asset/environment.ply');
@@ -184,7 +200,12 @@ async function boot() {
   environment.setLocalEulerAngles(0, 0, 180);
   environment.addComponent('gsplat', { asset: envAsset });
   groundingRoot.addChild(environment);
-  governor.wake(1400, 'environment-loaded');
+
+  loadingTitle.textContent = 'Czekam na gotową klatkę GS…';
+  loadingDetail.textContent = 'Pierwszy pełny sort i render';
+  await waitForInitialGsplatReady(app.systems.gsplat, 6000);
+
+  governor = new RenderGovernor(app, initialProfile);
 
   const bounds = meta.foreground.bounds;
   const centerSource = bounds.min.map((value, index) => (value + bounds.max[index]) * 0.5);
