@@ -35,6 +35,10 @@ function Invoke-NodeStep([string]$label, [string[]]$arguments, [string]$outputPa
     }
 }
 
+$extractDir = $null
+$runDir = $null
+$completed = $false
+
 try {
     $repoRoot = Split-Path -Parent $PSScriptRoot
     Set-Location -LiteralPath $repoRoot
@@ -43,7 +47,6 @@ try {
     Write-Host 'Jozz Splat Game Lab - F0'
     Write-Host '============================================================'
     Write-Host ''
-    Write-Host 'Za chwile otworzy sie zwykle okno wyboru pliku Windows.'
     Write-Host 'Wybierz oryginalny ZIP z Luma albo gs_GG_Szko_a.ply.'
     Write-Host 'Oryginalny plik nie zostanie zmodyfikowany.'
 
@@ -67,7 +70,6 @@ try {
     }
 
     $sourcePath = $null
-    $extractDir = $null
 
     if ($extension -eq '.zip') {
         $extractDir = Join-Path ([System.IO.Path]::GetTempPath()) ('JozzSplatGameLab_F0_extract_' + [Guid]::NewGuid().ToString('N'))
@@ -120,14 +122,16 @@ try {
     Invoke-NodeStep '[4/5] Odtwarzam foreground i environment...' @('tools/f0-luma-source.mjs', 'split', $sourcePath, $splitDir) (Join-Path $runDir 'split.json')
     Invoke-NodeStep '[5/5] Porownuje dane bajt po bajcie...' @('tools/f0-verify-split.mjs', $sourcePath, (Join-Path $splitDir 'scene.foreground.ply'), (Join-Path $splitDir 'scene.environment.ply')) (Join-Path $runDir 'verify.json')
 
+    $completed = $true
+
     Write-Host ''
     Write-Host '============================================================'
     Write-Host 'F0: PASS'
     Write-Host '============================================================'
-    Write-Host 'Oryginalny ZIP/PLY nie zostal zmodyfikowany.'
-    Write-Host "Dane testowe sa tylko w katalogu tymczasowym: $runDir"
+    Write-Host 'Wszystko sie zgadza. Oryginalny ZIP/PLY nie zostal zmodyfikowany.'
+    Write-Host 'Tymczasowe kopie testowe zostana automatycznie usuniete.'
 
-    Show-Info "F0: PASS`n`nWszystko sie zgadza. Oryginalny ZIP/PLY nie zostal zmodyfikowany.`n`nNie musisz nic robic z plikami wynikowymi." 'Jozz Splat Game Lab - F0 PASS'
+    Show-Info "F0: PASS`n`nWszystko sie zgadza. Oryginalny ZIP/PLY nie zostal zmodyfikowany.`n`nTymczasowe kopie testowe zostana automatycznie usuniete." 'Jozz Splat Game Lab - F0 PASS'
     exit 0
 }
 catch {
@@ -136,9 +140,22 @@ catch {
     Write-Host 'F0: FAIL'
     Write-Host '============================================================'
     Write-Host $_.Exception.Message
+    if ($runDir) {
+        Write-Host "Katalog diagnostyczny: $runDir"
+    }
     Write-Host ''
     Write-Host 'Nie probuj tego sam naprawiac. Wyslij mi screenshot tego okna.'
 
     Show-ErrorBox ("F0: FAIL`n`n" + $_.Exception.Message + "`n`nNie naprawiaj tego sam. Wyslij mi screenshot komunikatu.")
     exit 1
+}
+finally {
+    if ($completed) {
+        if ($runDir -and (Test-Path -LiteralPath $runDir)) {
+            Remove-Item -LiteralPath $runDir -Recurse -Force -ErrorAction SilentlyContinue
+        }
+        if ($extractDir -and (Test-Path -LiteralPath $extractDir)) {
+            Remove-Item -LiteralPath $extractDir -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
 }
