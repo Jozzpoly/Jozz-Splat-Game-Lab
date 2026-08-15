@@ -1,7 +1,7 @@
 # AI Project Memory — Jozz Splat Game Lab
 
 Updated: 2026-08-15
-Status: `W0.2 GRAVITY — STRONG AXIS EVIDENCE / DIRECTION + PREVIEW NEXT`
+Status: `W0.2 GRAVITY RECOVERED / HARDENED OWNER REPLAY NEXT`
 
 This is a router, not canonical truth. Current Git, executable evidence and direct owner validation outrank it.
 
@@ -13,55 +13,65 @@ This is a router, not canonical truth. Current Git, executable evidence and dire
 - active runtime PlayCanvas Engine `2.21.2`;
 - Spark `2.1.0` + Three `0.185.1` validated fallback;
 - W0.1 stable foreground picking VERIFIED;
+- accepted `main` remains W0.1 commit `489cd24d047910de63239c7e22935a3906864fa5`;
+- W0.2 remains draft PR #6 on `agent/w0-2-gravity`;
 - no collision or Box3D yet.
 
 ## W0 World Grounding
 
 1. W0.1 picking — VERIFIED;
-2. W0.2 gravity — ACTIVE;
+2. W0.2 gravity — ACTIVE / RECOVERED;
 3. W0.3 metric scale — LOCKED;
 4. W0.4 authoritative `ScanToWorld` — LOCKED;
 5. W0.5 human-scale navigation — LOCKED.
 
 ## W0.2 real evidence
 
-Owner collected five building-edge references on 2026-08-15. Reanalysis of the raw coordinates shows:
+Five owner-selected building-edge references support one strong vertical axis:
 
-- tilt candidate `7.6424°` from baseline `+Y`;
+- tilt candidate `7.6424°`;
 - axis coherence `99.939%`;
 - axis residual median `0.5149°`;
 - axis residual max `2.1871°`;
-- three entered bottom→top directions agree and two are reversed.
+- three entered bottom→top directions agree, two are reversed.
 
-Therefore the physical vertical **axis** is strongly supported; the original huge mean/RMS directed residuals were mostly an endpoint-direction semantics problem, not contradictory geometry. Technical evidence: `evidence/w0/w0-2-owner-axis-2026-08-15.json`.
+Therefore the physical axis is strongly supported; the original huge directed mean/RMS came mainly from endpoint-order semantics. Technical evidence: `evidence/w0/w0-2-owner-axis-2026-08-15.json`.
 
-## W0.2 hardened model
+## Hardened W0.2 model
 
-- `gravity.mjs` fits an orientation-independent dominant axis and reports `axisCoherence`;
-- each reference records `axisResidualDeg`, `directedResidualDeg` and `directionStatus`;
+- sign-independent physical-axis fitting;
+- separate `axisResidualDeg`, `directedResidualDeg`, `directionStatus`;
 - no silent reversal/outlier deletion;
-- explicit owner `Odwróć` swaps endpoint roles and increments `manualFlipCount`;
-- preview stays blocked while intended bottom→top evidence has unresolved reversed pairs;
-- evidence schema v2 preserves axis, direction and manual-correction provenance;
-- real owner evidence is embedded in deterministic solver regression tests;
-- still no automatic acceptance or metric scale.
+- explicit `Odwróć` and `manualFlipCount`;
+- preview blocked while `REVERSED` remains;
+- owner evidence regression test preserves the exact five real references;
+- no automatic acceptance or metric scale.
 
 ## Survey navigation
 
-Inspection navigation was hardened after owner feedback:
+Inspection navigation now uses:
 
 - MMB orbit;
 - Shift+MMB view-plane pan;
-- cursor-anchored wheel zoom with close-range floor reduced from `2.5%` of initial radius to a tiny numerical safety radius;
-- F fit; R reset;
-- LMB/RMB remain available for spatial/world interaction;
-- camera near clip reduced for close inspection.
+- cursor-anchored wheel zoom; Shift+wheel faster;
+- F = focus verified foreground under cursor while preserving camera position;
+- Home = fit full scan;
+- R = reset;
+- no initial-radius near/far zoom ceiling beyond a tiny numerical safety floor;
+- LMB/RMB remain free for spatial/world interaction;
+- near clip `0.003`.
 
 This is not W0.5 human navigation.
 
+## Local security boundary
+
+The owner LAB now validates loopback Host headers, rejects malformed paths safely, adds basic same-origin/no-sniff headers, hashes the exact known ZIP before extraction and attempts temp cleanup after normal exit. Raw/foreground/environment F0 hashes remain the authority.
+
 ## Immediate next evidence
 
-Run the hardened W0.2 workflow, resolve only visibly reversed endpoint pairs, then inspect the reversible level preview. If it visibly corrects the tilt without over-correction, W0.2 can be squash-merged and W0.3 may begin.
+Run the final hardened W0.2 owner build, resolve only genuinely reversed endpoint roles, apply the reversible level preview, verify the corrected level visually, and judge the new close-range navigation. Then copy schema-v2 gravity evidence.
+
+If this passes, squash PR #6 and begin W0.3 metric scale. Do not start collision or Box3D before W0.4.
 
 ## Long-term direction
 
@@ -74,6 +84,6 @@ Future confidence/semantics/material systems should be justified by observed fai
 1. `docs/PROJECT_STATE.md`
 2. `docs/W0_WORLD_GROUNDING.md`
 3. `evidence/w0/w0-2-owner-axis-2026-08-15.json`
-4. `evidence/w0/w0-2-preflight-2026-08-15.json`
+4. `evidence/w0/w0-2-recovery-preflight-2026-08-15.json`
 5. `docs/R0_DECISION.md`
 6. `AGENTS.md`
