@@ -2,8 +2,11 @@
   "evidenceVersion": 1,
   "recordedAt": "2026-08-15",
   "gate": "W0.1",
-  "status": "STATIC_SOURCE_PREFLIGHT_VERIFIED_GPU_PICKING_PENDING",
-  "runtime": { "playcanvas": "2.21.2", "backendBaseline": "webgl2" },
+  "status": "W0_1_CORE_VERIFIED_MARKER_HARDENING_PREFLIGHT_PASS",
+  "runtime": {
+    "playcanvas": "2.21.2",
+    "backendBaseline": "webgl2"
+  },
   "source": {
     "sha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
     "rawHttpSha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
@@ -21,11 +24,14 @@
     "Environment and existing marker entities are disabled while preparing the picker buffer.",
     "A pick is accepted only when selection contains the foreground GSplat component.",
     "Accepted runtime-world points are transformed back to foreground local/source coordinates.",
-    "W0.1 code contains no metric scale, gravity solver, collision or Box3D implementation."
+    "W0.1 code contains no metric scale, gravity solver, collision or Box3D implementation.",
+    "Owner-device evidence produced 7 valid foreground probes across materially different camera views.",
+    "Persistent marker parallax is consistent with the same recovered surfaces; core W0.1 question passes.",
+    "Marker visualization changed from scene-extent world-unit scaling to adaptive constant-screen-size scaling after close-range occlusion was observed.",
+    "Post-hardening static routes and raw/foreground/environment SHA-256 streams were revalidated through the actual W0 server."
   ],
   "pending": [
-    "Actual owner-device GSplat world-point picking.",
-    "Persistent marker visual stability after camera movement.",
-    "Visual confirmation that environment/background cannot contaminate calibration picks."
+    "Environment/background rejection was not explicitly demonstrated in the supplied owner report; runtime exclusion remains enforced and should be incidentally rechecked later.",
+    "Adaptive marker-size hardening will be naturally exercised by the next owner W0.2 run."
   ]
 }
