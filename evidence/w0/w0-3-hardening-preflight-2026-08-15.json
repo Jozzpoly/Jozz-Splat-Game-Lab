@@ -1,0 +1,52 @@
+{
+  "gate": "W0.3",
+  "recordedAt": "2026-08-15",
+  "status": "HARDENING_PREFLIGHT_VERIFIED_OWNER_METRIC_GROUND_TRUTH_REQUIRED",
+  "baseMain": "4cffaf3bd227fd66a0fd9fbbc8060118c5b6aea6",
+  "sourceSha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+  "triggers": [
+    "filtered solver input originally lost the original measurement-row index and could attach residuals to the wrong visible row",
+    "per-keystroke form recomputation could rebuild input DOM while the owner was typing",
+    "Polish decimal-comma owner input such as 12,5 was not accepted by Number()",
+    "owner-package workspace initially omitted scale.css although the published index referenced it"
+  ],
+  "hardening": {
+    "originalMeasurementRowIdentityPreserved": true,
+    "solverInputMapping": "map sourceIndex before filtering incomplete rows",
+    "formCommitPolicy": "change/blur instead of per-keystroke input rerender",
+    "decimalInput": "comma and dot accepted equivalently; zero/negative/nonfinite rejected",
+    "scaleCssPackageContract": true,
+    "silentOutlierRemoval": false,
+    "automaticAcceptance": false
+  },
+  "checks": {
+    "scaleSolverSynthetic": "PASS",
+    "conflictingMeasurementRemainsVisible": "PASS",
+    "sparseMeasurementRowIdentityRegression": "PASS",
+    "polishDecimalCommaRegression": "PASS",
+    "staticMetricScaleContract": "PASS",
+    "nodeSyntax": "PASS",
+    "httpRoot": 200,
+    "httpApp": 200,
+    "httpScale": 200,
+    "httpScaleWorkflow": 200,
+    "httpAcceptedOrientation": 200,
+    "httpSpatialProbe": 200,
+    "httpMarkerSystem": 200,
+    "httpSurvey": 200,
+    "httpStyles": 200,
+    "httpScaleCss": 200,
+    "foreignHost": 403,
+    "encodedTraversal": 404,
+    "rawHttpSha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+    "foregroundHttpSha256": "a734ce660a9bfd08ad11605fb45f1691fee3fa0bfe87fbbdb32f4acc7748d112",
+    "environmentHttpSha256": "b92d3782374dd945619a96024d7918252b5762d5e26c91fb67c21adafeca496c"
+  },
+  "evidenceBoundary": {
+    "renderedOwnerWorkflow": "PENDING_OWNER_DEVICE",
+    "knownRealDistances": "REQUIRED",
+    "minimumIndependentKnownDistances": 2,
+    "preferredIndependentKnownDistances": 3,
+    "scanToWorldPromotion": "BLOCKED_UNTIL_W0_3_PASS"
+  }
+}

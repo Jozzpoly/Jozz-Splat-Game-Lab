@@ -27,65 +27,66 @@ Exact first source and deterministic foreground/environment source-coordinate pa
 
 ### R0 — CLOSED / REOPENABLE
 
-PlayCanvas Engine `2.21.2` is the active runtime. Spark `2.1.0` + Three `0.185.1` is a validated fallback/reference path. Reopen R0 only on material contradictory evidence. Do not maintain a renderer abstraction merely to preserve both paths.
+PlayCanvas Engine `2.21.2` is the active runtime. Spark `2.1.0` + Three `0.185.1` is a validated fallback/reference path. Reopen only on material contradictory evidence.
 
 ### W0 — ACTIVE
 
-W0 must create one measured world authority. It is explicitly staged:
+W0 must create one measured world authority:
 
-- W0.1 picking;
-- W0.2 gravity/up calibration;
-- W0.3 metric scale;
-- W0.4 authoritative `ScanToWorld`;
-- W0.5 human-scale navigation.
+- W0.1 picking — VERIFIED;
+- W0.2 gravity/up — VERIFIED;
+- W0.3 metric scale — ACTIVE;
+- W0.4 authoritative `ScanToWorld` — LOCKED;
+- W0.5 human-scale navigation — LOCKED.
 
-Do not collapse these stages for convenience. `ScanToWorld` remains `draft` until real orientation and scale evidence pass. No collision, Box3D or metre-valued gameplay tuning before W0.4.
+Do not collapse these gates. No collision, Box3D or metre-valued gameplay tuning before W0.4.
 
-#### W0.2 hard boundaries
+#### W0.3 hard boundaries
 
-- W0.1 picking is accepted and reused; do not redesign the picker while solving gravity unless contradictory evidence appears;
-- a physical vertical **axis** and its entered `bottom → top` **direction** are separate evidence dimensions;
-- preserve raw source coordinates and one baseline runtime coordinate frame for every endpoint;
-- all references contribute to the axis candidate; never silently delete or trim outliers;
-- report `axisResidualDeg` independently from `directedResidualDeg` / `directionStatus`;
-- never silently reverse endpoints; explicit owner reversal must remain auditable (`manualFlipCount`);
-- level preview stays blocked while intended bottom→top evidence contains unresolved `REVERSED` references;
-- `axisCoherence` is evidence, not an automatic acceptance threshold;
-- level correction is a reversible preview on a temporary draft grounding root, not accepted `ScanToWorld`;
-- reset preview before collecting new evidence so coordinate frames cannot mix;
-- require at least three references before owner evidence export;
-- no metric scale, collision, Box3D or gameplay in W0.2.
+- reuse the accepted `SpatialProbe`; do not create a second picking stack;
+- keep picked evidence in immutable raw source coordinates even though the display uses the accepted W0.2 orientation;
+- each scale sample is A/B foreground endpoints + `sourceLength` + explicitly known real metres + a provenance note;
+- do not treat visually plausible or nominal standard dimensions as strong evidence unless the owner actually knows that site's value;
+- require at least 2 valid independent metric measurements for a scale candidate and prefer 3 for owner acceptance;
+- preserve original visible measurement-row identity when filtering incomplete rows for the solver;
+- accept ordinary owner decimal input with comma or dot; reject zero, negative and non-finite values;
+- do not rebuild owner input fields on every keystroke; commit edits on change/blur;
+- fit all valid scale measurements and expose each implied scale/residual; never silently trim outliers;
+- `automaticAcceptance` remains false; numerical consistency is evidence, not a magic acceptance threshold;
+- provenance is part of evidence and must survive export;
+- W0.3 may produce a scale **candidate**, never a final `ScanToWorld` or physical authority.
+
+#### Accepted W0.2 orientation
+
+W0.3 consumes `evidence/w0/w0-2-owner-pass-2026-08-15.json`. Its accepted correction quaternion may level the draft grounding root for measurement, but source-coordinate recovery must continue to invert the complete foreground world transform. Do not recompute or silently replace W0.2 gravity inside W0.3.
 
 #### Survey navigation contract
 
-Survey is an inspection camera, not human-scale movement. Preserve the editor-style interaction contract unless owner evidence requests otherwise:
+Survey is an inspection camera, not human-scale movement:
 
 - `MMB` orbit;
-- `Shift + MMB` pan in the view plane;
-- wheel cursor-anchored zoom; `Shift + wheel` accelerates long travel;
-- `F` focuses the orbit pivot on the verified **foreground** surface under the last canvas cursor position while preserving camera position;
-- `Home` fits the full scan while preserving current orientation;
-- `R` resets the original survey view;
-- `LMB` and `RMB` remain free for world/model interaction;
-- close inspection is limited only by a tiny numerical radius floor, never by a fraction of the initial scan radius.
-
-Do not use Survey freedom as evidence that W0.5 metric Walk is complete.
+- `Shift + MMB` pan;
+- wheel cursor-anchored zoom; `Shift + wheel` faster travel;
+- `F` focus verified foreground under cursor without teleporting the camera;
+- `Home` fit full scan;
+- `R` reset;
+- `LMB` and `RMB` remain free for world interaction.
 
 #### Local owner-lab security contract
 
-The local LAB can expose the owner's raw capture bytes and must therefore stay fail-closed:
+The local LAB can expose raw capture bytes and must remain fail-closed:
 
 - bind only to loopback;
 - accept only `127.0.0.1` / `localhost` Host headers;
-- reject malformed request paths rather than crashing;
+- reject malformed paths safely;
 - preserve same-origin / no-sniff response hardening;
-- verify the exact known F0 ZIP hash **before** extraction;
-- direct PLY input still passes the exact F0 byte/hash gate in the Node server;
-- temporary ZIP extraction should be cleaned up after normal launcher exit.
+- verify the exact F0 ZIP hash before extraction;
+- direct PLY input must pass exact F0 byte/hash validation before serving;
+- clean temporary ZIP extraction after normal launcher exit where possible.
 
 ### Later gates
 
-C0/C1 collision evidence, P0 physical inhabitance and G0 gameplay remain downstream. See `docs/FOUNDATION_PLAN.md`.
+W0.4 must define one versioned `ScanToWorld`, including an explicit origin decision as well as accepted orientation/scale. W0.5 metric Walk and C0/C1 collision remain downstream.
 
 ## Owner workflow
 
