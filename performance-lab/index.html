@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jozz Splat Game Lab — R1 Thermal Render Budget</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "playcanvas": "https://cdn.jsdelivr.net/npm/playcanvas@2.21.2/build/playcanvas.mjs"
+    }
+  }
+  </script>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main id="app" data-state="loading">
+    <canvas id="viewport"></canvas>
+
+    <header class="topbar">
+      <div class="brand"><strong>Jozz Splat Game Lab</strong><span>R1 · Thermal Render Budget</span></div>
+      <div class="runtime"><span id="backendStatus">—</span><span id="sortStatus">—</span><span class="verified">SOURCE VERIFIED</span></div>
+    </header>
+
+    <aside class="panel">
+      <section>
+        <div class="state-line"><span>RENDER POLICY</span><strong id="renderState">BOOT</strong></div>
+        <p class="intro">Cel: zachować pełny splat i jakość, ale nie renderować setek identycznych klatek gdy kamera stoi.</p>
+      </section>
+
+      <section>
+        <h2>Profil</h2>
+        <div class="segmented" id="profileControls">
+          <button data-profile="quiet">Quiet 60</button>
+          <button data-profile="balanced">Balanced 120</button>
+          <button data-profile="continuous">Continuous</button>
+        </div>
+        <p class="micro">Quiet/Balanced renderują tylko podczas ruchu i krótkiego settlingu. Continuous odtwarza stary styl ciągłego renderowania.</p>
+      </section>
+
+      <section>
+        <h2>Backend</h2>
+        <div class="segmented" id="backendControls">
+          <button data-backend="best">Best</button>
+          <button data-backend="webgl2">WebGL2</button>
+        </div>
+        <p class="micro">Zmiana backendu przeładowuje LAB. Best próbuje WebGPU, potem bezpiecznie spada do WebGL2.</p>
+      </section>
+
+      <section class="readout">
+        <div><span>Backend</span><strong id="backendReadout">—</strong></div>
+        <div><span>GS sort</span><strong id="sortReadout">—</strong></div>
+        <div><span>Policy</span><strong id="policyReadout">—</strong></div>
+        <div><span>Rendered FPS · 2s</span><strong id="fpsReadout">—</strong></div>
+        <div><span>Frames · 10s</span><strong id="framesReadout">—</strong></div>
+        <div><span>Idle frames · 10s</span><strong id="idleFramesReadout">—</strong></div>
+        <div><span>Idle for</span><strong id="idleReadout">—</strong></div>
+        <div><span>Backbuffer</span><strong id="pixelsReadout">—</strong></div>
+        <div><span>Splats</span><strong>1 063 122</strong></div>
+      </section>
+
+      <section class="test-note">
+        <strong>Najważniejszy test</strong>
+        <p>Porusz kamerą, potem zostaw ją nieruchomo. W Quiet po chwili Rendered FPS powinno spaść praktycznie do 0, bez zmiany obrazu.</p>
+      </section>
+
+      <button id="copyEvidenceButton" class="evidence">Kopiuj performance evidence</button>
+    </aside>
+
+    <div class="modebar">
+      <button id="focusViewButton">Focus (F)</button>
+      <button id="fitViewButton">Fit (Home)</button>
+      <button id="resetViewButton">Reset (R)</button>
+    </div>
+
+    <div class="nav-hint">MMB obrót · Shift+MMB pan · scroll zoom do kursora · Shift+scroll szybciej · F focus · Home fit · R reset</div>
+
+    <section id="loadingPanel" class="modal-status">
+      <strong id="loadingTitle">Uruchamiam R1…</strong>
+      <span id="loadingDetail">Sprawdzam źródło</span>
+      <div class="progress"><div id="progressBar"></div></div>
+    </section>
+
+    <section id="errorPanel" class="modal-status error" hidden>
+      <strong>R1: FAIL</strong>
+      <pre id="errorText"></pre>
+    </section>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
