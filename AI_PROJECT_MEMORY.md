@@ -10,8 +10,7 @@ This file is a router, not canonical truth. Current Git, executable evidence and
 - repository: `Jozzpoly/Jozz-Splat-Game-Lab`;
 - default branch: `main`;
 - initialization commit: `6baac6336ceadb47ca991120d87f8ce47238e2d9`;
-- foundation PR: `#1`, branch `agent/foundation-grounding`;
-- F0 PR: `#2`, branch `agent/f0-evidence-freeze`, stacked on foundation until acceptance;
+- foundation/F0 are being consolidated onto a clean source line before R0;
 - no application runtime is accepted;
 - no renderer is selected;
 - no collision representation is accepted;
@@ -34,9 +33,9 @@ Binary/source evidence is reproduced and the source-specific structural split is
 - independent verification proved output payloads are exact source byte ranges;
 - semantic interpretation of the tail as Luma environment is still `LIKELY`.
 
-Foundation/F0 supports Node `>=22.16.0`; npm version is not an evidence variable for these dependency-free binary tools. The implementation executed on supported Node `22.16.0` and was independently reproduced with Python/NumPy byte analysis.
+Foundation/F0 supports Node `>=22.16.0`; npm version is not an evidence variable for these dependency-free binary tools. The implementation executed on supported Node `22.16.0`, was independently reproduced with Python/NumPy byte analysis, and a later full revalidation reproduced all source/output/payload hashes again.
 
-`RUN_F0_CANONICAL.cmd` is an optional owner-side reproduction helper. Double-clicking it opens a normal Windows file picker. Owner reproduction is not required to close the technical F0 gate.
+`SPRAWDZ_F0.cmd` is an optional owner-side reproduction helper. Double-clicking it opens a normal Windows file picker. Owner reproduction is not required to close the technical F0 gate.
 
 ### R0 Renderer Bake-Off
 
