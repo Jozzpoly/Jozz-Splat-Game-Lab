@@ -1,17 +1,19 @@
 # Jozz Splat Game Lab
 
-Evidence-driven R&D and gameplay laboratory for turning real-world Gaussian Splatting captures into physically coherent, genuinely playable worlds.
+Evidence-driven R&D for turning real Gaussian Splatting captures into spatially grounded, physically testable game worlds.
 
-**Current status:** `R0-A LAB IMPLEMENTED / OWNER BROWSER EVIDENCE NEXT`
+**Accepted `main`:** F0 source integrity → R0 renderer selection → W0.1 stable spatial probes.
 
-The first campaign remains deliberately gated: **F0 Evidence Freeze → R0 Renderer Bake-Off → W0 World Contract**. No collision recipe, physics integration, streaming strategy or game mechanic is considered chosen until the relevant gate produces evidence.
+**Active draft:** W0.2 Gravity on PlayCanvas Engine `2.21.2`. Spark remains a validated fallback.
 
-F0 has verified the exact first Luma source and a deterministic source-coordinate foreground/environment partition. The structural split is `VERIFIED`; the semantic interpretation of the 50,000-record shell as Luma environment remains `LIKELY`.
+W0.2 now distinguishes physical **vertical-axis agreement** from entered **bottom→top direction**. Real owner evidence from five building edges shows `99.939%` axis coherence with a `7.642°` tilt candidate, while two endpoint pairs were direction-reversed. The hardened workflow exposes that conflict explicitly instead of treating good vertical axes as ~180° geometry errors.
 
-R0-A now has an owner-testable local LAB containing two pinned renderer candidates over the same verified source: Spark 2.1.0 + Three.js 0.185.1 and PlayCanvas Engine 2.21.2. **No renderer has been selected yet.** Actual browser/GPU evidence is the next gate.
+Survey navigation is hardened for close inspection: **MMB orbit · Shift+MMB pan · cursor-anchored wheel zoom · F fit · R reset**. LMB/RMB remain free for world interactions. This is an inspection camera, not W0.5 metric human movement.
 
-This repository is intentionally separate from JV, HomeScan, JURE, VAW and other projects. Those repositories may provide verified patterns and evidence, but they are not dependencies or writable workspaces for Splat Game Lab.
+W0 remains intentionally staged: **W0.1 Picking → W0.2 Gravity → W0.3 Scale → W0.4 ScanToWorld → W0.5 Human Navigation**. No collision or Box3D is accepted before the world transform has measured orientation and scale.
 
-Raw capture assets and large derived PLYs remain outside Git and are identified by SHA-256 receipts.
+Raw capture assets remain outside Git and are identified by SHA-256 receipts. The 50,000-record environment tail renders as appearance only and has no calibration/physical authority.
 
-Start with `AI_PROJECT_MEMORY.md` and `docs/PROJECT_STATE.md`. To run the current R0 LAB on Windows, double-click `URUCHOM_R0_LAB.cmd`, choose the original Luma ZIP/PLY in the normal file picker, and use the browser UI. No terminal commands or npm install are required.
+Windows owner workflow: double-click `URUCHOM_W0_WORLD_GROUNDING.cmd`, choose the original verified Luma ZIP/PLY, and use the browser UI. No terminal or npm setup is required.
+
+Start with `AI_PROJECT_MEMORY.md`, `docs/PROJECT_STATE.md` and `docs/W0_WORLD_GROUNDING.md`.

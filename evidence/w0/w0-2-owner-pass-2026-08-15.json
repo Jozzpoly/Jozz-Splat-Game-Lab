@@ -1,0 +1,58 @@
+{
+  "gate": "W0.2",
+  "schemaVersion": 2,
+  "recordedAt": "2026-08-15T14:35:52.696Z",
+  "sourceSha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+  "runtime": "PlayCanvas 2.21.2",
+  "backend": "webgl2",
+  "privacy": "technical numeric evidence only; owner screenshot/location image not committed",
+  "worldCalibration": "DRAFT_ORIENTATION_CANDIDATE_NO_SCALE",
+  "referenceCount": 6,
+  "references": [
+    {"id":1,"bottomSource":[-1.8085410133369058,1.588850913050864,-0.18038196102059165],"topSource":[-1.7996940574353928,1.3096788454690438,-0.14803601780769401],"sourceLength":0.2811788967703011,"axisResidualDeg":1.466315609013735,"directedResidualDeg":1.466315609013735,"directionStatus":"AGREES","manualFlipCount":0},
+    {"id":2,"bottomSource":[-1.8376539853139051,1.5902315951598802,-0.16814095367559714],"topSource":[-1.8166699781517721,1.2906943657318473,-0.12692717297681097],"sourceLength":0.3030865488428844,"axisResidualDeg":1.70133944083639,"directedResidualDeg":1.70133944083639,"directionStatus":"AGREES","manualFlipCount":0},
+    {"id":3,"bottomSource":[-1.7134782505490618,1.658395803574638,0.36840264548452706],"topSource":[-1.703291953906966,1.3541529802690875,0.40501867016760595],"sourceLength":0.30660754954143754,"axisResidualDeg":1.1939630848673999,"directedResidualDeg":1.1939630848673999,"directionStatus":"AGREES","manualFlipCount":0},
+    {"id":4,"bottomSource":[-0.16978476662522346,1.615756916687255,-0.5356056561767816],"topSource":[-0.1540838777459839,1.3081186510094363,-0.4900455285995749],"sourceLength":0.3113897006095509,"axisResidualDeg":0.7470080298609754,"directedResidualDeg":0.7470080298609754,"directionStatus":"AGREES","manualFlipCount":0},
+    {"id":5,"bottomSource":[0.7354855710129126,1.6599328709834011,-0.46215739134266826],"topSource":[0.7344012938561846,1.5172824783740237,-0.4393585536175453],"sourceLength":0.1444648648294062,"axisResidualDeg":2.91499323810134,"directedResidualDeg":2.91499323810134,"directionStatus":"AGREES","manualFlipCount":0},
+    {"id":6,"bottomSource":[-1.177973016461781,1.5717136278354864,-0.3282852505272243],"topSource":[-1.1682736364967996,1.415916111759532,-0.3031129015834091],"sourceLength":0.15811575234141456,"axisResidualDeg":1.711192804101628,"directedResidualDeg":1.711192804101628,"directionStatus":"AGREES","manualFlipCount":0}
+  ],
+  "solver": {
+    "upBaselineRuntime": [-0.03972233717587429,0.9894921119239979,0.13902336627154666],
+    "tiltDeg": 8.313355975736457,
+    "axisCoherence": 0.9990636154282938,
+    "axisResidualStats": {"meanDeg":1.6224687011302448,"rmsDeg":1.7537375608430974,"medianDeg":1.5838275249250624,"maxDeg":2.91499323810134},
+    "directionConsensus": {"agreeCount":6,"reversedCount":0,"agreeFraction":1,"voteMargin":6,"method":"MAJORITY_BOTTOM_TO_TOP"},
+    "correctionQuaternion": [-0.06969501109561521,0,-0.01991354981873241,0.9973695683957874],
+    "automaticAcceptance": false
+  },
+  "crossRunRepeatability": {
+    "previousReferenceCount": 5,
+    "previousUpBaselineRuntime": [-0.04090474819900204,0.991117388634081,0.1265429710491104],
+    "previousTiltDeg": 7.6424034017408395,
+    "upAxisDifferenceDeg": 0.724292112041314,
+    "tiltDifferenceDeg": 0.6709525739956175,
+    "interpretation": "independently recollected references reproduce the same gravity axis within well under one degree"
+  },
+  "ownerNavigationFeedback": {
+    "focusUnderCursor": "works very well",
+    "shiftWheel": "works",
+    "closeRangeInspection": "definitely no longer a fight with the camera",
+    "currentNavigationAssessment": "sufficient for the current gate; fuller combinations may be useful later"
+  },
+  "levelPreviewEvidence": {
+    "previewApplied": true,
+    "ownerDeviceScreenshotProvided": true,
+    "screenshotCommitted": false,
+    "agentVisualReview": "no obvious over-correction visible; main building verticals remain visually credible after preview",
+    "explicitOwnerTextConfirmationOfLevel": false
+  },
+  "claimStates": {
+    "gravityAxis": "VERIFIED_REPEATABLE_FOR_CURRENT_RECONSTRUCTION_FRAME",
+    "endpointDirection": "VERIFIED_6_OF_6_AGREE",
+    "levelPreview": "VERIFIED_OWNER_DEVICE_SCREENSHOT_NO_OBVIOUS_OVERCORRECTION",
+    "surveyNavigation": "VERIFIED_OWNER_POSITIVE_FEEDBACK",
+    "metricScale": "UNKNOWN",
+    "spatiallyVaryingLocalReconstructionDistortion": "NOT_EVALUATED_GLOBALLY"
+  },
+  "gateDecision": "PASS_W0_2; squash merge after state documentation update; move to W0.3 metric scale"
+}

@@ -1,0 +1,107 @@
+{
+  "gate": "W0.2",
+  "recordedAt": "2026-08-15",
+  "status": "RECOVERY_HARDENING_PREFLIGHT_VERIFIED",
+  "repository": "Jozzpoly/Jozz-Splat-Game-Lab",
+  "acceptedMainSha": "489cd24d047910de63239c7e22935a3906864fa5",
+  "recoveredBranch": "agent/w0-2-gravity",
+  "preRecoveryHeadSha": "345606050565773eb68277ec4175817bd3ec140a",
+  "recoveryDecision": "continue existing W0.2; do not restart takeover or reopen W0.1/R0",
+  "source": {
+    "bytes": 263655789,
+    "sha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+    "foregroundSha256": "a734ce660a9bfd08ad11605fb45f1691fee3fa0bfe87fbbdb32f4acc7748d112",
+    "environmentSha256": "b92d3782374dd945619a96024d7918252b5762d5e26c91fb67c21adafeca496c"
+  },
+  "gravityEvidenceRegression": {
+    "status": "PASS",
+    "ownerReferenceCount": 5,
+    "candidateTiltDeg": 7.6424,
+    "axisCoherenceMin": 0.9993,
+    "axisResidualMedianDegMax": 0.6,
+    "axisResidualMaxDegMax": 2.25,
+    "expectedReversedBeforeManualResolution": 2,
+    "explicitEndpointFlipPreservesPhysicalAxis": true,
+    "automaticAcceptance": false
+  },
+  "navigationHardening": {
+    "orbit": "MMB",
+    "pan": "Shift+MMB view plane",
+    "zoom": "cursor-anchored exponential wheel",
+    "fastZoom": "Shift+wheel",
+    "focus": "F / Focus button: verified foreground under cursor; preserve current camera position and move orbit pivot",
+    "fit": "Home / Fit button",
+    "reset": "R / Reset button",
+    "leftMouseCameraBinding": false,
+    "rightMouseCameraBinding": false,
+    "initialRadiusNearLimit": false,
+    "initialRadiusFarLimit": false,
+    "numericalMinimumRadius": 0.000001,
+    "cameraNearClip": 0.003,
+    "metricMovementClaimed": false
+  },
+  "securityDiffReview": {
+    "method": "Codex Security security-diff-scan guidance applied manually because the bound Codex Security scan runtime is not exposed in this ChatGPT host",
+    "assets": [
+      "owner raw PLY capture bytes",
+      "owner-selected Luma ZIP/PLY",
+      "loopback HTTP service",
+      "calibration evidence integrity"
+    ],
+    "trustBoundaries": [
+      "Windows file picker / external ZIP",
+      "local filesystem to Node server",
+      "loopback HTTP to browser",
+      "pinned external PlayCanvas CDN module"
+    ],
+    "hardeningApplied": [
+      "validate Host as 127.0.0.1 or localhost before serving capture bytes",
+      "malformed URL decoding returns 400 rather than escaping request handling",
+      "X-Content-Type-Options nosniff",
+      "X-Frame-Options DENY",
+      "Referrer-Policy no-referrer",
+      "Cross-Origin-Resource-Policy same-origin",
+      "validate exact F0 ZIP bytes and SHA-256 before Expand-Archive",
+      "attempt temporary extraction cleanup after normal launcher exit"
+    ],
+    "remainingKnownRisk": [
+      "PlayCanvas 2.21.2 is still loaded from the pinned jsDelivr package URL; vendoring/content-locking is deferred and should be revisited for durable/offline delivery"
+    ],
+    "identifiedHighSeverityFindingsRemaining": 0
+  },
+  "checks": {
+    "nodeSyntax": "PASS",
+    "staticNavigationSecurityContract": "PASS",
+    "gravitySyntheticAndOwnerRegression": "PASS",
+    "httpRoot": 200,
+    "httpApp": 200,
+    "httpGravity": 200,
+    "httpGravityWorkflow": 200,
+    "httpMarkerSystem": 200,
+    "httpSpatialProbe": 200,
+    "httpSurvey": 200,
+    "httpStyles": 200,
+    "foreignHost": 403,
+    "malformedEncodedUri": 400,
+    "encodedTraversal": "NOT_SERVED",
+    "securityHeaders": "PASS",
+    "rawHttpSha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+    "foregroundHttpSha256": "a734ce660a9bfd08ad11605fb45f1691fee3fa0bfe87fbbdb32f4acc7748d112",
+    "environmentHttpSha256": "b92d3782374dd945619a96024d7918252b5762d5e26c91fb67c21adafeca496c"
+  },
+  "renderedQa": {
+    "status": "PENDING_OWNER_DEVICE",
+    "browserPlugin": "ABSENT",
+    "playwright": "NOT_INSTALLED",
+    "externalCdnDns": "UNAVAILABLE_IN_EXECUTION_HOST",
+    "reason": "do not promote the new focus/navigation/security build to rendered PASS by inference"
+  },
+  "remainingGateEvidence": [
+    "resolve only visibly reversed endpoint roles",
+    "confirm no unresolved REVERSED reference remains",
+    "apply reversible level preview",
+    "owner confirms level correction without over-correction",
+    "owner confirms close-range Survey navigation materially improved",
+    "copy schema-v2 gravity evidence"
+  ]
+}

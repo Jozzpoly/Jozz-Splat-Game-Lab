@@ -78,3 +78,27 @@ button.primary.armed { background: rgba(230,184,110,.18); border-color: rgba(230
   .brand span { display: none; }
   .modebar { top: auto; bottom: 14px; }
 }
+.step.complete { background: rgba(87,160,119,.07); border-color: rgba(112,190,143,.15); }
+.step.complete > span, .step.complete strong { color: #8fd6aa; }
+.gravity-readout strong { font-variant-numeric: tabular-nums; }
+.preview-row { margin-top: 0; }
+.micro-note { margin-top: 8px !important; margin-bottom: 0 !important; color: #81909c !important; font-size: 9px !important; }
+.vertical-row { display: grid; grid-template-columns: 28px 1fr auto; gap: 7px; align-items: center; padding: 6px; border-radius: 4px; background: rgba(255,255,255,.035); }
+.vertical-row strong { font-size: 9px; color: #ffd08a; }
+.vertical-row code { font-size: 8px; color: #aeb9c3; }
+.vertical-row .residual { font: 600 8px/1 ui-monospace, SFMono-Regular, Menlo, monospace; color: #9ed6f8; }
+.vertical-row .residual.warn { color: #ffd08a; }
+.vertical-row .residual.bad { color: #ff9b9b; }
+.order-warning { margin: 8px 0 0; padding: 7px 8px; border: 1px solid rgba(255,184,95,.32); border-radius: 5px; background: rgba(255,166,67,.08); color: #ffd39a; font-size: 9px; line-height: 1.45; }
+.endpoint-note { line-height: 1.5 !important; }
+.cyan-dot,.amber-dot { display:inline-block; width:7px; height:7px; margin-right:4px; border-radius:50%; vertical-align:baseline; }
+.cyan-dot { background:#40d1ff; }
+.amber-dot { background:#ffb75c; }
+.vertical-row { grid-template-columns: 28px minmax(70px,1fr) auto auto auto; }
+.vertical-row.reversed { background: rgba(255,122,94,.065); box-shadow: inset 2px 0 rgba(255,143,105,.6); }
+.vertical-row .direction { font:700 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace; }
+.vertical-row .direction.ok { color:#8fd6aa; }
+.vertical-row .direction.bad { color:#ff9b9b; }
+.vertical-row .flip { padding:4px 6px; font-size:8px; }
+.nav-hint { position:fixed; right:14px; bottom:14px; z-index:8; padding:6px 8px; border:1px solid rgba(255,255,255,.1); border-radius:5px; background:rgba(8,12,15,.76); color:#9ba8b3; font-size:9px; backdrop-filter:blur(10px); pointer-events:none; }
+@media (max-width: 720px) { .nav-hint { display:none; } .vertical-row { grid-template-columns:24px 1fr auto; } .vertical-row .direction,.vertical-row .flip { grid-column:2 / span 2; } }

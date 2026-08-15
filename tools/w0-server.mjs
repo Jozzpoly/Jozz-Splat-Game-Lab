@@ -91,31 +91,73 @@ const sourceMeta = {
 };
 
 const contentTypes = new Map([
-  ['.html', 'text/html; charset=utf-8'], ['.js', 'text/javascript; charset=utf-8'],
-  ['.mjs', 'text/javascript; charset=utf-8'], ['.css', 'text/css; charset=utf-8'], ['.json', 'application/json; charset=utf-8']
+  ['.html', 'text/html; charset=utf-8'],
+  ['.js', 'text/javascript; charset=utf-8'],
+  ['.mjs', 'text/javascript; charset=utf-8'],
+  ['.css', 'text/css; charset=utf-8'],
+  ['.json', 'application/json; charset=utf-8']
 ]);
+
+function applySecurityHeaders(res) {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('Referrer-Policy', 'no-referrer');
+  res.setHeader('Cross-Origin-Resource-Policy', 'same-origin');
+}
+
+function isAllowedHost(rawHost) {
+  if (!rawHost) return false;
+  try {
+    const parsed = new URL(`http://${rawHost}`);
+    return parsed.hostname === '127.0.0.1' || parsed.hostname === 'localhost';
+  } catch {
+    return false;
+  }
+}
 
 function sendJson(res, value, headOnly = false) {
   const body = Buffer.from(JSON.stringify(value));
-  res.writeHead(200, { 'Content-Type': 'application/json; charset=utf-8', 'Content-Length': body.length, 'Cache-Control': 'no-store' });
+  res.writeHead(200, {
+    'Content-Type': 'application/json; charset=utf-8',
+    'Content-Length': body.length,
+    'Cache-Control': 'no-store'
+  });
   res.end(headOnly ? undefined : body);
 }
 
 function streamRaw(res, headOnly) {
-  res.writeHead(200, { 'Content-Type': 'application/octet-stream', 'Content-Length': SOURCE_BYTES, 'Cache-Control': 'no-store', 'Accept-Ranges': 'none' });
+  res.writeHead(200, {
+    'Content-Type': 'application/octet-stream',
+    'Content-Length': SOURCE_BYTES,
+    'Cache-Control': 'no-store',
+    'Accept-Ranges': 'none'
+  });
   if (headOnly) return res.end();
   createReadStream(sourcePath).pipe(res);
 }
 
 function streamForeground(res, headOnly) {
-  res.writeHead(200, { 'Content-Type': 'application/octet-stream', 'Content-Length': FOREGROUND_BYTES, 'Cache-Control': 'no-store', 'Accept-Ranges': 'none' });
+  res.writeHead(200, {
+    'Content-Type': 'application/octet-stream',
+    'Content-Length': FOREGROUND_BYTES,
+    'Cache-Control': 'no-store',
+    'Accept-Ranges': 'none'
+  });
   if (headOnly) return res.end();
   res.write(foregroundHeader);
-  createReadStream(sourcePath, { start: HEADER_BYTES, end: HEADER_BYTES + FOREGROUND_SPLATS * RECORD_BYTES - 1 }).pipe(res);
+  createReadStream(sourcePath, {
+    start: HEADER_BYTES,
+    end: HEADER_BYTES + FOREGROUND_SPLATS * RECORD_BYTES - 1
+  }).pipe(res);
 }
 
 function streamEnvironment(res, headOnly) {
-  res.writeHead(200, { 'Content-Type': 'application/octet-stream', 'Content-Length': environmentBytes, 'Cache-Control': 'no-store', 'Accept-Ranges': 'none' });
+  res.writeHead(200, {
+    'Content-Type': 'application/octet-stream',
+    'Content-Length': environmentBytes,
+    'Cache-Control': 'no-store',
+    'Accept-Ranges': 'none'
+  });
   if (headOnly) return res.end();
   res.write(environmentHeader);
   const start = HEADER_BYTES + FOREGROUND_SPLATS * RECORD_BYTES;
@@ -124,24 +166,64 @@ function streamEnvironment(res, headOnly) {
 
 function serveStatic(reqPath, res, headOnly) {
   const requested = reqPath === '/' ? '/index.html' : reqPath;
-  const relativePath = normalize(decodeURIComponent(requested)).replace(/^[/\\]+/, '');
+  let decoded;
+  try {
+    decoded = decodeURIComponent(requested);
+  } catch {
+    res.writeHead(400);
+    res.end('Bad request');
+    return;
+  }
+
+  const relativePath = normalize(decoded).replace(/^[/\\]+/, '');
   const fullPath = resolve(labRoot, relativePath);
   const relToLab = pathRelative(resolve(labRoot), fullPath);
   if (relToLab === '..' || relToLab.startsWith(`..${sep}`) || isAbsolute(relToLab)) {
-    res.writeHead(403); res.end('Forbidden'); return;
+    res.writeHead(403);
+    res.end('Forbidden');
+    return;
   }
+
   readFile(fullPath).then((body) => {
     const type = contentTypes.get(extname(fullPath).toLowerCase()) || 'application/octet-stream';
-    res.writeHead(200, { 'Content-Type': type, 'Content-Length': body.length, 'Cache-Control': 'no-store' });
+    res.writeHead(200, {
+      'Content-Type': type,
+      'Content-Length': body.length,
+      'Cache-Control': 'no-store'
+    });
     res.end(headOnly ? undefined : body);
-  }).catch(() => { res.writeHead(404); res.end('Not found'); });
+  }).catch(() => {
+    res.writeHead(404);
+    res.end('Not found');
+  });
 }
 
 const server = createServer((req, res) => {
+  applySecurityHeaders(res);
+
+  if (!isAllowedHost(req.headers.host)) {
+    res.writeHead(403);
+    res.end('Forbidden host');
+    return;
+  }
+
   const method = req.method || 'GET';
   const headOnly = method === 'HEAD';
-  if (method !== 'GET' && method !== 'HEAD') { res.writeHead(405); res.end('Method not allowed'); return; }
-  const url = new URL(req.url || '/', 'http://localhost');
+  if (method !== 'GET' && method !== 'HEAD') {
+    res.writeHead(405);
+    res.end('Method not allowed');
+    return;
+  }
+
+  let url;
+  try {
+    url = new URL(req.url || '/', 'http://127.0.0.1');
+  } catch {
+    res.writeHead(400);
+    res.end('Bad request');
+    return;
+  }
+
   if (url.pathname === '/api/source') return sendJson(res, sourceMeta, headOnly);
   if (url.pathname === '/asset/raw.ply') return streamRaw(res, headOnly);
   if (url.pathname === '/asset/foreground.ply') return streamForeground(res, headOnly);
@@ -153,9 +235,17 @@ async function listenOnAvailablePort(start = 4173, max = 4190) {
   for (let port = start; port <= max; port++) {
     try {
       await new Promise((resolveListen, reject) => {
-        const onError = (error) => { server.off('listening', onListening); reject(error); };
-        const onListening = () => { server.off('error', onError); resolveListen(); };
-        server.once('error', onError); server.once('listening', onListening); server.listen(port, '127.0.0.1');
+        const onError = (error) => {
+          server.off('listening', onListening);
+          reject(error);
+        };
+        const onListening = () => {
+          server.off('error', onError);
+          resolveListen();
+        };
+        server.once('error', onError);
+        server.once('listening', onListening);
+        server.listen(port, '127.0.0.1');
       });
       return port;
     } catch (error) {
@@ -169,7 +259,7 @@ const port = await listenOnAvailablePort();
 const url = `http://127.0.0.1:${port}/`;
 console.log('');
 console.log('============================================================');
-console.log('Jozz Splat Game Lab — W0.1 WORLD GROUNDING');
+console.log('Jozz Splat Game Lab — W0.2 WORLD GROUNDING');
 console.log('============================================================');
 console.log(`Source: VERIFIED ${sourceSha.slice(0, 12)}…`);
 console.log(`LAB:    ${url}`);
@@ -179,6 +269,9 @@ console.log('Zamknięcie tego okna zatrzyma lokalny LAB.');
 console.log('');
 
 if (process.platform === 'win32') {
-  const child = spawn('cmd.exe', ['/c', 'start', '', url], { detached: true, stdio: 'ignore' });
+  const child = spawn('cmd.exe', ['/c', 'start', '', url], {
+    detached: true,
+    stdio: 'ignore'
+  });
   child.unref();
 }

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Jozz Splat Game Lab — W0 World Grounding</title>
+  <title>Jozz Splat Game Lab — W0.2 Gravity</title>
   <script type="importmap">
   {
     "imports": {
@@ -16,40 +16,89 @@
 <body>
   <main id="app" data-state="loading" data-pick-armed="false">
     <canvas id="viewport"></canvas>
+
     <header class="topbar">
-      <div class="brand"><strong>Jozz Splat Game Lab</strong><span>W0 · World Grounding</span></div>
+      <div class="brand"><strong>Jozz Splat Game Lab</strong><span>W0.2 · Gravity Grounding</span></div>
       <div class="runtime"><span>PlayCanvas 2.21.2</span><span id="backendStatus">—</span><span class="verified">SOURCE VERIFIED</span></div>
     </header>
+
     <aside class="workflow" aria-label="World grounding workflow">
-      <div class="world-state"><span>WORLD</span><strong>DRAFT</strong></div>
+      <div class="world-state">
+        <span>WORLD</span><strong>DRAFT</strong>
+      </div>
+
       <ol class="steps">
-        <li class="step active"><span>01</span><div><strong>Picking</strong><small>Stable 3D probes</small></div></li>
-        <li class="step locked"><span>02</span><div><strong>Gravity</strong><small>Locked until W0.1 passes</small></div></li>
+        <li class="step complete"><span>01</span><div><strong>Picking</strong><small>Verified · 7 owner probes</small></div></li>
+        <li class="step active"><span>02</span><div><strong>Gravity</strong><small>Known vertical references</small></div></li>
         <li class="step locked"><span>03</span><div><strong>Scale</strong><small>Locked until gravity evidence</small></div></li>
       </ol>
+
       <section class="panel-section">
-        <h2>W0.1 · Spatial Probe</h2>
-        <p id="instruction">Obróć widok. Gdy chcesz wskazać powierzchnię, kliknij „Dodaj punkt”, a potem raz w splat.</p>
-        <button id="armPickButton" class="primary">Dodaj punkt</button>
-        <div class="button-row"><button id="undoButton" disabled>Cofnij</button><button id="clearButton" disabled>Wyczyść</button></div>
+        <h2>W0.2 · Gravity</h2>
+        <p id="instruction">Dodaj co najmniej 3 piony z różnych miejsc. DÓŁ jest CYAN, GÓRA jest ŻÓŁTA. Jeśli kierunek pary okaże się odwrócony, LAB pokaże REVERSED zamiast fałszować geometrię.</p>
+        <button id="addVerticalButton" class="primary">Dodaj pion</button>
+        <div class="button-row">
+          <button id="undoVerticalButton" disabled>Cofnij</button>
+          <button id="clearVerticalButton" disabled>Wyczyść</button>
+        </div>
       </section>
-      <section class="panel-section readout">
-        <div><span>Punkty</span><strong id="pointCount">0</strong></div>
-        <div><span>Pick status</span><strong id="pickStatus">IDLE</strong></div>
-        <div><span>World calibration</span><strong>UNMEASURED</strong></div>
+
+      <section class="panel-section readout gravity-readout">
+        <div><span>Piony</span><strong id="verticalCount">0</strong></div>
+        <div><span>Stan solvera</span><strong id="solverStatus">INSUFFICIENT</strong></div>
+        <div><span>Tilt od +Y</span><strong id="tiltStatus">—</strong></div>
+        <div><span>Axis coherence</span><strong id="axisCoherenceStatus">—</strong></div>
+        <div><span>Axis residual median</span><strong id="medianResidualStatus">—</strong></div>
+        <div><span>Axis residual max</span><strong id="maxResidualStatus">—</strong></div>
+        <div><span>Odwrócony zwrot</span><strong id="reversedStatus">—</strong></div>
+        <div><span>Preview</span><strong id="previewStatus">OFF</strong></div>
       </section>
+
+      <section class="panel-section">
+        <div class="button-row preview-row">
+          <button id="previewButton" disabled>Podgląd poziomu</button>
+          <button id="resetPreviewButton" disabled>Reset preview</button>
+        </div>
+        <p id="orderWarning" class="order-warning" hidden></p>
+        <p class="micro-note">Preview jest dostępny dopiero po rozwiązaniu jawnie odwróconych par. Obraca tylko warstwę świata; nadal nie zapisuje ScanToWorld ani metrów.</p>
+      </section>
+
       <section class="panel-section latest">
-        <h2>Ostatni punkt</h2>
-        <div class="coord-block"><span>SOURCE</span><code id="sourceCoords">—</code></div>
-        <div class="coord-block"><span>RUNTIME WORLD</span><code id="worldCoords">—</code></div>
+        <h2>Gravity candidate</h2>
+        <div class="coord-block"><span>UP · BASELINE RUNTIME</span><code id="upVectorStatus">—</code></div>
+        <div class="coord-block"><span>CORRECTION QUATERNION</span><code id="quatStatus">—</code></div>
       </section>
-      <section class="panel-section points-section"><h2>Probes</h2><div id="pointsList" class="points-list"><p class="empty">Brak punktów.</p></div></section>
-      <button id="copyEvidenceButton" class="evidence" disabled>Kopiuj evidence</button>
+
+      <section class="panel-section points-section">
+        <h2>Vertical references</h2>
+        <p class="micro-note endpoint-note"><span class="cyan-dot"></span>DÓŁ · <span class="amber-dot"></span>GÓRA · axis residual mierzy zgodność osi niezależnie od zwrotu.</p>
+        <div id="verticalList" class="points-list"><p class="empty">Brak pionów.</p></div>
+      </section>
+
+      <button id="copyEvidenceButton" class="evidence" disabled>Kopiuj gravity evidence</button>
     </aside>
-    <div class="modebar"><button class="selected">Survey</button><button disabled title="Walk pojawi się dopiero po W0.4">Walk</button><button id="resetViewButton">Reset view</button></div>
-    <div id="pickHint" class="pick-hint" hidden>W0.1 PICK · kliknij widoczną powierzchnię foreground · Esc anuluje</div>
-    <section id="loadingPanel" class="modal-status"><strong id="loadingTitle">Uruchamiam World Grounding…</strong><span id="loadingDetail">Sprawdzam źródło</span><div class="progress"><div id="progressBar"></div></div></section>
-    <section id="errorPanel" class="modal-status error" hidden><strong>W0.1: FAIL</strong><pre id="errorText"></pre></section>
+
+    <div class="modebar">
+      <button class="selected">Survey</button>
+      <button disabled title="Walk pojawi się dopiero po W0.4">Walk</button>
+      <button id="focusViewButton" title="Najedź kursorem na powierzchnię i naciśnij F">Focus (F)</button>
+      <button id="fitViewButton" title="Home">Fit (Home)</button>
+      <button id="resetViewButton" title="R">Reset (R)</button>
+    </div>
+
+    <div class="nav-hint">MMB obrót · Shift+MMB pan · scroll zoom do kursora · Shift+scroll szybciej · F focus pod kursorem · Home fit · R reset</div>
+    <div id="pickHint" class="pick-hint" hidden></div>
+
+    <section id="loadingPanel" class="modal-status">
+      <strong id="loadingTitle">Uruchamiam W0.2 Gravity…</strong>
+      <span id="loadingDetail">Sprawdzam źródło</span>
+      <div class="progress"><div id="progressBar"></div></div>
+    </section>
+
+    <section id="errorPanel" class="modal-status error" hidden>
+      <strong>W0.2: FAIL</strong>
+      <pre id="errorText"></pre>
+    </section>
   </main>
   <script type="module" src="./app.js"></script>
 </body>

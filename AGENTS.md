@@ -4,25 +4,14 @@ This repository is an evidence-driven R&D/game project. Fast progress is useful 
 
 ## Start gate — required before implementation
 
-Record or verify all of the following before changing code:
-
-1. repository: `Jozzpoly/Jozz-Splat-Game-Lab`;
-2. current branch and exact HEAD;
-3. local worktree state when a local checkout is used;
-4. current milestone in `docs/PROJECT_STATE.md`;
-5. allowed files/paths for the task and any protected/generated inputs;
-6. validation commands available on the current HEAD;
-7. documentation conflicts or stale claims.
-
-Current Git, executable evidence and direct owner validation outrank prose handoffs or historical chat summaries.
+Record or verify repository identity, current branch/HEAD, active milestone in `docs/PROJECT_STATE.md`, allowed paths, available validation commands and any documentation conflicts before changing code. Current Git, executable evidence and direct owner validation outrank prose handoffs or historical chat summaries.
 
 ## Repository boundary
 
-- Do not modify JV, HomeScan, JURE, VAW or any other repository while working here unless the owner explicitly asks for that separate write.
-- Other repositories may be inspected for verified patterns. Copy only the smallest justified pieces and record provenance when code is actually reused.
-- Do not make this repository depend on another personal project merely because useful code exists there.
-- Keep accepted `main` history stable; use bounded branches and intentional commits for experiments.
-- Do not create GitHub Actions without explicit owner approval.
+- Do not modify JV, HomeScan, JURE, VAW or another repository unless the owner explicitly asks for that separate write.
+- Other repositories may provide verified patterns, never implicit dependencies.
+- Do not force-push, rewrite accepted history or create GitHub Actions without explicit owner approval.
+- Raw capture assets stay external/immutable and are identified by receipts.
 
 ## Evidence rules
 
@@ -30,60 +19,86 @@ Classify material claims as `VERIFIED`, `LIKELY`, `UNCERTAIN`, `CONFLICT` or `OW
 
 A build is not runtime evidence. A rendered splat is not calibrated geometry. A generated collision mesh is not automatically physical truth. Owner visual/playtest evidence is a separate evidence class from automated checks.
 
-Raw capture assets are immutable inputs. Do not hand-edit them. Large capture files stay outside Git by default and are identified by SHA-256 receipts under `evidence/`.
+## Gate state
 
-Every meaningful derived asset must eventually have a receipt containing source hash(es), tool identity/version, parameters, world-transform version and output hash. Manual repairs are allowed only when explicitly recorded as manual evidence, never hidden inside a pipeline.
+### F0 — VERIFIED
 
-## Current gate constraints
+Exact first source and deterministic foreground/environment source-coordinate partition are verified. The shell structure is verified; the historical semantic label remains `LIKELY`.
 
-### F0 — Evidence Freeze — VERIFIED
+### R0 — CLOSED / REOPENABLE
 
-The exact first Luma source and deterministic foreground/environment source-coordinate partition are verified. Do not reopen F0 without new contradictory evidence. The 50,000-record shell's structure is verified; its historical semantic label remains `LIKELY`.
+PlayCanvas Engine `2.21.2` is the active runtime. Spark `2.1.0` + Three `0.185.1` is a validated fallback/reference path. Reopen R0 only on material contradictory evidence. Do not maintain a renderer abstraction merely to preserve both paths.
 
-### R0 — Renderer Bake-Off — CLOSED / REOPENABLE
+### W0 — ACTIVE
 
-PlayCanvas Engine `2.21.2` is the active runtime. Spark `2.1.0` + Three `0.185.1` is a validated fallback/reference path. Reopen R0 only on material contradictory evidence. Do not maintain a generic renderer abstraction merely to preserve both candidates.
+W0 must create one measured world authority. It is explicitly staged:
 
-### W0 — World Grounding — ACTIVE
+- W0.1 picking;
+- W0.2 gravity/up calibration;
+- W0.3 metric scale;
+- W0.4 authoritative `ScanToWorld`;
+- W0.5 human-scale navigation.
 
-W0 must create one measured world authority and is explicitly staged:
+Do not collapse these stages for convenience. `ScanToWorld` remains `draft` until real orientation and scale evidence pass. No collision, Box3D or metre-valued gameplay tuning before W0.4.
 
-1. W0.1 stable foreground picking;
-2. W0.2 gravity/up calibration;
-3. W0.3 metric scale;
-4. W0.4 authoritative `ScanToWorld`;
-5. W0.5 human-scale navigation.
+#### W0.2 hard boundaries
 
-Do not collapse these stages for convenience. `ScanToWorld` remains `draft` until real orientation and scale evidence pass. Do not tune collision or integrate Box3D against uncalibrated units.
+- W0.1 picking is accepted and reused; do not redesign the picker while solving gravity unless contradictory evidence appears;
+- a physical vertical **axis** and its entered `bottom → top` **direction** are separate evidence dimensions;
+- preserve raw source coordinates and one baseline runtime coordinate frame for every endpoint;
+- all references contribute to the axis candidate; never silently delete or trim outliers;
+- report `axisResidualDeg` independently from `directedResidualDeg` / `directionStatus`;
+- never silently reverse endpoints; explicit owner reversal must remain auditable (`manualFlipCount`);
+- level preview stays blocked while intended bottom→top evidence contains unresolved `REVERSED` references;
+- `axisCoherence` is evidence, not an automatic acceptance threshold;
+- level correction is a reversible preview on a temporary draft grounding root, not accepted `ScanToWorld`;
+- reset preview before collecting new evidence so coordinate frames cannot mix;
+- require at least three references before owner evidence export;
+- no metric scale, collision, Box3D or gameplay in W0.2.
 
-#### W0.1 hard boundaries
+#### Survey navigation contract
 
-- PlayCanvas only;
-- foreground is the only calibration authority;
-- environment may render as appearance but must not be accepted as calibration evidence;
-- persistent markers must remain visually attached to the selected surface under camera movement;
-- preserve both runtime-world and raw source coordinates for every accepted probe;
-- no gravity solver, metric scale, collision or physics in W0.1.
+Survey is an inspection camera, not human-scale movement. Preserve the editor-style interaction contract unless owner evidence requests otherwise:
+
+- `MMB` orbit;
+- `Shift + MMB` pan in the view plane;
+- wheel cursor-anchored zoom; `Shift + wheel` accelerates long travel;
+- `F` focuses the orbit pivot on the verified **foreground** surface under the last canvas cursor position while preserving camera position;
+- `Home` fits the full scan while preserving current orientation;
+- `R` resets the original survey view;
+- `LMB` and `RMB` remain free for world/model interaction;
+- close inspection is limited only by a tiny numerical radius floor, never by a fraction of the initial scan radius.
+
+Do not use Survey freedom as evidence that W0.5 metric Walk is complete.
+
+#### Local owner-lab security contract
+
+The local LAB can expose the owner's raw capture bytes and must therefore stay fail-closed:
+
+- bind only to loopback;
+- accept only `127.0.0.1` / `localhost` Host headers;
+- reject malformed request paths rather than crashing;
+- preserve same-origin / no-sniff response hardening;
+- verify the exact known F0 ZIP hash **before** extraction;
+- direct PLY input still passes the exact F0 byte/hash gate in the Node server;
+- temporary ZIP extraction should be cleaned up after normal launcher exit.
 
 ### Later gates
 
-Collision, Box3D inhabitance and gameplay must not be pulled forward merely because they are interesting. See `docs/FOUNDATION_PLAN.md`.
+C0/C1 collision evidence, P0 physical inhabitance and G0 gameplay remain downstream. See `docs/FOUNDATION_PLAN.md`.
 
 ## Owner workflow
 
-The repository owner is not expected to operate this project like a software engineer. Prefer browser/GUI workflows and double-clickable Windows launchers with normal file pickers. Do not make terminal arguments, Git operations, npm setup or developer-style drag/drop the default owner interaction.
-
-When owner evidence is genuinely needed, make the requested action small and explain what unique evidence it contributes. Do not use the owner as manual CI for checks the agent can reproduce independently.
+The repository owner is not expected to operate the project like a software engineer. Prefer browser/GUI workflows and double-clickable Windows launchers with normal file pickers. Ask for owner action only when perception, real-world knowledge or target hardware adds evidence unavailable to the agent.
 
 ## Engineering discipline
 
-- Prefer small, falsifiable slices over broad frameworks.
-- Do not create empty future systems, generic plugin architectures or speculative schemas that are not required by the active gate.
-- Pin experimental tool versions. Capture `--version`/`--help` when a CLI contract matters; moving documentation is not a versioned binary contract.
-- Preserve one canonical world transform. Visual, collision and gameplay layers must not invent independent scale/origin fixes.
-- If required source files cannot be accessed reliably, ask the owner for the exact file/package instead of spending long effort bypassing access limitations.
-- If a check cannot be run, state that explicitly. Never promote `PENDING` to `PASS` by inference.
+- Prefer small falsifiable slices over broad frameworks.
+- Pin experiment versions; no `latest` aliases for evidence-producing runtime paths.
+- Preserve one canonical world transform. Later layers must consume `ScanToWorld`, never invent independent corrections.
+- If required files cannot be accessed reliably, ask the owner for the exact file/package rather than spending long effort bypassing constraints.
+- If a check cannot be run, say so. Never promote `PENDING` to `PASS` by inference.
 
 ## Publish discipline
 
-Use bounded branches and intentional commits. Prefer a draft PR for substantive experiment changes. Keep `main` as accepted source truth. When a local worktree contains unrelated edits, confirm scope before staging or publishing.
+Use bounded branches and intentional commits. Prefer draft PRs for active experiments. Keep `main` as accepted source truth. Experimental branch commit noise must be squash-merged when the gate is accepted.

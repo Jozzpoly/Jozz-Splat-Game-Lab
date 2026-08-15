@@ -1,0 +1,41 @@
+{
+  "gate": "W0.2",
+  "recordedAt": "2026-08-15T12:52:29.781Z",
+  "sourceSha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+  "runtime": "PlayCanvas 2.21.2",
+  "backend": "webgl2",
+  "privacy": "technical numeric evidence only; owner screenshot/location image not committed",
+  "baselineOrientation": "source -> baseline runtime: 180deg around Z; NOT calibrated world orientation",
+  "worldCalibration": "DRAFT_ORIENTATION_CANDIDATE_NO_SCALE",
+  "referenceCount": 5,
+  "spatialDistributionAssessment": {
+    "state": "LOCALLY_STRONG_GLOBALLY_INCOMPLETE",
+    "observation": "the owner screenshot shows the five references concentrated on the main school building rather than broadly distributed across the capture",
+    "implication": "strong evidence for the local building vertical axis; insufficient by itself to rule out wider reconstruction-orientation drift",
+    "closureNeed": "add at least one preferably two trustworthy vertical references on a spatially distant structure or pole before global orientation acceptance"
+  },
+  "references": [
+    {"id":1,"bottomSource":[-1.828414036416173,1.323824197295552,-0.14032697831584529],"topSource":[-1.839922197275479,1.5942364123795,-0.17241008379614323],"sourceLength":0.27255188403353775,"originalDirectedResidualDeg":179.48510053860173,"reanalyzedAxisResidualDeg":0.5148994613982723,"directionStatus":"REVERSED"},
+    {"id":2,"bottomSource":[0.6876952582552629,1.6863801937205785,-0.582413205718054],"topSource":[0.693214300364842,1.4826488505226865,-0.5636190417653825],"sourceLength":0.20467081039001253,"originalDirectedResidualDeg":2.1576587471414346,"reanalyzedAxisResidualDeg":2.1576587471414346,"directionStatus":"AGREES"},
+    {"id":3,"bottomSource":[-0.217859372660949,1.576786681741364,-0.5318687016359105],"topSource":[-0.21042760699851204,1.4209279861623447,-0.5059623629429554],"sourceLength":0.1581717500469945,"originalDirectedResidualDeg":2.187141542858074,"reanalyzedAxisResidualDeg":2.187141542858074,"directionStatus":"AGREES"},
+    {"id":4,"bottomSource":[-1.7166224350781047,1.744949384257733,0.36086807311275165],"topSource":[-1.7003884347970564,1.3538201679749164,0.41082820089474675],"sourceLength":0.3946411293354111,"originalDirectedResidualDeg":0.013636627032090322,"reanalyzedAxisResidualDeg":0.013636627032090322,"directionStatus":"AGREES"},
+    {"id":5,"bottomSource":[-1.1802786374416714,1.3240604919919803,-0.2796024342723406],"topSource":[-1.1974161678375472,1.6839428184695573,-0.32780362758883336],"sourceLength":0.36350012227799433,"originalDirectedResidualDeg":179.4978174539992,"reanalyzedAxisResidualDeg":0.5021825460008,"directionStatus":"REVERSED"}
+  ],
+  "reanalysis": {
+    "upBaselineRuntime": [-0.04090474819900204,0.991117388634081,0.1265429710491104],
+    "tiltDeg": 7.6424034017408395,
+    "axisCoherence": 0.9993936872223401,
+    "axisResidualStats": {"meanDeg":1.0751037848861333,"rmsDeg":1.4111395480294942,"medianDeg":0.5148994613982723,"maxDeg":2.187141542858074},
+    "directionConsensus": {"agreeCount":3,"reversedCount":2,"agreeFraction":0.6,"interpretation":"all five references strongly agree on one undirected physical axis; two endpoint pairs encode the opposite bottom-to-top direction"},
+    "correctionQuaternion": [-0.06341245928352053,0,-0.020497943569423662,0.9977768760184016]
+  },
+  "claimStates": {
+    "localMainBuildingAxisAgreement": "VERIFIED_STRONG_OWNER_EVIDENCE",
+    "globalCaptureAxisAgreement": "PENDING_SPATIALLY_DIVERSE_CONFIRMATION",
+    "endpointDirection": "CONFLICT_TWO_OF_FIVE",
+    "gravityDirection": "LIKELY_PENDING_DIRECTION_AND_SPATIAL_CONFIRMATION",
+    "levelPreview": "PENDING_OWNER_VISUAL_VALIDATION",
+    "metricScale": "UNKNOWN"
+  },
+  "gateDecision": "DO_NOT_REJECT_W0_2; harden axis-vs-direction semantics, resolve explicit endpoint direction, add spatially distant vertical evidence, then validate reversible level preview before accepting orientation"
+}
