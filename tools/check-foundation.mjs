@@ -8,6 +8,7 @@ const requiredFiles = [
   'docs/EVIDENCE_CONTRACT.md',
   'docs/R0_RENDERER_BAKEOFF.md',
   'docs/RESEARCH_BASELINE.md',
+  'docs/UX_EXECUTION_POLICY.md',
   'contracts/source-receipt.schema.json',
   'contracts/derived-asset-receipt.schema.json',
   'contracts/scan-to-world.schema.json',
@@ -27,9 +28,9 @@ for (const path of requiredFiles) {
 }
 
 const pkg = JSON.parse(await text('package.json'));
-assert(pkg.packageManager === 'npm@11.13.0', 'unexpected packageManager pin');
-assert(pkg.engines?.node === '24.16.0', 'unexpected Node pin');
-assert(pkg.engines?.npm === '11.13.0', 'unexpected npm engine pin');
+assert(pkg.engines?.node === '>=22.16.0', 'unexpected Node support baseline');
+assert(!Object.hasOwn(pkg.engines ?? {}, 'npm'), 'npm must not be an F0 evidence gate');
+assert(!Object.hasOwn(pkg, 'devEngines'), 'exact devEngines pin is intentionally absent during foundation/F0');
 
 const source = JSON.parse(await text('evidence/sources/luma-school-2026-08-15.json'));
 assert(source.receiptVersion === 1, 'unexpected source receipt version');
