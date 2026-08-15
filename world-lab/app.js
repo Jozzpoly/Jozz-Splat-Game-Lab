@@ -16,7 +16,7 @@ async function loadGsplat(name,url,onProgress){
 }
 
 function ui(){return{
-  app:appElement,hint:$('#pickHint'),add:$('#addVerticalButton'),undo:$('#undoVerticalButton'),clear:$('#clearVerticalButton'),preview:$('#previewButton'),resetPreview:$('#resetPreviewButton'),copy:$('#copyEvidenceButton'),count:$('#verticalCount'),solver:$('#solverStatus'),tilt:$('#tiltStatus'),median:$('#medianResidualStatus'),max:$('#maxResidualStatus'),previewStatus:$('#previewStatus'),up:$('#upVectorStatus'),quat:$('#quatStatus'),list:$('#verticalList')
+  app:appElement,hint:$('#pickHint'),add:$('#addVerticalButton'),undo:$('#undoVerticalButton'),clear:$('#clearVerticalButton'),preview:$('#previewButton'),resetPreview:$('#resetPreviewButton'),copy:$('#copyEvidenceButton'),count:$('#verticalCount'),solver:$('#solverStatus'),tilt:$('#tiltStatus'),coherence:$('#axisCoherenceStatus'),median:$('#medianResidualStatus'),max:$('#maxResidualStatus'),reversed:$('#reversedStatus'),previewStatus:$('#previewStatus'),up:$('#upVectorStatus'),quat:$('#quatStatus'),orderWarning:$('#orderWarning'),list:$('#verticalList')
 };}
 
 async function boot(){
