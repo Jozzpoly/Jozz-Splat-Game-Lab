@@ -1,7 +1,7 @@
 # AI Project Memory — Jozz Splat Game Lab
 
 Updated: 2026-08-15
-Status: `F0 SOURCE/SPLIT VERIFIED / CANONICAL REPLAY PENDING`
+Status: `F0 VERIFIED / R0 PHASE A NEXT`
 
 This file is a router, not canonical truth. Current Git, executable evidence and direct owner validation outrank it.
 
@@ -11,7 +11,7 @@ This file is a router, not canonical truth. Current Git, executable evidence and
 - default branch: `main`;
 - initialization commit: `6baac6336ceadb47ca991120d87f8ce47238e2d9`;
 - foundation PR: `#1`, branch `agent/foundation-grounding`;
-- F0 work is stacked on `agent/f0-evidence-freeze` until foundation acceptance;
+- F0 PR: `#2`, branch `agent/f0-evidence-freeze`, stacked on foundation until acceptance;
 - no application runtime is accepted;
 - no renderer is selected;
 - no collision representation is accepted;
@@ -24,7 +24,7 @@ Turn real captures into physically coherent, open-ended worlds that are enjoyabl
 
 ## First campaign state
 
-### F0 Evidence Freeze
+### F0 Evidence Freeze — VERIFIED
 
 Binary/source evidence is reproduced and the source-specific structural split is verified:
 
@@ -34,15 +34,21 @@ Binary/source evidence is reproduced and the source-specific structural split is
 - independent verification proved output payloads are exact source byte ranges;
 - semantic interpretation of the tail as Luma environment is still `LIKELY`.
 
-The committed Node implementation still requires a canonical Node `24.16.0` / npm `11.13.0` replay. Current assistant execution used Node `22.16.0` plus an independent Python/NumPy check; do not downgrade the project toolchain.
+Foundation/F0 supports Node `>=22.16.0`; npm version is not an evidence variable for these dependency-free binary tools. The implementation executed on supported Node `22.16.0` and was independently reproduced with Python/NumPy byte analysis.
+
+`RUN_F0_CANONICAL.cmd` is an optional owner-side reproduction helper. Double-clicking it opens a normal Windows file picker. Owner reproduction is not required to close the technical F0 gate.
 
 ### R0 Renderer Bake-Off
 
-Next after F0 acceptance. Same PLY first; same SOG only if both candidates pass. Candidates remain Spark/Three and PlayCanvas. No abstraction layer and no preselected winner.
+Next executable gate. Same exact PLY first; same SOG only if both candidates pass. Candidates remain Spark/Three and PlayCanvas. No abstraction layer and no preselected winner.
 
 ### W0 World Contract
 
 Still blocked by real calibration. Do not assume source units are metres.
+
+## Owner workflow rule
+
+Prefer browser/UI and double-clickable helpers with normal file pickers. Do not make terminal arguments, Git commands, environment setup or developer-style drag/drop the default owner workflow.
 
 ## Read next
 
@@ -50,5 +56,6 @@ Still blocked by real calibration. Do not assume source units are metres.
 2. `docs/F0_EVIDENCE_FREEZE.md`
 3. `evidence/f0/luma-school-2026-08-15/reproduction.json`
 4. `docs/R0_RENDERER_BAKEOFF.md`
-5. `docs/FOUNDATION_PLAN.md`
-6. `AGENTS.md`
+5. `docs/UX_EXECUTION_POLICY.md`
+6. `docs/FOUNDATION_PLAN.md`
+7. `AGENTS.md`
