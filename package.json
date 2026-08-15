@@ -1,0 +1,28 @@
+{
+  "name": "jozz-splat-game-lab",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "packageManager": "npm@11.13.0",
+  "engines": {
+    "node": "24.16.0",
+    "npm": "11.13.0"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.16.0",
+      "onFail": "error"
+    },
+    "packageManager": {
+      "name": "npm",
+      "version": "11.13.0",
+      "onFail": "error"
+    }
+  },
+  "scripts": {
+    "check:foundation": "node tools/check-foundation.mjs",
+    "check": "npm run check:foundation"
+  }
+}
