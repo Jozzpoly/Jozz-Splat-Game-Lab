@@ -1,14 +1,30 @@
-import { solveScale } from '../world-lab/scale.mjs';
+import { buildScaleSolverInput, parseKnownMetres, solveScale } from '../world-lab/scale.mjs';
 
-function assert(condition, message) { if (!condition) throw new Error(message); }
+function assert(condition, message) {
+  if (!condition) throw new Error(message);
+}
 
+assert(parseKnownMetres('12,5') === 12.5, 'Polish decimal comma input was not accepted');
+assert(parseKnownMetres('12.5') === 12.5, 'decimal point input was not accepted');
+assert(parseKnownMetres('0') === null, 'zero metres must not become scale evidence');
+
+const sparseInput = buildScaleSolverInput([
+  { sourceLength: 0.5, knownMetres: null },
+  { sourceLength: 1.25, knownMetres: '5,0' },
+  { sourceLength: 2.0, knownMetres: '' },
+  { sourceLength: 2.5, knownMetres: '10' }
+]);
+assert(sparseInput.length === 2, 'incomplete measurements leaked into solver input');
+assert(sparseInput[0].sourceIndex === 1 && sparseInput[1].sourceIndex === 3, 'solver input lost original measurement row identity');
+
+const truth = 0.25;
 const clean = solveScale([
   { sourceLength: 0.5, knownMetres: 2 },
   { sourceLength: 1.251, knownMetres: 5 },
   { sourceLength: 2.498, knownMetres: 10 }
 ]);
 assert(clean.status === 'CANDIDATE', 'scale solver did not produce candidate');
-assert(Math.abs(clean.unitsPerMetre - 0.25) < 0.001, 'scale solver drifted from synthetic truth');
+assert(Math.abs(clean.unitsPerMetre - truth) < 0.001, 'scale solver drifted from synthetic truth');
 assert(clean.consistency.maxAbsRelativeResidualPct < 0.5, 'clean synthetic residual unexpectedly high');
 assert(clean.silentOutlierRemoval === false, 'solver must never silently trim measurements');
 assert(clean.automaticAcceptance === false, 'solver must not self-accept');
