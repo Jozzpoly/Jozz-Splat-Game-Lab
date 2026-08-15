@@ -20,6 +20,7 @@ function assert(condition, message) {
 const content = Object.fromEntries(await Promise.all(Object.entries(files).map(async ([key, path]) => [key, await text(path)])));
 
 assert(content.html.includes('three@0.185.1'), 'R0 Three pin drifted');
+assert(content.html.includes('three@0.185.1/examples/jsm/'), 'R0 Three addons import-map prefix drifted');
 assert(content.html.includes('/spark/2.1.0/spark.module.js'), 'R0 Spark pin drifted');
 assert(content.html.includes('playcanvas@2.21.2'), 'R0 PlayCanvas pin drifted');
 assert(!content.html.includes('@latest'), 'R0 must not use latest CDN aliases');
