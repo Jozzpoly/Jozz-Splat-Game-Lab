@@ -23,7 +23,10 @@
     </header>
 
     <aside class="workflow" aria-label="World grounding workflow">
-      <div class="world-state"><span>WORLD</span><strong>DRAFT</strong></div>
+      <div class="world-state">
+        <span>WORLD</span><strong>DRAFT</strong>
+      </div>
+
       <ol class="steps">
         <li class="step complete"><span>01</span><div><strong>Picking</strong><small>Verified · 7 owner probes</small></div></li>
         <li class="step active"><span>02</span><div><strong>Gravity</strong><small>Known vertical references</small></div></li>
@@ -34,7 +37,10 @@
         <h2>W0.2 · Gravity</h2>
         <p id="instruction">Dodaj co najmniej 3 piony z różnych miejsc. Dla każdego najpierw kliknij DÓŁ, potem GÓRĘ tej samej rzeczywiście pionowej krawędzi.</p>
         <button id="addVerticalButton" class="primary">Dodaj pion</button>
-        <div class="button-row"><button id="undoVerticalButton" disabled>Cofnij</button><button id="clearVerticalButton" disabled>Wyczyść</button></div>
+        <div class="button-row">
+          <button id="undoVerticalButton" disabled>Cofnij</button>
+          <button id="clearVerticalButton" disabled>Wyczyść</button>
+        </div>
       </section>
 
       <section class="panel-section readout gravity-readout">
@@ -47,7 +53,10 @@
       </section>
 
       <section class="panel-section">
-        <div class="button-row preview-row"><button id="previewButton" disabled>Podgląd poziomu</button><button id="resetPreviewButton" disabled>Reset preview</button></div>
+        <div class="button-row preview-row">
+          <button id="previewButton" disabled>Podgląd poziomu</button>
+          <button id="resetPreviewButton" disabled>Reset preview</button>
+        </div>
         <p class="micro-note">Preview obraca tylko warstwę świata. Nie zapisuje jeszcze ScanToWorld i nie ustala metrów.</p>
       </section>
 
@@ -65,11 +74,24 @@
       <button id="copyEvidenceButton" class="evidence" disabled>Kopiuj gravity evidence</button>
     </aside>
 
-    <div class="modebar"><button class="selected">Survey</button><button disabled title="Walk pojawi się dopiero po W0.4">Walk</button><button id="resetViewButton">Reset view</button></div>
+    <div class="modebar">
+      <button class="selected">Survey</button>
+      <button disabled title="Walk pojawi się dopiero po W0.4">Walk</button>
+      <button id="resetViewButton">Reset view</button>
+    </div>
+
     <div id="pickHint" class="pick-hint" hidden></div>
 
-    <section id="loadingPanel" class="modal-status"><strong id="loadingTitle">Uruchamiam W0.2 Gravity…</strong><span id="loadingDetail">Sprawdzam źródło</span><div class="progress"><div id="progressBar"></div></div></section>
-    <section id="errorPanel" class="modal-status error" hidden><strong>W0.2: FAIL</strong><pre id="errorText"></pre></section>
+    <section id="loadingPanel" class="modal-status">
+      <strong id="loadingTitle">Uruchamiam W0.2 Gravity…</strong>
+      <span id="loadingDetail">Sprawdzam źródło</span>
+      <div class="progress"><div id="progressBar"></div></div>
+    </section>
+
+    <section id="errorPanel" class="modal-status error" hidden>
+      <strong>W0.2: FAIL</strong>
+      <pre id="errorText"></pre>
+    </section>
   </main>
   <script type="module" src="./app.js"></script>
 </body>
