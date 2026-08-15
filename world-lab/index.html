@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Jozz Splat Game Lab — W0.2 Gravity</title>
+  <title>Jozz Splat Game Lab — W0.3 Metric Scale</title>
   <script type="importmap">
   {
     "imports": {
@@ -12,93 +12,63 @@
   }
   </script>
   <link rel="stylesheet" href="./styles.css" />
+  <link rel="stylesheet" href="./scale.css" />
 </head>
 <body>
   <main id="app" data-state="loading" data-pick-armed="false">
     <canvas id="viewport"></canvas>
-
     <header class="topbar">
-      <div class="brand"><strong>Jozz Splat Game Lab</strong><span>W0.2 · Gravity Grounding</span></div>
+      <div class="brand"><strong>Jozz Splat Game Lab</strong><span>W0.3 · Metric Scale</span></div>
       <div class="runtime"><span>PlayCanvas 2.21.2</span><span id="backendStatus">—</span><span class="verified">SOURCE VERIFIED</span></div>
     </header>
 
     <aside class="workflow" aria-label="World grounding workflow">
-      <div class="world-state">
-        <span>WORLD</span><strong>DRAFT</strong>
-      </div>
-
+      <div class="world-state"><span>WORLD</span><strong>DRAFT</strong></div>
       <ol class="steps">
-        <li class="step complete"><span>01</span><div><strong>Picking</strong><small>Verified · 7 owner probes</small></div></li>
-        <li class="step active"><span>02</span><div><strong>Gravity</strong><small>Known vertical references</small></div></li>
-        <li class="step locked"><span>03</span><div><strong>Scale</strong><small>Locked until gravity evidence</small></div></li>
+        <li class="step complete"><span>01</span><div><strong>Picking</strong><small>Verified</small></div></li>
+        <li class="step complete"><span>02</span><div><strong>Gravity</strong><small id="gravityStatus">Verified</small></div></li>
+        <li class="step active"><span>03</span><div><strong>Scale</strong><small>Known real distances</small></div></li>
       </ol>
 
       <section class="panel-section">
-        <h2>W0.2 · Gravity</h2>
-        <p id="instruction">Dodaj co najmniej 3 piony z różnych miejsc. DÓŁ jest CYAN, GÓRA jest ŻÓŁTA. Jeśli kierunek pary okaże się odwrócony, LAB pokaże REVERSED zamiast fałszować geometrię.</p>
-        <button id="addVerticalButton" class="primary">Dodaj pion</button>
-        <div class="button-row">
-          <button id="undoVerticalButton" disabled>Cofnij</button>
-          <button id="clearVerticalButton" disabled>Wyczyść</button>
-        </div>
+        <h2>W0.3 · Scale</h2>
+        <p>Wskaż dwa końce odległości, którą naprawdę znasz. Potem wpisz jej wartość w metrach i krótko skąd ją znasz. Nie używaj „standardowych” wymiarów na oko.</p>
+        <button id="addMeasurementButton" class="primary">Dodaj pomiar A/B</button>
+        <div class="button-row"><button id="undoMeasurementButton" disabled>Cofnij</button><button id="clearMeasurementButton" disabled>Wyczyść</button></div>
       </section>
 
-      <section class="panel-section readout gravity-readout">
-        <div><span>Piony</span><strong id="verticalCount">0</strong></div>
-        <div><span>Stan solvera</span><strong id="solverStatus">INSUFFICIENT</strong></div>
-        <div><span>Tilt od +Y</span><strong id="tiltStatus">—</strong></div>
-        <div><span>Axis coherence</span><strong id="axisCoherenceStatus">—</strong></div>
-        <div><span>Axis residual median</span><strong id="medianResidualStatus">—</strong></div>
-        <div><span>Axis residual max</span><strong id="maxResidualStatus">—</strong></div>
-        <div><span>Odwrócony zwrot</span><strong id="reversedStatus">—</strong></div>
-        <div><span>Preview</span><strong id="previewStatus">OFF</strong></div>
+      <section class="panel-section readout">
+        <div><span>Pomiary A/B</span><strong id="measurementCount">0</strong></div>
+        <div><span>Z metrami</span><strong id="solvedMeasurementCount">0</strong></div>
+        <div><span>Stan solvera</span><strong id="scaleSolverStatus">INSUFFICIENT</strong></div>
+        <div><span>Source units / m</span><strong id="unitsPerMetreStatus">—</strong></div>
+        <div><span>m / source unit</span><strong id="metresPerUnitStatus">—</strong></div>
+        <div><span>Median |residual|</span><strong id="medianScaleResidualStatus">—</strong></div>
+        <div><span>Max |residual|</span><strong id="maxScaleResidualStatus">—</strong></div>
+        <div><span>Ratio CV</span><strong id="scaleCvStatus">—</strong></div>
+        <div><span>Evidence ready</span><strong id="scaleReadinessStatus">0</strong></div>
       </section>
 
-      <section class="panel-section">
-        <div class="button-row preview-row">
-          <button id="previewButton" disabled>Podgląd poziomu</button>
-          <button id="resetPreviewButton" disabled>Reset preview</button>
-        </div>
-        <p id="orderWarning" class="order-warning" hidden></p>
-        <p class="micro-note">Preview jest dostępny dopiero po rozwiązaniu jawnie odwróconych par. Obraca tylko warstwę świata; nadal nie zapisuje ScanToWorld ani metrów.</p>
+      <section class="panel-section points-section scale-section">
+        <h2>Distance measurements</h2>
+        <p class="micro-note"><span class="cyan-dot"></span>A · <span class="amber-dot"></span>B · dłuższe odcinki zwykle zmniejszają względny wpływ błędu kliknięcia.</p>
+        <div id="measurementList" class="points-list"><p class="empty">Brak pomiarów A/B.</p></div>
       </section>
 
-      <section class="panel-section latest">
-        <h2>Gravity candidate</h2>
-        <div class="coord-block"><span>UP · BASELINE RUNTIME</span><code id="upVectorStatus">—</code></div>
-        <div class="coord-block"><span>CORRECTION QUATERNION</span><code id="quatStatus">—</code></div>
-      </section>
-
-      <section class="panel-section points-section">
-        <h2>Vertical references</h2>
-        <p class="micro-note endpoint-note"><span class="cyan-dot"></span>DÓŁ · <span class="amber-dot"></span>GÓRA · axis residual mierzy zgodność osi niezależnie od zwrotu.</p>
-        <div id="verticalList" class="points-list"><p class="empty">Brak pionów.</p></div>
-      </section>
-
-      <button id="copyEvidenceButton" class="evidence" disabled>Kopiuj gravity evidence</button>
+      <button id="copyScaleEvidenceButton" class="evidence" disabled>Kopiuj scale evidence</button>
     </aside>
 
     <div class="modebar">
-      <button class="selected">Survey</button>
-      <button disabled title="Walk pojawi się dopiero po W0.4">Walk</button>
-      <button id="focusViewButton" title="Najedź kursorem na powierzchnię i naciśnij F">Focus (F)</button>
-      <button id="fitViewButton" title="Home">Fit (Home)</button>
-      <button id="resetViewButton" title="R">Reset (R)</button>
+      <button class="selected">Survey</button><button disabled title="Walk pojawi się dopiero po W0.4">Walk</button>
+      <button id="focusViewButton" title="F">Focus (F)</button><button id="fitViewButton" title="Home">Fit (Home)</button><button id="resetViewButton" title="R">Reset (R)</button>
     </div>
-
-    <div class="nav-hint">MMB obrót · Shift+MMB pan · scroll zoom do kursora · Shift+scroll szybciej · F focus pod kursorem · Home fit · R reset</div>
+    <div class="nav-hint">MMB obrót · Shift+MMB pan · scroll zoom · Shift+scroll szybciej · F focus · Home fit · R reset</div>
     <div id="pickHint" class="pick-hint" hidden></div>
 
     <section id="loadingPanel" class="modal-status">
-      <strong id="loadingTitle">Uruchamiam W0.2 Gravity…</strong>
-      <span id="loadingDetail">Sprawdzam źródło</span>
-      <div class="progress"><div id="progressBar"></div></div>
+      <strong id="loadingTitle">Uruchamiam W0.3 Metric Scale…</strong><span id="loadingDetail">Sprawdzam źródło</span><div class="progress"><div id="progressBar"></div></div>
     </section>
-
-    <section id="errorPanel" class="modal-status error" hidden>
-      <strong>W0.2: FAIL</strong>
-      <pre id="errorText"></pre>
-    </section>
+    <section id="errorPanel" class="modal-status error" hidden><strong>W0.3: FAIL</strong><pre id="errorText"></pre></section>
   </main>
   <script type="module" src="./app.js"></script>
 </body>
