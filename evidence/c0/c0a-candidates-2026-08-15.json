@@ -6,9 +6,18 @@
   "foregroundRecordCount": 1013122,
   "metricStatus": "UNCALIBRATED_SOURCE_UNITS",
   "roiSourceBounds": {
-    "x": [-1.9, 0.82],
-    "y": [1.08, 1.86],
-    "z": [-0.62, 0.52]
+    "x": [
+      -1.9,
+      0.82
+    ],
+    "y": [
+      1.08,
+      1.86
+    ],
+    "z": [
+      -0.62,
+      0.52
+    ]
   },
   "roiSplats": 42164,
   "roiDiagonalSource": 3.0506392772663236,
@@ -30,40 +39,103 @@
   },
   "candidates": {
     "conservative": {
-      "parameters": {"voxel": 0.015, "alpha_min": 0.5, "max_scale": 0.04, "dilation": 1, "min_count": 1},
+      "parameters": {
+        "voxel": 0.015,
+        "alpha_min": 0.5,
+        "max_scale": 0.04,
+        "dilation": 1,
+        "min_count": 1
+      },
       "selectedSplats": 12753,
-      "gridDims": [182, 53, 77],
+      "gridDims": [
+        182,
+        53,
+        77
+      ],
       "occupiedVoxels": 33132,
       "vertices": 72778,
       "faces": 148060,
       "watertight": false,
-      "boundsSource": [[-1.9075, 1.1325, -0.6275], [0.8224999999999998, 1.8525, 0.5275]],
+      "boundsSource": [
+        [
+          -1.9075,
+          1.1325,
+          -0.6275
+        ],
+        [
+          0.8224999999999998,
+          1.8525,
+          0.5275
+        ]
+      ],
       "voxelFractionOfRoiDiagonal": 0.004917002187633765,
       "bytes": 2650872,
       "sha256": "c04292bafcab432862a37387dfcae5fd34c2f5e4aeb9318995e2ab9855fc155b"
     },
     "balanced": {
-      "parameters": {"voxel": 0.02, "alpha_min": 0.2, "max_scale": 0.04, "dilation": 1, "min_count": 1},
+      "parameters": {
+        "voxel": 0.02,
+        "alpha_min": 0.2,
+        "max_scale": 0.04,
+        "dilation": 1,
+        "min_count": 1
+      },
       "selectedSplats": 21288,
-      "gridDims": [136, 39, 58],
+      "gridDims": [
+        136,
+        39,
+        58
+      ],
       "occupiedVoxels": 33460,
       "vertices": 57368,
       "faces": 116016,
       "watertight": false,
-      "boundsSource": [[-1.91, 1.1300000000000001, -0.63], [0.81, 1.85, 0.5299999999999999]],
+      "boundsSource": [
+        [
+          -1.91,
+          1.1300000000000001,
+          -0.63
+        ],
+        [
+          0.81,
+          1.85,
+          0.5299999999999999
+        ]
+      ],
       "voxelFractionOfRoiDiagonal": 0.00655600291684502,
       "bytes": 2081420,
       "sha256": "72295aee1fad62e04a8a770349854deb94758582dff007a48f86487c85a8ffe3"
     },
     "permissive": {
-      "parameters": {"voxel": 0.03, "alpha_min": 0.1, "max_scale": 0.06, "dilation": 1, "min_count": 1},
+      "parameters": {
+        "voxel": 0.03,
+        "alpha_min": 0.1,
+        "max_scale": 0.06,
+        "dilation": 1,
+        "min_count": 1
+      },
       "selectedSplats": 29941,
-      "gridDims": [91, 27, 39],
+      "gridDims": [
+        91,
+        27,
+        39
+      ],
       "occupiedVoxels": 22160,
       "vertices": 26943,
       "faces": 54246,
       "watertight": false,
-      "boundsSource": [[-1.9149999999999998, 1.0650000000000002, -0.635], [0.8150000000000004, 1.875, 0.535]],
+      "boundsSource": [
+        [
+          -1.9149999999999998,
+          1.0650000000000002,
+          -0.635
+        ],
+        [
+          0.8150000000000004,
+          1.875,
+          0.535
+        ]
+      ],
       "voxelFractionOfRoiDiagonal": 0.00983400437526753,
       "bytes": 975064,
       "sha256": "def8f4248ac0186ecb530e992280738e2591993088c29acc16b191cd2ba52a7c"
