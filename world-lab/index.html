@@ -35,7 +35,7 @@
 
       <section class="panel-section">
         <h2>W0.2 · Gravity</h2>
-        <p id="instruction">Dodaj co najmniej 3 piony z różnych miejsc. Dla każdego najpierw kliknij DÓŁ, potem GÓRĘ tej samej rzeczywiście pionowej krawędzi.</p>
+        <p id="instruction">Dodaj co najmniej 3 piony z różnych miejsc. DÓŁ jest CYAN, GÓRA jest ŻÓŁTA. Jeśli kierunek pary okaże się odwrócony, LAB pokaże REVERSED zamiast fałszować geometrię.</p>
         <button id="addVerticalButton" class="primary">Dodaj pion</button>
         <div class="button-row">
           <button id="undoVerticalButton" disabled>Cofnij</button>
@@ -47,8 +47,10 @@
         <div><span>Piony</span><strong id="verticalCount">0</strong></div>
         <div><span>Stan solvera</span><strong id="solverStatus">INSUFFICIENT</strong></div>
         <div><span>Tilt od +Y</span><strong id="tiltStatus">—</strong></div>
-        <div><span>Residual median</span><strong id="medianResidualStatus">—</strong></div>
-        <div><span>Residual max</span><strong id="maxResidualStatus">—</strong></div>
+        <div><span>Axis coherence</span><strong id="axisCoherenceStatus">—</strong></div>
+        <div><span>Axis residual median</span><strong id="medianResidualStatus">—</strong></div>
+        <div><span>Axis residual max</span><strong id="maxResidualStatus">—</strong></div>
+        <div><span>Odwrócony zwrot</span><strong id="reversedStatus">—</strong></div>
         <div><span>Preview</span><strong id="previewStatus">OFF</strong></div>
       </section>
 
@@ -57,7 +59,8 @@
           <button id="previewButton" disabled>Podgląd poziomu</button>
           <button id="resetPreviewButton" disabled>Reset preview</button>
         </div>
-        <p class="micro-note">Preview obraca tylko warstwę świata. Nie zapisuje jeszcze ScanToWorld i nie ustala metrów.</p>
+        <p id="orderWarning" class="order-warning" hidden></p>
+        <p class="micro-note">Preview jest dostępny dopiero po rozwiązaniu jawnie odwróconych par. Obraca tylko warstwę świata; nadal nie zapisuje ScanToWorld ani metrów.</p>
       </section>
 
       <section class="panel-section latest">
@@ -68,6 +71,7 @@
 
       <section class="panel-section points-section">
         <h2>Vertical references</h2>
+        <p class="micro-note endpoint-note"><span class="cyan-dot"></span>DÓŁ · <span class="amber-dot"></span>GÓRA · axis residual mierzy zgodność osi niezależnie od zwrotu.</p>
         <div id="verticalList" class="points-list"><p class="empty">Brak pionów.</p></div>
       </section>
 
@@ -77,9 +81,11 @@
     <div class="modebar">
       <button class="selected">Survey</button>
       <button disabled title="Walk pojawi się dopiero po W0.4">Walk</button>
-      <button id="resetViewButton">Reset view</button>
+      <button id="fitViewButton" title="F">Fit (F)</button>
+      <button id="resetViewButton" title="R">Reset (R)</button>
     </div>
 
+    <div class="nav-hint">MMB obrót · Shift+MMB pan · scroll zoom do kursora · F fit · R reset</div>
     <div id="pickHint" class="pick-hint" hidden></div>
 
     <section id="loadingPanel" class="modal-status">
