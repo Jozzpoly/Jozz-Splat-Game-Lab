@@ -1,7 +1,7 @@
 # Project State
 
 Date: 2026-08-15
-Milestone: `W0.2 GRAVITY — IMPLEMENTED / OWNER EVIDENCE NEXT`
+Milestone: `W0.2 GRAVITY — STRONG AXIS EVIDENCE / DIRECTION + LEVEL PREVIEW HARDENING`
 Active branch: `agent/w0-2-gravity`
 
 ## Closed gates
@@ -18,44 +18,79 @@ PlayCanvas Engine `2.21.2` is active; Spark remains a validated fallback.
 
 Owner evidence recovered seven foreground probes that remained spatially coherent across materially different camera views. Adaptive constant-screen-size marker hardening was merged with W0.1. Environment remains appearance-only and excluded from calibration authority.
 
-## W0.2 implementation
+## W0.2 owner evidence — 2026-08-15
 
-Question: can multiple independently sampled real-world verticals produce one credible gravity/up direction before any metric scale is introduced?
+Five real-world vertical references were collected on the school capture.
 
-Implemented:
+The original directed residual report contained two ~179.5° values and three low residuals. Reanalysis showed this was not contradictory physical geometry: all five references strongly agree on the same **undirected vertical axis**, while two endpoint pairs encode the opposite direction.
 
-- bottom→top vertical reference workflow using the verified foreground picker;
-- separate cyan bottom / amber top endpoint markers with constant screen-space size;
-- immediate world-space reference lines;
-- pure-math `solveGravity()` module independent of PlayCanvas rendering;
-- dominant-axis fit across all normalized vertical directions;
-- signed residual angle for every reference, so reversed or contradictory verticals remain visible;
-- mean/RMS/median/max angular residual statistics;
-- tilt angle relative to baseline runtime +Y;
-- minimal quaternion mapping the solved up vector to +Y;
-- reversible `Draft Grounding Root` preview applied equally to foreground, environment and reference markers;
-- preview automatically resets before collecting another vertical, keeping all evidence in one baseline coordinate frame;
-- evidence export remains `DRAFT_ORIENTATION_CANDIDATE_NO_SCALE`;
-- evidence export is disabled until at least three references exist;
-- no automatic acceptance of solver output.
+Reanalyzed evidence:
 
-## VERIFIED preflight
+- reference count: `5`;
+- solved baseline up: `[-0.0409047482, 0.9911173886, 0.1265429710]`;
+- tilt from baseline runtime `+Y`: `7.6424°`;
+- axis coherence: `0.9993936872` (`99.939%`);
+- axis residual mean: `1.0751°`;
+- axis residual RMS: `1.4111°`;
+- axis residual median: `0.5149°`;
+- axis residual max: `2.1871°`;
+- endpoint direction consensus: `3 AGREES / 2 REVERSED`.
 
-- W0.2 static contract PASS;
-- W0.2 gravity solver deterministic synthetic tests PASS;
-- synthetic truth is recovered within the required angular tolerance;
-- correction quaternion maps solved up to +Y;
-- intentionally reversed vertical remains a large residual instead of being silently discarded;
-- one reference remains insufficient;
-- no `unitsPerMetre`, collision or Box3D code exists in W0.2;
-- full source/server HTTP hash reproduction PASSes for raw, foreground and environment exact F0 SHA-256 values.
+Technical owner evidence is stored in `evidence/w0/w0-2-owner-axis-2026-08-15.json`. The owner screenshot is intentionally not committed to the public repository.
 
-## Owner evidence required
+## W0.2 hardening after real evidence
 
-Use at least three real vertical references, preferably on more than one structure and spread across the useful capture. For each reference click the lower point first and the upper point second. Do not use terrain, roofs or tree trunks unless their real-world verticality is genuinely known.
+The model now distinguishes two facts that must not be conflated:
 
-W0.2 should not pass from solver numbers alone. Owner evidence must include the copied gravity JSON plus a visual judgment of the reversible level preview.
+1. `axisResidual` — whether a reference belongs to the same physical vertical axis regardless of endpoint order;
+2. `directionStatus` — whether the explicitly entered `BOTTOM → TOP` direction agrees with the oriented up candidate.
+
+Implemented after the owner evidence:
+
+- orientation-independent covariance/dominant-axis fit;
+- `axisCoherence` as a direction-sign-independent geometric agreement metric;
+- per-reference `axisResidualDeg` and `directedResidualDeg`;
+- explicit `AGREES` / `REVERSED` classification;
+- no silent endpoint reversal;
+- explicit owner `Odwróć` action that swaps bottom/top markers and records `manualFlipCount`;
+- level preview is blocked while unresolved reversed references remain;
+- evidence schema version 2 records axis evidence, direction evidence and manual corrections separately;
+- deterministic regression test embeds the five real owner references and verifies the recorded axis result.
+
+## Survey navigation hardening
+
+Owner navigation is now aligned with the established project/editor convention instead of the earlier coarse orbit prototype:
+
+- `MMB` orbit;
+- `Shift + MMB` view-plane pan;
+- `LMB` and `RMB` remain free for model/world interaction;
+- wheel uses cursor-anchored exponential zoom;
+- the old `2.5% of initial radius` close-range zoom floor is removed and replaced with a very small safety floor;
+- `F` fits the full scan while preserving current orientation;
+- `R` restores the original survey view;
+- camera near clip is reduced for close inspection.
+
+This is Survey navigation only. It is not metric human movement and does not weaken the later W0.5 Walk gate.
+
+## VERIFIED so far
+
+- W0.2 pure gravity solver synthetic tests PASS;
+- real owner evidence regression reproduces strong axis coherence and exactly two reversed endpoint pairs;
+- explicit correction of those two directions leaves the solved physical axis unchanged within numerical tolerance;
+- no automatic acceptance of the gravity candidate exists;
+- no `unitsPerMetre`, collision or Box3D exists in W0.2;
+- source/foreground/environment roles and F0 hashes remain unchanged by the W0.2 design.
+
+## Still required to close W0.2
+
+Run the hardened owner workflow once more, resolve only endpoint pairs that are visibly reversed according to the cyan-bottom / amber-top markers, then apply the reversible level preview.
+
+W0.2 passes only if:
+
+- at least three independent vertical axes remain coherent;
+- no unresolved reversed direction remains in the intended bottom→top evidence;
+- the level preview visibly corrects the observed reconstruction tilt without obvious over-correction.
 
 ## Next only after W0.2 PASS
 
-W0.3 metric scale from 2–3 independently known real-world distances.
+W0.3 metric scale from 2–3 independently known real-world distances. The scale solver will reuse `SpatialProbe` and the hardened evidence/provenance pattern rather than creating a separate picking system.
