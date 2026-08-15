@@ -27,7 +27,7 @@ This is a router, not canonical truth. Current Git, executable evidence and dire
 
 ## W0.2 real evidence
 
-Five owner-selected building-edge references support one strong vertical axis:
+Five owner-selected building-edge references support one strong local vertical axis:
 
 - tilt candidate `7.6424°`;
 - axis coherence `99.939%`;
@@ -35,7 +35,9 @@ Five owner-selected building-edge references support one strong vertical axis:
 - axis residual max `2.1871°`;
 - three entered bottom→top directions agree, two are reversed.
 
-Therefore the physical axis is strongly supported; the original huge directed mean/RMS came mainly from endpoint-order semantics. Technical evidence: `evidence/w0/w0-2-owner-axis-2026-08-15.json`.
+Therefore the physical axis around the main school building is strongly supported; the original huge directed mean/RMS came mainly from endpoint-order semantics. Technical evidence: `evidence/w0/w0-2-owner-axis-2026-08-15.json`.
+
+The five references are spatially concentrated on the main building. Global capture orientation remains pending until at least one preferably two trustworthy distant verticals confirm/falsify the same axis. If no distant feature is trustworthy, preserve this as uncertainty rather than inventing a global proof.
 
 ## Hardened W0.2 model
 
@@ -54,7 +56,7 @@ Inspection navigation now uses:
 - MMB orbit;
 - Shift+MMB view-plane pan;
 - cursor-anchored wheel zoom; Shift+wheel faster;
-- F = focus verified foreground under cursor while preserving camera position;
+- F = focus verified foreground under cursor while preserving camera position and changing the orbit pivot;
 - Home = fit full scan;
 - R = reset;
 - no initial-radius near/far zoom ceiling beyond a tiny numerical safety floor;
@@ -65,11 +67,11 @@ This is not W0.5 human navigation.
 
 ## Local security boundary
 
-The owner LAB now validates loopback Host headers, rejects malformed paths safely, adds basic same-origin/no-sniff headers, hashes the exact known ZIP before extraction and attempts temp cleanup after normal exit. Raw/foreground/environment F0 hashes remain the authority.
+The owner LAB validates loopback Host headers, rejects malformed paths safely, adds basic same-origin/no-sniff headers, hashes the exact known ZIP before extraction and attempts temp cleanup after normal exit. Raw/foreground/environment F0 hashes remain the authority.
 
 ## Immediate next evidence
 
-Run the final hardened W0.2 owner build, resolve only genuinely reversed endpoint roles, apply the reversible level preview, verify the corrected level visually, and judge the new close-range navigation. Then copy schema-v2 gravity evidence.
+Run the final hardened W0.2 owner build. Include a distant trustworthy vertical if possible, resolve only genuinely reversed endpoint roles, apply the reversible level preview, verify the corrected level visually, and judge the new close-range navigation. Then copy schema-v2 gravity evidence.
 
 If this passes, squash PR #6 and begin W0.3 metric scale. Do not start collision or Box3D before W0.4.
 
