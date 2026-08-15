@@ -47,7 +47,7 @@ node tools/f0-verify-split.mjs <source.ply> <scene.foreground.ply> <scene.enviro
 
 They are not the expected owner workflow.
 
-For owner-side reproduction, double-click `RUN_F0_CANONICAL.cmd`. The launcher delegates to `tools/run-f0-owner.ps1`, opens a normal Windows file picker for the original ZIP/PLY, runs the checks automatically and shows a simple PASS/FAIL dialog. No drag-and-drop onto a terminal, command-line arguments or npm knowledge are required.
+For optional owner-side reproduction on Windows, double-click `SPRAWDZ_F0.cmd`. It opens a normal file picker for the original ZIP/PLY, runs the checks automatically and shows a simple PASS/FAIL dialog. No drag-and-drop onto scripts, command-line arguments or npm knowledge are required. Successful runs remove their temporary extracted/split copies automatically.
 
 The splitter is intentionally source-specific. It requires the exact source SHA-256 and refuses to operate when the recorded PLY layout or shell invariants differ. It is not a general Luma background detector.
 
@@ -66,14 +66,14 @@ An independent verifier confirmed that the foreground and environment payloads a
 
 Foundation/F0 supports Node `>=22.16.0` and has no npm-version evidence requirement. The F0 implementation ran on Node `22.16.0`, which is inside the supported range.
 
-The result was also cross-checked independently with Python `3.13.5` + NumPy `2.3.5` and raw byte-range comparison. The binary evidence and committed implementation are therefore accepted for F0.
+The result was also cross-checked independently with Python `3.13.5` + NumPy `2.3.5` and raw byte-range comparison. A subsequent full revalidation again reproduced the source, foreground, environment and payload hashes exactly.
 
 The earlier exact Node `24.16.0` / npm `11.13.0` gate was removed after review because it had been inherited from another project without evidence that those exact versions affect this binary-processing gate.
 
-Owner-side replay is an optional additional reproduction check, not a ceremonial prerequisite for closing F0.
+Owner-side replay is optional additional reproduction evidence, not a prerequisite for closing F0.
 
 ## Exit to R0
 
-F0 is technically closed. R0 Phase A may begin after the foundation/F0 changes are accepted into the project source line.
+F0 is technically closed. R0 Phase A may begin after the clean foundation/F0 source line is accepted.
 
 R0 must use the exact source PLY hash above in both renderer candidates. R0 Phase B may compare the exact same generated SOG hash only if both candidates pass source compatibility.
