@@ -49,7 +49,7 @@ try {
 
     Write-Host ''
     Write-Host 'Uruchamiam W0.2 World Grounding...'
-    Write-Host 'To jest test kalibracji pionu. Nie wymaga npm ani terminala.'
+    Write-Host 'To jest test picking/markerow. Nie wymaga npm ani terminala.'
     Write-Host ''
     & node tools/w0-server.mjs $sourcePath
     exit $LASTEXITCODE
