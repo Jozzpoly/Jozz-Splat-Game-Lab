@@ -1,10 +1,10 @@
 @echo off
 setlocal EnableExtensions
 cd /d "%~dp0"
-title Jozz Splat Game Lab - W0.1 World Grounding
+title Jozz Splat Game Lab - W0.2 World Grounding
 
 echo ============================================================
-echo Jozz Splat Game Lab - W0.1 World Grounding
+echo Jozz Splat Game Lab - W0.2 World Grounding
 echo ============================================================
 echo.
 echo Otworzy sie zwykle okno wyboru pliku Windows.
@@ -17,9 +17,9 @@ set "EXIT_CODE=%ERRORLEVEL%"
 
 echo.
 if "%EXIT_CODE%"=="0" (
-  echo W0.1 zakonczony.
+  echo W0.2 zakonczony.
 ) else (
-  echo W0.1 zakonczyl sie bledem.
+  echo W0.2 zakonczyl sie bledem.
   echo Zrob screenshot tego okna i wyslij mi go.
 )
 echo.
