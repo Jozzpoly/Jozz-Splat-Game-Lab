@@ -1,0 +1,69 @@
+{
+  "reportVersion": 1,
+  "gate": "F0 Evidence Freeze",
+  "recordedAt": "2026-08-15",
+  "status": "VERIFIED",
+  "source": {
+    "name": "gs_GG_Szko_a.ply",
+    "sha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+    "bytes": 263655789,
+    "archiveSha256": "2390ffd6a324ee015d27e95a878e07710e347a3f31fa418ddfd819bc730547a7"
+  },
+  "reproducedObservations": {
+    "format": "binary_little_endian 1.0",
+    "headerBytes": 1533,
+    "vertexCount": 1063122,
+    "float32FieldsPerVertex": 62,
+    "recordBytes": 248,
+    "allFloatFieldsFinite": true,
+    "allNormalsZero": true,
+    "foregroundBounds": {
+      "min": [-150.57611083984375, -14.89201545715332, -71.93040466308594],
+      "max": [110.7751235961914, 6.4909186363220215, 80.14979553222656]
+    },
+    "shell": {
+      "firstRecord": 1013122,
+      "lastRecord": 1063121,
+      "recordCount": 50000,
+      "radiusMin": 171.86850951935887,
+      "radiusMax": 171.86855293047165,
+      "radiusMean": 171.86853029004345,
+      "radiusStd": 5.57845221440865e-06,
+      "opacityRaw": 4.595120906829834,
+      "quaternion": [1, 0, 0, 0],
+      "scaleMismatchCount": 0,
+      "quaternionMismatchCount": 0
+    }
+  },
+  "structuralPartition": {
+    "status": "VERIFIED",
+    "foregroundRecords": 1013122,
+    "environmentRecords": 50000,
+    "verification": "independent verifier confirmed output payloads are exact ordered byte ranges from the immutable source; only vertex-count headers differ"
+  },
+  "semanticInterpretation": {
+    "environmentShell": "LIKELY",
+    "note": "Structural partition is verified; semantic origin as Luma background/environment is still an inference because the exported PLY carries no authoritative semantic label."
+  },
+  "outputs": {
+    "foreground": {
+      "name": "scene.foreground.ply",
+      "sha256": "a734ce660a9bfd08ad11605fb45f1691fee3fa0bfe87fbbdb32f4acc7748d112",
+      "bytes": 251255789,
+      "payloadSha256": "033c03b71eb9c9e294732d596d299862289c0543aad1381cf18446917d59800b"
+    },
+    "environment": {
+      "name": "scene.environment.ply",
+      "sha256": "b92d3782374dd945619a96024d7918252b5762d5e26c91fb67c21adafeca496c",
+      "bytes": 12401531,
+      "payloadSha256": "6fe1c7db98a3cdd61fec3b53999fb559730bcb289f389d3b049b99f60b196281"
+    }
+  },
+  "execution": {
+    "supportedNodeBaseline": ">=22.16.0",
+    "implementationRuntime": "Node v22.16.0",
+    "independentBinaryCheck": "Python 3.13.5 + NumPy 2.3.5",
+    "npmEvidenceVariable": false,
+    "qualification": "accepted: implementation ran on the supported Node baseline and independent binary verification reproduced the result"
+  }
+}
