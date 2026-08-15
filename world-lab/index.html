@@ -17,6 +17,7 @@
 <body>
   <main id="app" data-state="loading" data-pick-armed="false">
     <canvas id="viewport"></canvas>
+
     <header class="topbar">
       <div class="brand"><strong>Jozz Splat Game Lab</strong><span>W0.3 · Metric Scale</span></div>
       <div class="runtime"><span>PlayCanvas 2.21.2</span><span id="backendStatus">—</span><span class="verified">SOURCE VERIFIED</span></div>
@@ -34,7 +35,10 @@
         <h2>W0.3 · Scale</h2>
         <p>Wskaż dwa końce odległości, którą naprawdę znasz. Potem wpisz jej wartość w metrach i krótko skąd ją znasz. Nie używaj „standardowych” wymiarów na oko.</p>
         <button id="addMeasurementButton" class="primary">Dodaj pomiar A/B</button>
-        <div class="button-row"><button id="undoMeasurementButton" disabled>Cofnij</button><button id="clearMeasurementButton" disabled>Wyczyść</button></div>
+        <div class="button-row">
+          <button id="undoMeasurementButton" disabled>Cofnij</button>
+          <button id="clearMeasurementButton" disabled>Wyczyść</button>
+        </div>
       </section>
 
       <section class="panel-section readout">
@@ -59,16 +63,26 @@
     </aside>
 
     <div class="modebar">
-      <button class="selected">Survey</button><button disabled title="Walk pojawi się dopiero po W0.4">Walk</button>
-      <button id="focusViewButton" title="F">Focus (F)</button><button id="fitViewButton" title="Home">Fit (Home)</button><button id="resetViewButton" title="R">Reset (R)</button>
+      <button class="selected">Survey</button>
+      <button disabled title="Walk pojawi się dopiero po W0.4">Walk</button>
+      <button id="focusViewButton" title="F">Focus (F)</button>
+      <button id="fitViewButton" title="Home">Fit (Home)</button>
+      <button id="resetViewButton" title="R">Reset (R)</button>
     </div>
+
     <div class="nav-hint">MMB obrót · Shift+MMB pan · scroll zoom · Shift+scroll szybciej · F focus · Home fit · R reset</div>
     <div id="pickHint" class="pick-hint" hidden></div>
 
     <section id="loadingPanel" class="modal-status">
-      <strong id="loadingTitle">Uruchamiam W0.3 Metric Scale…</strong><span id="loadingDetail">Sprawdzam źródło</span><div class="progress"><div id="progressBar"></div></div>
+      <strong id="loadingTitle">Uruchamiam W0.3 Metric Scale…</strong>
+      <span id="loadingDetail">Sprawdzam źródło</span>
+      <div class="progress"><div id="progressBar"></div></div>
     </section>
-    <section id="errorPanel" class="modal-status error" hidden><strong>W0.3: FAIL</strong><pre id="errorText"></pre></section>
+
+    <section id="errorPanel" class="modal-status error" hidden>
+      <strong>W0.3: FAIL</strong>
+      <pre id="errorText"></pre>
+    </section>
   </main>
   <script type="module" src="./app.js"></script>
 </body>

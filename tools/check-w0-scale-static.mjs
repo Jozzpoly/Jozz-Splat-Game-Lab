@@ -3,14 +3,16 @@ import { readFile } from 'node:fs/promises';
 async function text(path) { return readFile(new URL(`../${path}`, import.meta.url), 'utf8'); }
 function assert(condition, message) { if (!condition) throw new Error(message); }
 
-const [html, app, scale, workflow, orientation, probe, survey, server, launcher, owner] = await Promise.all([
-  text('world-lab/index.html'), text('world-lab/app.js'), text('world-lab/scale.mjs'),
+const [html, scaleCss, app, scale, workflow, orientation, probe, survey, server, launcher, owner] = await Promise.all([
+  text('world-lab/index.html'), text('world-lab/scale.css'), text('world-lab/app.js'), text('world-lab/scale.mjs'),
   text('world-lab/scale-workflow.mjs'), text('world-lab/accepted-orientation.mjs'),
   text('world-lab/spatial-probe.mjs'), text('world-lab/survey.mjs'), text('tools/w0-server.mjs'),
   text('URUCHOM_W0_WORLD_GROUNDING.cmd'), text('tools/run-w0-owner.ps1')
 ]);
 
 assert(html.includes('W0.3 · Metric Scale'), 'W0.3 page identity missing');
+assert(html.includes('./scale.css'), 'W0.3 scale stylesheet link missing');
+assert(scaleCss.includes('.scale-row'), 'W0.3 scale stylesheet content missing');
 assert(html.includes('playcanvas@2.21.2'), 'PlayCanvas pin drifted');
 assert(!html.includes('@latest'), 'W0 must not use latest CDN alias');
 assert(html.includes('known real distances') || html.includes('Known real distances') || html.includes('Znana odległość'), 'known-distance workflow missing');
