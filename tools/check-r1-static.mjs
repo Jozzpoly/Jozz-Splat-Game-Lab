@@ -26,6 +26,8 @@ assert(app.includes('DEVICETYPE_WEBGPU'), 'R1 must include WebGPU preference pat
 assert(app.includes('GSPLAT_RENDERER_AUTO'), 'R1 must explicitly use AUTO GS renderer');
 assert(app.includes('antialias: false'), 'R1 must keep antialias disabled');
 assert(app.includes('maxPixelRatio = 1'), 'R1 must keep DPR capped at 1 for this gate');
+assert(app.includes("'frame:ready'"), 'R1 must wait for an initial complete GS frame before on-demand mode');
+assert(app.indexOf('new RenderGovernor') > app.indexOf('waitForInitialGsplatReady'), 'Render governor must be enabled after initial GS readiness');
 assert(governor.includes("quiet: Object.freeze({ id: 'quiet'"), 'Quiet profile missing');
 assert(governor.includes('autoRender: false'), 'On-demand rendering missing');
 assert(governor.includes("'frame:request'"), 'GSplat frame:request bridge missing');
