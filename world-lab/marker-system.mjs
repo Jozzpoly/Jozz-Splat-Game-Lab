@@ -26,11 +26,12 @@ export class MarkerSystem {
   }
 
   create(sourcePoint, role, name, sourceToBaseline) {
-    const point = sourceToBaseline(sourcePoint);
+    const p = sourceToBaseline(sourcePoint);
     const marker = new Entity(name);
     marker.addComponent('render', { type: 'sphere' });
-    marker.setLocalPosition(...point);
-    this.setRole(marker, role);
+    marker.setLocalPosition(p[0], p[1], p[2]);
+    const mat = role === 'bottom' ? this.bottomMaterial : this.topMaterial;
+    for (const mesh of marker.render.meshInstances) mesh.material = mat;
     this.root.addChild(marker);
     this.entities.push(marker);
     this.updateScale(marker);
@@ -39,8 +40,8 @@ export class MarkerSystem {
 
   setRole(marker, role) {
     if (!marker?.render?.meshInstances) return;
-    const selectedMaterial = role === 'bottom' ? this.bottomMaterial : this.topMaterial;
-    for (const mesh of marker.render.meshInstances) mesh.material = selectedMaterial;
+    const mat = role === 'bottom' ? this.bottomMaterial : this.topMaterial;
+    for (const mesh of marker.render.meshInstances) mesh.material = mat;
   }
 
   remove(marker) {
@@ -62,7 +63,5 @@ export class MarkerSystem {
     marker.setLocalScale(size, size, size);
   }
 
-  update() {
-    for (const marker of this.entities) this.updateScale(marker);
-  }
+  update() { for (const marker of this.entities) this.updateScale(marker); }
 }
