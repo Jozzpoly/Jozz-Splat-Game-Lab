@@ -2,7 +2,7 @@
   "receiptVersion": 1,
   "id": "luma-school-2026-08-15",
   "recordedAt": "2026-08-15",
-  "status": "historical-analysis-to-be-reproduced-in-f0",
+  "status": "verified-by-f0-reproduction",
   "source": {
     "name": "gs_GG_Szko_a.ply",
     "sha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
@@ -25,17 +25,17 @@
     "recordBytes": 248,
     "sphericalHarmonicsDegree": 3,
     "nanOrInfObserved": false,
-    "normalFieldObservation": "header used nxx, ny, nz; observed normal values were zero",
-    "sizeEquationVerifiedHistorically": "1063122 * 248 + 1533 = 263655789"
+    "normalFieldObservation": "header uses nxx, ny, nz; F0 reproduction observed all three normal fields equal to zero for every record",
+    "sizeEquationVerified": "1063122 * 248 + 1533 = 263655789"
   },
   "foregroundObservation": {
     "recordCount": 1013122,
-    "approxBounds": {
-      "x": [-150.58, 110.78],
-      "y": [-14.89, 6.49],
-      "z": [-71.93, 80.15]
+    "bounds": {
+      "x": [-150.57611083984375, 110.7751235961914],
+      "y": [-14.89201545715332, 6.4909186363220215],
+      "z": [-71.93040466308594, 80.14979553222656]
     },
-    "approxCentral99Percent": {
+    "historicalApproxCentral99Percent": {
       "x": [-108.0, 51.0],
       "y": [-9.35, 3.43],
       "z": [-45.3, 51.5]
@@ -43,19 +43,23 @@
   },
   "environmentShellInference": {
     "claimState": "LIKELY",
-    "reason": "50,000 trailing records form an extraordinarily regular near-perfect spherical layer; exported PLY contains no authoritative semantic label proving its origin",
+    "structuralPartitionState": "VERIFIED",
+    "reason": "F0 independently reproduced exactly 50,000 trailing shell-like records. Their structure is verified; semantic origin as Luma background/environment remains an inference because the exported PLY contains no authoritative semantic label.",
     "indexBase": 0,
     "startRecord": 1013122,
     "recordCount": 50000,
-    "radiusApprox": 171.8685303,
-    "radiusStdApprox": 0.0000056,
-    "opacityRawApprox": 4.5951209068,
+    "radiusMin": 171.86850951935887,
+    "radiusMax": 171.86855293047165,
+    "radiusMean": 171.86853029004345,
+    "radiusStd": 0.00000557845221440865,
+    "opacityRaw": 4.595120906829834,
     "alphaApprox": 0.99,
     "quaternionObserved": [1.0, 0.0, 0.0, 0.0],
     "scalePattern": "isotropic-per-record",
-    "nearestForegroundCenterDistanceApprox": 15.65,
+    "nearestForegroundCenterDistanceHistoricalApprox": 15.65,
     "physicalPolicy": "exclude from collision unless independently proven physical"
   },
+  "f0Evidence": "evidence/f0/luma-school-2026-08-15/reproduction.json",
   "openQuestions": [
     "unitsPerMetre",
     "canonicalRuntimeOrientation",

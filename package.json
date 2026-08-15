@@ -23,6 +23,10 @@
   },
   "scripts": {
     "check:foundation": "node tools/check-foundation.mjs",
-    "check": "npm run check:foundation"
+    "check:f0-records": "node tools/check-f0-records.mjs",
+    "f0:inspect": "node tools/f0-luma-source.mjs inspect",
+    "f0:split": "node tools/f0-luma-source.mjs split",
+    "f0:verify-split": "node tools/f0-verify-split.mjs",
+    "check": "npm run check:foundation && npm run check:f0-records"
   }
 }
