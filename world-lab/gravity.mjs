@@ -24,6 +24,11 @@ export function angleDeg(a, b) {
   return Math.acos(clamp(dot(na, nb), -1, 1)) * RAD2DEG;
 }
 
+export function axisAngleDeg(a, b) {
+  const directed = angleDeg(a, b);
+  return Number.isFinite(directed) ? Math.min(directed, 180 - directed) : Number.NaN;
+}
+
 export function rotationBetween(from, to) {
   const a = normalize(from);
   const b = normalize(to);
@@ -52,41 +57,83 @@ export function rotateVectorByQuat(v, q) {
   return add(add(v, scale(t, qw)), cross(qv, t));
 }
 
-function dominantAxis(directions) {
+function covarianceMatrix(directions) {
   const matrix = [
     [0, 0, 0],
     [0, 0, 0],
     [0, 0, 0]
   ];
-  let signedSum = [0, 0, 0];
-
   for (const v of directions) {
-    signedSum = add(signedSum, v);
     for (let r = 0; r < 3; r++) {
       for (let c = 0; c < 3; c++) matrix[r][c] += v[r] * v[c];
     }
   }
+  return matrix;
+}
 
-  let axis = normalize(signedSum) ?? [0, 1, 0];
-  for (let i = 0; i < 32; i++) {
-    const next = [
-      matrix[0][0] * axis[0] + matrix[0][1] * axis[1] + matrix[0][2] * axis[2],
-      matrix[1][0] * axis[0] + matrix[1][1] * axis[1] + matrix[1][2] * axis[2],
-      matrix[2][0] * axis[0] + matrix[2][1] * axis[1] + matrix[2][2] * axis[2]
-    ];
-    const normalized = normalize(next);
+function multiply(matrix, v) {
+  return [
+    matrix[0][0] * v[0] + matrix[0][1] * v[1] + matrix[0][2] * v[2],
+    matrix[1][0] * v[0] + matrix[1][1] * v[1] + matrix[1][2] * v[2],
+    matrix[2][0] * v[0] + matrix[2][1] * v[1] + matrix[2][2] * v[2]
+  ];
+}
+
+function dominantAxis(directions) {
+  const matrix = covarianceMatrix(directions);
+  const basis = [[1, 0, 0], [0, 1, 0], [0, 0, 1]];
+  let axis = basis
+    .map((v) => ({ v, energy: dot(v, multiply(matrix, v)) }))
+    .sort((a, b) => b.energy - a.energy)[0].v;
+
+  for (let i = 0; i < 48; i++) {
+    const normalized = normalize(multiply(matrix, axis));
     if (!normalized) break;
     axis = normalized;
   }
 
-  if (dot(axis, signedSum) < 0) axis = scale(axis, -1);
-  return axis;
+  const rayleigh = dot(axis, multiply(matrix, axis));
+  const trace = matrix[0][0] + matrix[1][1] + matrix[2][2];
+  return {
+    axis,
+    coherence: trace > EPS ? rayleigh / trace : 0
+  };
 }
 
-function percentile(sorted, p) {
-  if (!sorted.length) return Number.NaN;
-  const idx = Math.min(sorted.length - 1, Math.max(0, Math.round((sorted.length - 1) * p)));
-  return sorted[idx];
+function orientAxis(axis, directions) {
+  let agree = 0;
+  let reverse = 0;
+  for (const direction of directions) {
+    if (dot(direction, axis) >= 0) agree++;
+    else reverse++;
+  }
+
+  let oriented = axis;
+  if (reverse > agree) {
+    oriented = scale(axis, -1);
+    [agree, reverse] = [reverse, agree];
+  } else if (reverse === agree && dot(axis, [0, 1, 0]) < 0) {
+    oriented = scale(axis, -1);
+  }
+
+  return {
+    up: oriented,
+    agreeCount: agree,
+    reversedCount: reverse,
+    agreeFraction: directions.length ? agree / directions.length : 0,
+    voteMargin: agree - reverse,
+    method: agree === reverse ? 'BASELINE_Y_TIE_BREAK' : 'MAJORITY_BOTTOM_TO_TOP'
+  };
+}
+
+function stats(values) {
+  if (!values.length) return { meanDeg: Number.NaN, rmsDeg: Number.NaN, medianDeg: Number.NaN, maxDeg: Number.NaN };
+  const sorted = [...values].sort((a, b) => a - b);
+  const mean = values.reduce((sum, v) => sum + v, 0) / values.length;
+  const rms = Math.sqrt(values.reduce((sum, v) => sum + v * v, 0) / values.length);
+  const mid = Math.floor(sorted.length / 2);
+  const median = sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) * 0.5;
+  return { meanDeg: mean, rmsDeg: rms, medianDeg: median, maxDeg: sorted.at(-1) };
 }
 
 export function solveGravity(references) {
@@ -107,17 +154,23 @@ export function solveGravity(references) {
     };
   }
 
-  const up = dominantAxis(valid.map((ref) => ref.direction));
-  const residuals = valid.map((ref, index) => ({
-    index,
-    angleDeg: angleDeg(ref.direction, up),
-    referenceLength: ref.referenceLength
-  }));
-  const values = residuals.map((r) => r.angleDeg).sort((a, b) => a - b);
-  const mean = values.reduce((sum, v) => sum + v, 0) / values.length;
-  const rms = Math.sqrt(values.reduce((sum, v) => sum + v * v, 0) / values.length);
-  const max = values.at(-1);
-  const median = percentile(values, 0.5);
+  const axisResult = dominantAxis(valid.map((ref) => ref.direction));
+  const orientation = orientAxis(axisResult.axis, valid.map((ref) => ref.direction));
+  const up = orientation.up;
+
+  const residuals = valid.map((ref, index) => {
+    const directedResidualDeg = angleDeg(ref.direction, up);
+    return {
+      index,
+      axisResidualDeg: Math.min(directedResidualDeg, 180 - directedResidualDeg),
+      directedResidualDeg,
+      directionStatus: directedResidualDeg <= 90 ? 'AGREES' : 'REVERSED',
+      referenceLength: ref.referenceLength
+    };
+  });
+
+  const axisResidualStats = stats(residuals.map((r) => r.axisResidualDeg));
+  const directedResidualStats = stats(residuals.map((r) => r.directedResidualDeg));
   const tiltDeg = angleDeg(up, [0, 1, 0]);
   const correctionQuaternion = rotationBetween(up, [0, 1, 0]);
 
@@ -126,12 +179,16 @@ export function solveGravity(references) {
     referenceCount: valid.length,
     up,
     tiltDeg,
+    axisCoherence: axisResult.coherence,
     residuals,
-    residualStats: {
-      meanDeg: mean,
-      rmsDeg: rms,
-      medianDeg: median,
-      maxDeg: max
+    axisResidualStats,
+    directedResidualStats,
+    directionConsensus: {
+      agreeCount: orientation.agreeCount,
+      reversedCount: orientation.reversedCount,
+      agreeFraction: orientation.agreeFraction,
+      voteMargin: orientation.voteMargin,
+      method: orientation.method
     },
     correctionQuaternion,
     automaticAcceptance: false
