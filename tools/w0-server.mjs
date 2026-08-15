@@ -87,7 +87,7 @@ const sourceMeta = {
     physicalAuthority: false,
     calibrationAuthority: false
   },
-  worldCalibration: 'DRAFT_UNMEASURED'
+  worldCalibration: 'DRAFT_ORIENTATION_VERIFIED_SCALE_UNKNOWN'
 };
 
 const contentTypes = new Map([
@@ -259,7 +259,7 @@ const port = await listenOnAvailablePort();
 const url = `http://127.0.0.1:${port}/`;
 console.log('');
 console.log('============================================================');
-console.log('Jozz Splat Game Lab — W0.2 WORLD GROUNDING');
+console.log('Jozz Splat Game Lab — W0.3 METRIC SCALE');
 console.log('============================================================');
 console.log(`Source: VERIFIED ${sourceSha.slice(0, 12)}…`);
 console.log(`LAB:    ${url}`);
