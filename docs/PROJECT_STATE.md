@@ -47,6 +47,12 @@ Reanalyzed evidence:
 
 Technical evidence is stored in `evidence/w0/w0-2-owner-axis-2026-08-15.json`. Owner screenshots/location images are intentionally not committed.
 
+### Spatial-evidence limitation
+
+The owner screenshot shows the five references concentrated on the main school building. This is strong **local** vertical-axis evidence, but it is not sufficient by itself to exclude reconstruction-orientation drift across the wider capture.
+
+Before accepting a **global** gravity/orientation contract, collect at least one and preferably two trustworthy vertical references on a spatially distant structure or pole. Their purpose is falsification: verify that the same vertical axis survives outside the main-building region. If no distant feature is trustworthy, preserve global orientation as uncertain rather than fabricating diversity.
+
 ## W0.2 model hardening
 
 - orientation-independent dominant-axis fit;
@@ -77,9 +83,9 @@ This is still Survey. It does not claim W0.5 metric human movement.
 
 ## Recovery security hardening
 
-A Codex Security-style diff review treated the local PLY, selected ZIP and loopback server as trust boundaries. Two unnecessary exposures were removed before the next owner package:
+A security-style diff review treated the local PLY, selected ZIP and loopback server as trust boundaries. Two unnecessary exposures were removed before the next owner package:
 
-- loopback HTTP now validates `Host` (`127.0.0.1` / `localhost`) to reduce DNS-rebinding exposure of raw capture bytes;
+- loopback HTTP validates `Host` (`127.0.0.1` / `localhost`) to reduce DNS-rebinding exposure of raw capture bytes;
 - malformed URL decoding returns `400` instead of being able to throw through the request handler;
 - responses add `nosniff`, `DENY` framing, no-referrer and same-origin resource policy headers;
 - the Windows launcher validates exact F0 ZIP byte count + SHA-256 before `Expand-Archive` and attempts cleanup on normal exit.
@@ -88,7 +94,7 @@ No high-severity security finding remains identified in the W0.2 diff. The pinne
 
 ## Recovery preflight
 
-The recovered/hardened local tree passed:
+The recovered/hardened tree passed:
 
 - JS/MJS syntax checks;
 - gravity synthetic + exact owner-evidence regression;
@@ -100,19 +106,20 @@ The recovered/hardened local tree passed:
 - encoded traversal does not expose repository files;
 - raw/foreground/environment streams reproduce exact F0 SHA-256 hashes.
 
-Rendered browser QA of the **new** focus/security build remains owner evidence: the Browser plugin is unavailable in this host, Playwright is not installed, and outbound DNS to the pinned CDN is unavailable. Do not infer rendered PASS from static checks.
+Rendered browser QA of the **new** focus/security build remains owner evidence: the execution host has no usable browser automation path to the pinned CDN/runtime, so rendered PASS must not be inferred from static checks.
 
 ## Still required to close W0.2
 
 Use the hardened owner build once more:
 
-1. collect at least three strong verticals (or repeat five if convenient);
+1. collect at least three strong verticals, including at least one spatially distant from the main school building if a trustworthy feature exists;
 2. resolve only visibly reversed cyan-bottom / amber-top endpoint pairs using `Odwróć`;
-3. confirm no unresolved `REVERSED` row remains;
-4. apply `Podgląd poziomu`;
-5. visually confirm the ~7.6° candidate corrects the reconstruction tilt without obvious over-correction;
-6. verify the new close-range Survey navigation is materially easier near building surfaces;
-7. copy schema-v2 gravity evidence.
+3. if `REVERSED` remains while the marker roles are physically correct, preserve it as a conflict rather than forcing the solver;
+4. confirm no unresolved direction conflict remains in the intended bottom→top evidence;
+5. apply `Podgląd poziomu`;
+6. visually confirm the ~7.6° candidate corrects the reconstruction tilt without obvious over-correction;
+7. verify the new close-range Survey navigation is materially easier near building surfaces;
+8. copy schema-v2 gravity evidence.
 
 ## Next only after W0.2 PASS
 
