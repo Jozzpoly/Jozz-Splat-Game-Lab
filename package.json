@@ -4,22 +4,8 @@
   "private": true,
   "type": "module",
   "license": "UNLICENSED",
-  "packageManager": "npm@11.13.0",
   "engines": {
-    "node": "24.16.0",
-    "npm": "11.13.0"
-  },
-  "devEngines": {
-    "runtime": {
-      "name": "node",
-      "version": "24.16.0",
-      "onFail": "error"
-    },
-    "packageManager": {
-      "name": "npm",
-      "version": "11.13.0",
-      "onFail": "error"
-    }
+    "node": ">=22.16.0"
   },
   "scripts": {
     "check:foundation": "node tools/check-foundation.mjs",
@@ -27,6 +13,6 @@
     "f0:inspect": "node tools/f0-luma-source.mjs inspect",
     "f0:split": "node tools/f0-luma-source.mjs split",
     "f0:verify-split": "node tools/f0-verify-split.mjs",
-    "check": "npm run check:foundation && npm run check:f0-records"
+    "check": "node tools/check-foundation.mjs && node tools/check-f0-records.mjs"
   }
 }
