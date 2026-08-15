@@ -1,5 +1,7 @@
-# C0a Owner Test
+# C0a Owner Test — preserved negative evidence
 
-This file exists only as a small branch-level reminder. The actual owner package contains the three external derived GLB candidates and a simpler `README_TESTUJ.txt`.
+C0a owner testing concluded that the generated collision geometry is not good enough to continue this extraction path.
 
-C0a is strictly `UNCALIBRATED_SOURCE_UNITS`. It does not establish metres, authoritative collision, Box3D or gameplay physics.
+Status: `REJECTED_METHOD / PRESERVE_EVIDENCE`.
+
+Do not use these candidates as physical authority and do not tune Box3D around them. The branch is retained only as an auditable experiment and possible future reference.
