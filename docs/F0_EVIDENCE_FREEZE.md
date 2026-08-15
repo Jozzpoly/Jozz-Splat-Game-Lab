@@ -37,7 +37,7 @@ The shell's **structure and location are VERIFIED**. Its semantic interpretation
 
 ## Tooling
 
-Direct developer commands are available, but they are not the default owner workflow:
+Developer commands remain available:
 
 ```text
 node tools/f0-luma-source.mjs inspect <path-to-gs_GG_Szko_a.ply>
@@ -45,7 +45,9 @@ node tools/f0-luma-source.mjs split <path-to-gs_GG_Szko_a.ply> <output-dir>
 node tools/f0-verify-split.mjs <source.ply> <scene.foreground.ply> <scene.environment.ply>
 ```
 
-For owner-side reproduction, double-click `RUN_F0_CANONICAL.cmd`. It opens a normal Windows file picker for the original ZIP/PLY and performs the checks automatically. No drag-and-drop onto a terminal or command-line arguments are required.
+They are not the expected owner workflow.
+
+For owner-side reproduction, double-click `RUN_F0_CANONICAL.cmd`. The launcher delegates to `tools/run-f0-owner.ps1`, opens a normal Windows file picker for the original ZIP/PLY, runs the checks automatically and shows a simple PASS/FAIL dialog. No drag-and-drop onto a terminal, command-line arguments or npm knowledge are required.
 
 The splitter is intentionally source-specific. It requires the exact source SHA-256 and refuses to operate when the recorded PLY layout or shell invariants differ. It is not a general Luma background detector.
 
@@ -68,7 +70,7 @@ The result was also cross-checked independently with Python `3.13.5` + NumPy `2.
 
 The earlier exact Node `24.16.0` / npm `11.13.0` gate was removed after review because it had been inherited from another project without evidence that those exact versions affect this binary-processing gate.
 
-Owner-side replay is now an optional additional reproduction check, not a ceremonial prerequisite for closing F0.
+Owner-side replay is an optional additional reproduction check, not a ceremonial prerequisite for closing F0.
 
 ## Exit to R0
 
