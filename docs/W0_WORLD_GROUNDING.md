@@ -1,6 +1,6 @@
 # W0 World Grounding
 
-Status: `W0.2 GRAVITY — RECOVERED / HARDENED OWNER REPLAY NEXT`
+Status: `W0.2 GRAVITY VERIFIED / W0.3 METRIC SCALE NEXT`
 
 ## Purpose
 
@@ -10,112 +10,119 @@ W0 converts an appearance reconstruction into one measured spatial contract. It 
 
 ### W0.1 — Spatial Probe — VERIFIED
 
-Foreground GSplat picking recovers persistent source/runtime positions. Environment is appearance-only. Owner evidence verified seven stable probes.
+Foreground GSplat picking recovers persistent source/runtime positions. Environment is appearance-only. Owner evidence verified stable probes.
 
-### W0.2 — Gravity — ACTIVE
+### W0.2 — Gravity — VERIFIED
 
 Question: do multiple real vertical structures agree on one gravity/up axis, and can endpoint direction be resolved explicitly before orientation is accepted?
 
-#### Axis and direction are separate
+#### Accepted evidence model
 
-A physical vertical line is an **axis**: reversing its endpoints does not create a different vertical. `bottom → top` is separate directional evidence. W0.2 therefore records both.
+A physical vertical line is an **axis**: reversing endpoints does not create a different vertical. `bottom → top` is separate directional evidence. W0.2 therefore reports both:
 
-For every reference the solver reports:
-
-- `axisResidualDeg` — smallest angle to the solved vertical axis, independent of endpoint direction;
+- `axisResidualDeg` — smallest angle to the solved physical vertical axis, independent of endpoint direction;
 - `directedResidualDeg` — bottom→top disagreement with the oriented up candidate;
 - `directionStatus` — `AGREES` or `REVERSED`;
-- reference length in source units.
+- `axisCoherence` — global sign-independent agreement of all vertical directions;
+- tilt, residual statistics and reversible correction quaternion;
+- `automaticAcceptance: false`.
 
-Across the set it reports orientation-independent `axisCoherence`, residual statistics, explicit direction consensus, tilt from baseline `+Y`, a reversible correction quaternion and `automaticAcceptance: false`.
+No endpoint/outlier is silently deleted or reversed. Explicit manual reversal remains auditable.
 
-No outlier or endpoint is silently deleted or reversed.
+#### First owner run
 
-#### Real owner evidence — 2026-08-15
+Five references produced `99.939%` axis coherence and a `7.6424°` tilt candidate. Two endpoint pairs were reversed even though their undirected axis residuals were only about half a degree. This finding changed the solver/evidence model rather than being hidden as bad data.
 
-Five building-edge references produced:
+Evidence: `evidence/w0/w0-2-owner-axis-2026-08-15.json`.
 
-- axis coherence `99.939%`;
-- axis residual median `0.515°`;
-- axis residual max `2.187°`;
-- candidate tilt `7.642°`;
-- three endpoint directions agreeing and two reversed.
+#### Independent repeat run after hardening
 
-The two original ~179.5° residuals were direction-order conflicts, not physically contradictory vertical axes. Technical evidence: `evidence/w0/w0-2-owner-axis-2026-08-15.json`.
+Six freshly collected references produced:
 
-The UI flags `REVERSED`, preserves the conflict and offers explicit `Odwróć`, which swaps the stored endpoint roles and increments `manualFlipCount`.
+- all `6 / 6` directions `AGREES`;
+- UP `[-0.0397223372, 0.9894921119, 0.1390233663]` in baseline runtime coordinates;
+- tilt `8.31336°`;
+- axis coherence `99.906%`;
+- residual mean `1.6225°`, RMS `1.7537°`, median `1.5838°`, max `2.9150°`;
+- reversible level preview applied on owner hardware.
 
-The five supplied references are concentrated on the main school building. They therefore provide strong local-axis evidence, but not yet a complete proof that the same orientation holds across the entire reconstruction. Before global gravity acceptance, add at least one preferably two trustworthy vertical references at a materially distant location if the capture contains suitable features. This is a drift/falsification sample, not a request for many more measurements.
+The solved UP axis differs from the first independent run by only `0.7243°`. That cross-run repeatability is the main acceptance evidence. Owner-device screenshot after preview shows no obvious over-correction and is intentionally not committed because it depicts the real location.
 
-#### Owner workflow
+Evidence: `evidence/w0/w0-2-owner-pass-2026-08-15.json`.
 
-1. stay in Survey;
-2. choose `Dodaj pion`;
-3. click the **bottom** of a genuinely vertical edge — cyan marker;
-4. click the **top** — amber marker;
-5. repeat at least three times and include a spatially distant trustworthy vertical if available;
-6. inspect axis residual separately from `UP / REVERSED`;
-7. use `Odwróć` only when the endpoint colors prove a pair was stored backwards;
-8. if marker roles are physically correct but a row still reports `REVERSED`, preserve the conflict rather than forcing it;
-9. preview remains blocked until no unresolved reversed pair remains;
-10. apply `Podgląd poziomu` and visually confirm the correction;
-11. copy schema-v2 gravity evidence.
+#### Scope of the claim
 
-Do not use terrain slope as vertical evidence. Long, sharp building corners, poles and frame edges are preferable to short noisy features.
+W0.2 verifies the gravity/up direction of the current reconstruction coordinate frame. It does **not** assert that every local reconstructed surface across this imperfect capture is metrically rigid or perfectly vertical. Sampling a trustworthy distant vertical remains a useful later falsification check for local reconstruction drift, especially before broad collision use, but it is not a blocker for coordinate-frame orientation.
 
-#### Preview boundary
+### Survey navigation — VERIFIED FOR CURRENT LAB NEEDS
 
-Preview rotates only the temporary `Draft Grounding Root`. It is not `ScanToWorld`, does not set origin and does not introduce metres. Preview resets before new references are collected so frames cannot mix.
-
-W0.2 PASS remains an evidence decision, not a magic threshold.
-
-### Survey navigation hardening
-
-Survey is an engineering inspection camera, not W0.5 human movement.
+Survey remains an engineering inspection camera, not W0.5 human movement.
 
 Controls:
 
 - `MMB` orbit;
-- `Shift+MMB` pan in the camera view plane;
-- wheel = cursor-anchored exponential zoom;
-- `Shift+wheel` = faster travel across the scan;
-- `F` = focus the orbit pivot on the verified **foreground** surface under the cursor while preserving the current camera position;
-- `Home` = fit the full scan while preserving orientation;
-- `R` = reset the original survey view;
-- `LMB` / `RMB` remain reserved for world/model interaction.
+- `Shift+MMB` pan in camera view plane;
+- wheel cursor-anchored zoom;
+- `Shift+wheel` faster travel;
+- `F` focus the orbit pivot on a verified foreground point under the cursor while preserving current camera position;
+- `Home` fit full scan;
+- `R` reset original survey view;
+- `LMB` / `RMB` reserved for world/model interaction.
 
-The old close/far bounds tied to initial scan radius are removed; only a tiny numerical radius floor remains. Camera near clip is `0.003`. This deliberately makes close approach to building walls easy without claiming metric movement.
+Owner testing confirmed focus-under-cursor works very well, faster travel works and close inspection of building surfaces is no longer a fight with the camera. Fuller navigation combinations may be useful later, but current Survey is sufficient for W0 evidence collection.
 
 ### Local owner-lab security
 
 Because the local server can stream raw capture bytes, it is treated as a trust boundary:
 
-- binds to loopback only;
+- binds loopback only;
 - rejects non-loopback Host headers;
-- malformed request paths return errors rather than crashing;
-- basic no-sniff / same-origin / no-frame headers are added;
-- known Luma ZIP size + SHA-256 are checked before extraction;
-- the Node server still verifies the exact PLY size/hash before serving anything;
-- temporary extraction is cleaned on normal launcher exit.
+- malformed paths are handled safely;
+- basic no-sniff / same-origin / no-frame / no-referrer headers are present;
+- known Luma ZIP byte count + SHA-256 are checked before extraction;
+- exact PLY size/hash are checked before serving;
+- temporary extraction cleanup is attempted on normal launcher exit.
 
-### W0.3 — Scale — LOCKED
+The pinned PlayCanvas CDN remains an explicit external supply-chain dependency until later durable/offline delivery work.
 
-After gravity passes, measure 2–3 independently known real distances. Do not assume standard dimensions unless they are actually known for this site.
+### W0.3 — Metric Scale — NEXT
 
-Scale evidence will reuse `SpatialProbe`, explicit provenance and independent residual reporting rather than introducing another picking system.
+Question: can at least 2 independently known real distances, preferably 3, agree on one metric scale strongly enough to justify a later `ScanToWorld` scale component?
+
+W0.3 is intentionally sliced:
+
+#### W0.3a — Distance Probe
+
+Reuse `SpatialProbe`. Pick foreground endpoints A and B and record raw source coordinates plus raw source-space Euclidean distance. Do not add a second picking implementation.
+
+#### W0.3b — Real-distance provenance
+
+For each A/B measurement the owner explicitly enters the known real distance in metres and a short provenance note describing how that value is known. Nominal/assumed dimensions are not accepted as strong evidence merely because an object resembles a standard size.
+
+#### W0.3c — Scale Solver
+
+For each measurement report:
+
+- `sourceLength`;
+- `knownMetres`;
+- implied `sourceUnitsPerMetre`;
+- deviation from the common scale candidate;
+- explicit measurement status.
+
+Solve one common scale without silently dropping outliers. The solver must expose aggregate consistency and individual residuals; it must not self-accept.
+
+#### W0.3d — Owner consistency evidence
+
+Require at least 2 independent known distances, preferably 3 from different spans/features. Longer spans are preferable where practical because endpoint picking error has less relative effect. W0.3 PASS remains an evidence decision, not a magic threshold.
 
 ### W0.4 — ScanToWorld — LOCKED
 
-Promote one versioned transform only after gravity and scale evidence agree.
+Only after gravity and metric scale pass may one versioned authoritative `ScanToWorld` be promoted. Visual, collision and gameplay layers must consume that same transform rather than inventing local fixes.
 
 ### W0.5 — Human Navigation — LOCKED
 
 Only after metric calibration may movement use metres/second and human camera height. Survey freedom does not weaken this gate.
 
-## Recovery validation boundary
-
-Static, solver, full-source HTTP and security-negative tests pass on the recovered hardening tree. Rendered QA of the newest focus/navigation build remains owner evidence because this execution host lacks a reliable browser path to the pinned PlayCanvas CDN/runtime.
-
 ## Safety boundary
 
-No collision, Box3D or gameplay tuning before W0.4. Appearance is still not physical truth.
+No collision, Box3D or metre-valued gameplay tuning before W0.4. Appearance remains separate from physical truth.
