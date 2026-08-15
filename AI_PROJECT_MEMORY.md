@@ -1,7 +1,7 @@
 # AI Project Memory — Jozz Splat Game Lab
 
 Updated: 2026-08-15
-Status: `W0.1 SPATIAL PROBE IMPLEMENTED / OWNER EVIDENCE NEXT`
+Status: `W0.1 VERIFIED / W0.2 GRAVITY NEXT`
 
 This is a router, not canonical truth. Current Git, executable evidence and direct owner validation outrank it.
 
@@ -27,9 +27,7 @@ W0 stages:
 4. W0.4 one calibrated `ScanToWorld` authority;
 5. W0.5 separate metric human navigation from Survey navigation.
 
-## W0.1 current implementation
-
-Branch: `agent/w0-1-spatial-probe`.
+## W0.1 — VERIFIED
 
 - PlayCanvas only;
 - foreground and environment render as separate GSplat components;
@@ -42,7 +40,7 @@ Branch: `agent/w0-1-spatial-probe`.
 - Survey only; no Fly/WASD in this gate;
 - scale/gravity/physics remain absent.
 
-W0.1 PASS requires visual marker stability under camera movement, not merely successful API calls.
+W0.1 owner evidence passed with seven probes and materially different camera views. A close-range marker-size UX defect was fixed using adaptive constant-screen-size markers before merge. Environment rejection remains contract-protected but was not explicitly demonstrated in the supplied owner report.
 
 ## Long-term architecture
 
@@ -56,7 +54,8 @@ Later high-value research can add confidence, semantics, material/contact fields
 
 1. `docs/PROJECT_STATE.md`
 2. `docs/W0_WORLD_GROUNDING.md`
-3. `evidence/w0/w0-1-preflight-2026-08-15.json`
-4. `docs/R0_DECISION.md`
-5. `docs/EVIDENCE_CONTRACT.md`
-6. `AGENTS.md`
+3. `evidence/w0/w0-1-owner-2026-08-15.json`
+4. `evidence/w0/w0-1-preflight-2026-08-15.json`
+5. `docs/R0_DECISION.md`
+6. `docs/EVIDENCE_CONTRACT.md`
+7. `AGENTS.md`
