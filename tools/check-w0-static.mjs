@@ -14,6 +14,10 @@ assert(app.includes('app.scene.gsplat.enableIds = true'), 'GSplat IDs must be en
 assert(app.includes('new Picker(app, 1, 1, true)'), 'Depth-enabled Picker missing');
 assert(app.includes('picker.prepare(camera.camera, app.scene, [worldLayer])'), 'Picker prepare contract missing');
 assert(app.includes('getWorldPointAsync'), 'World-point picking missing');
+assert(app.includes('MARKER_DIAMETER_PX = 18'), 'W0.1 marker screen-size target drifted');
+assert(app.includes('function updateMarkerScales()'), 'W0.1 adaptive marker scaling missing');
+assert(app.includes("app.on('update', updateMarkerScales)"), 'W0.1 marker scaling is not updated with camera motion');
+assert(!app.includes('markerScale = maxExtent'), 'W0.1 must not use scene-extent world-unit marker scaling');
 assert(app.includes('getSelectionAsync'), 'Foreground identity picking missing');
 assert(app.includes('environment.enabled = false'), 'Environment must be excluded from calibration picking');
 assert(app.includes('selection.includes(foreground.gsplat)'), 'Foreground-only calibration authority missing');
