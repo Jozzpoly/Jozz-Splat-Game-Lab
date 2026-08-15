@@ -1,0 +1,46 @@
+{
+  "reportVersion": 1,
+  "gate": "R0 Renderer Bake-Off — Phase A preflight",
+  "recordedAt": "2026-08-15",
+  "status": "SOURCE_AND_STATIC_PREFLIGHT_VERIFIED_BROWSER_GPU_PENDING",
+  "baseCommit": "d39328bb824a85e1745a8c554987024396dca612",
+  "source": {
+    "sha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+    "bytes": 263655789,
+    "foregroundSha256": "a734ce660a9bfd08ad11605fb45f1691fee3fa0bfe87fbbdb32f4acc7748d112",
+    "foregroundBytes": 251255789,
+    "rawHttpHashReproduced": true,
+    "foregroundHttpHashReproduced": true
+  },
+  "candidates": {
+    "spark": {
+      "spark": "2.1.0",
+      "three": "0.185.1",
+      "baselineBackend": "webgl2",
+      "browserGpuStatus": "PENDING"
+    },
+    "playcanvas": {
+      "engine": "2.21.2",
+      "baselineBackend": "webgl2",
+      "bestBackendOrder": ["webgpu", "webgl2"],
+      "browserGpuStatus": "PENDING"
+    }
+  },
+  "checks": {
+    "nodeSyntax": "PASS",
+    "r0StaticContract": "PASS",
+    "exactSourceHashGate": "PASS",
+    "rawHttpByteIdentity": "PASS_AFTER_STATIC_SERVER_FIX",
+    "foregroundVirtualHttpByteIdentity": "PASS_AFTER_STATIC_SERVER_FIX",
+    "sameSourceSpaceResetCamera": "PASS_BY_STATIC_CONTRACT",
+    "sparkBackendNormalization": "PASS_BY_STATIC_CONTRACT",
+    "ownerGuiFilePickerWiring": "PASS_BY_STATIC_CONTRACT",
+    "actualSparkRender": "NOT_RUN_ENVIRONMENT_LIMITATION",
+    "actualPlayCanvasRender": "NOT_RUN_ENVIRONMENT_LIMITATION",
+    "staticIndexRoute": "PASS_HTTP_200",
+    "staticModuleRoutes": "PASS_HTTP_200",
+    "staticTraversalProtection": "PASS"
+  },
+  "environmentLimitation": "Assistant container cannot resolve the pinned external CDN hosts (cdn.jsdelivr.net, sparkjs.dev), so actual renderer/GPU behavior is intentionally not promoted to PASS.",
+  "nextEvidence": "Owner browser run: screenshot(s), copied JSON report(s), direct visual/sorting/navigation observations."
+}

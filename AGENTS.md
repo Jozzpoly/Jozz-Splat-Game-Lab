@@ -36,13 +36,25 @@ Every meaningful derived asset must eventually have a receipt containing source 
 
 ## Current gate constraints
 
-### F0 — Evidence Freeze
+### F0 — Evidence Freeze — VERIFIED
 
-The first active implementation gate. Inspect and fingerprint the real source asset, reproduce the recorded structural observations, and implement only the bounded source inspection/splitting work needed for a reproducible foreground/environment separation.
+The exact first Luma source and deterministic foreground/environment source-coordinate partition are verified. Do not reopen F0 without new contradictory evidence. The 50,000-record shell's **structure** is verified; its semantic interpretation as Luma environment remains `LIKELY`.
 
-### R0 — Renderer Bake-Off
+### R0 — Renderer Bake-Off — ACTIVE
 
-No renderer is selected yet. Spark/Three and PlayCanvas are candidates. Do not build a renderer-agnostic abstraction layer. The same source and benchmark protocol must decide the winner.
+Spark/Three and PlayCanvas are the only active candidates. The R0 LAB is an experiment harness, not accepted game architecture.
+
+Rules:
+
+- same exact verified PLY/foreground bytes for both candidates;
+- same source-space Reset camera transformed into each runtime;
+- exact runtime pins; no `latest` aliases;
+- Spark baseline is WebGL2;
+- PlayCanvas baseline is WebGL2, with a separately recorded `Best` mode allowed to try WebGPU then fall back to WebGL2;
+- do not build a renderer-agnostic product abstraction around the two candidates;
+- browser/GPU evidence and owner visual validation are required before selecting a winner;
+- do not silently tune one candidate after looking at the other without recording the asymmetry;
+- the losing active candidate is expected to be frozen/removed after the decision.
 
 ### W0 — World Contract
 
@@ -51,6 +63,12 @@ No renderer is selected yet. Spark/Three and PlayCanvas are candidates. Do not b
 ### Later gates
 
 Collision, Box3D inhabitance and gameplay must not be pulled forward merely because they are interesting. See `docs/FOUNDATION_PLAN.md`.
+
+## Owner workflow
+
+The repository owner is not expected to operate this project like a software engineer. Prefer browser/GUI workflows and double-clickable Windows launchers with normal file pickers. Do not make terminal arguments, Git operations, npm setup or developer-style drag/drop the default owner interaction.
+
+When owner evidence is genuinely needed, make the requested action small and explain what unique evidence it contributes. Do not use the owner as manual CI for checks the agent can reproduce independently.
 
 ## Engineering discipline
 
@@ -63,4 +81,4 @@ Collision, Box3D inhabitance and gameplay must not be pulled forward merely beca
 
 ## Publish discipline
 
-Use bounded branches and intentional commits. Prefer a draft PR for substantive foundation or experiment changes. Keep `main` as accepted source truth. When a local worktree contains unrelated edits, never use broad staging such as `git add .` without confirming scope.
+Use bounded branches and intentional commits. Prefer a draft PR for substantive experiment changes. Keep `main` as accepted source truth. When a local worktree contains unrelated edits, never use broad staging such as `git add .` without confirming scope.

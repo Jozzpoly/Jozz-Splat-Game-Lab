@@ -1,0 +1,57 @@
+{
+  "evidenceVersion": 1,
+  "recordedAt": "2026-08-15",
+  "status": "VERIFIED_OWNER_RUNTIME_EVIDENCE",
+  "source": {
+    "plySha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+    "foregroundSha256": "a734ce660a9bfd08ad11605fb45f1691fee3fa0bfe87fbbdb32f4acc7748d112"
+  },
+  "ownerPackage": {
+    "repository": "Jozzpoly/Jozz-Splat-Game-Lab",
+    "branch": "agent/r0-runtime-lab",
+    "commit": "46c788598a7963a5bbeb8b2648d8b91b91f92fcf",
+    "buildReceiptSha256": "f85ea95e8141116397df378aa97bf0feaaf57c9051f3bca5f7fece5e01daf843",
+    "packageManifestSha256": "bb9207e5ee54d788f04969146c82d309645822a9acb17fe4a6c46ca61fc28c21"
+  },
+  "verifiedRuntimeResults": {
+    "spark": {
+      "version": "2.1.0",
+      "three": "0.185.1",
+      "backend": "webgl2",
+      "exactPlyRendered": true,
+      "foregroundRendered": true
+    },
+    "playcanvas": {
+      "version": "2.21.2",
+      "webgl2ExactPlyRendered": true,
+      "webgl2ForegroundRendered": true,
+      "bestModeWebgpuObserved": true,
+      "rawPlyRendered": true
+    }
+  },
+  "screenshotObservations": {
+    "telemetryPolicy": "Snapshot values are observational only. Current FrameTelemetry measures presentation/requestAnimationFrame intervals and is not a GPU benchmark.",
+    "observedRanges": {
+      "sparkForegroundFpsApprox": [158, 240],
+      "playcanvasWebgl2FpsApprox": [238, 240],
+      "playcanvasWebgpuRawFpsApprox": 196,
+      "assetLoadSecondsApprox": [0.97, 1.74]
+    }
+  },
+  "ownerFeedback": [
+    "The scan has no true level and appears slightly tilted; explicit calibration is required.",
+    "Navigation is raw and not calibrated to the scan scale or physical size.",
+    "The current capture is substantially degraded at close range and is not a final-quality gameplay capture.",
+    "A better quality splat is expected later; tooling must therefore remain source-agnostic and receipt-driven."
+  ],
+  "privacy": {
+    "screenshotsCommitted": false,
+    "reason": "Owner screenshots show a real-world location; public repository stores technical conclusions rather than the images themselves."
+  },
+  "conclusion": {
+    "r0Compatibility": "PASS",
+    "rendererDecision": "PLAYCANVAS_ACTIVE_SPARK_VALIDATED_FALLBACK",
+    "decisionIsReopenable": true,
+    "nextGate": "W0_WORLD_GROUNDING"
+  }
+}
