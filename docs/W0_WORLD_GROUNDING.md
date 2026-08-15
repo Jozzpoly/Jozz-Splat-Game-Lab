@@ -1,69 +1,64 @@
 # W0 World Grounding
 
-Status: `W0.1 IMPLEMENTED / OWNER PICK STABILITY EVIDENCE NEXT`
+Status: `W0.2 GRAVITY — IMPLEMENTED / OWNER EVIDENCE NEXT`
 
-## Mission
+## Purpose
 
-Convert a visually plausible reconstruction into one measured world authority. W0 does not infer physical truth from appearance; it establishes a traceable transform from source coordinates into the coordinate system later consumed by collision, physics and gameplay.
+W0 converts an appearance reconstruction into one measured spatial contract. It is deliberately decomposed so bad picking, bad gravity and bad metric scale cannot hide inside one transform.
 
-## Gate structure
+## Gate sequence
 
-### W0.1 — Spatial Probe / Picking
+### W0.1 — Spatial Probe — VERIFIED
 
-Question: can a click on foreground appearance recover a stable 3D point that remains attached to the same visible surface as the camera moves?
+Foreground GSplat picking recovers persistent source/runtime positions. Environment is appearance-only. Owner evidence verified seven stable probes.
 
-Implementation boundaries:
+### W0.2 — Gravity — ACTIVE
 
-- PlayCanvas 2.21.2 only (R0 active runtime);
-- exact F0 source hash required;
-- foreground is calibration authority;
-- environment shell is rendered as appearance but explicitly excluded from picking;
-- no metric scale, gravity solver, collision or Box3D;
-- picked runtime-world points are converted back to raw source coordinates through the foreground entity transform;
-- persistent marker entities provide direct visual stability evidence;
-- evidence export records both source and runtime-world coordinates.
+Question: do multiple real vertical structures agree on one gravity direction?
 
-Pass requires owner observation that several markers placed on distinct foreground surfaces remain visually attached after substantial orbit, pan and zoom. A successful API call without stable visual attachment is not sufficient.
+Owner workflow:
 
-### W0.2 — Gravity
+1. stay in Survey;
+2. choose `Dodaj pion`;
+3. click the **bottom** of a genuinely vertical edge/structure;
+4. click the **top** of that same vertical;
+5. repeat at least three times, preferably across different structures and spatial regions;
+6. inspect each residual;
+7. use `Podgląd poziomu`;
+8. judge whether the world visibly becomes more physically plausible without over-correction;
+9. copy gravity evidence.
 
-Blocked until W0.1 passes. Collect several real structures known to be vertical, each represented by two W0.1 points. Solve a best-fit common vertical direction and report angular residuals/outliers. Do not level from terrain appearance alone.
+Do not use terrain slope as vertical evidence. Avoid vegetation unless its real orientation is genuinely known. Long, sharp building corners, poles and frame edges are preferable to tiny features because endpoint picking error creates less angular error on longer references.
 
-### W0.3 — Scale
+Solver behavior:
 
-Blocked until W0.2 passes. Create distance measurements from W0.1 points and attach owner-known real distances. Require at least two, preferably three independent measurements. Report each units-per-metre estimate and disagreement rather than hiding it in an average.
+- each bottom→top pair becomes one normalized baseline-runtime direction;
+- all directions contribute to a symmetric outer-product matrix;
+- power iteration extracts the dominant axis;
+- bottom→top sign orients the axis;
+- every signed angular residual is reported;
+- no automatic outlier removal;
+- no automatic acceptance;
+- the correction quaternion is the minimum rotation from candidate up to runtime +Y.
 
-### W0.4 — ScanToWorld
+A reversed reference should remain obvious as a very large residual.
 
-Blocked until orientation and scale evidence pass. Promote exactly one versioned `ScanToWorld` record from `draft` to `calibrated`. Later layers must consume this authority and may not invent local transform fixes.
+The preview rotates a temporary `Draft Grounding Root`. It is not `ScanToWorld`, does not set an origin and does not introduce metres. Preview is reset before new references are collected so evidence remains in a single baseline frame.
 
-### W0.5 — Human-scale navigation
+W0.2 PASS is an evidence decision, not a hard-coded threshold. Require at least three references and evaluate: spatial diversity, residual consistency, obvious outliers, capture quality and owner visual confirmation of the level preview.
 
-Blocked until W0.4. Keep Survey controls for scan inspection, then add a separate Walk mode whose camera height, speed, acceleration and interaction ranges are specified in metres.
+### W0.3 — Scale — LOCKED
 
-## Current appearance layering
+After gravity passes, measure 2–3 independently known real distances. Do not assume standard doors, roads or sports fixtures unless their actual dimensions are known for this site.
 
-The exact source is served as two deterministic source-coordinate ranges:
+### W0.4 — ScanToWorld — LOCKED
 
-- foreground: 1,013,122 records / calibration authority;
-- environment: 50,000 records / appearance only / no calibration or physical authority.
+Promote one versioned transform only after gravity and scale evidence agree.
 
-Both are rendered as separate PlayCanvas GSplat components. The current PlayCanvas renderer globally sorts splats from multiple components, allowing this semantic separation without forcing independent visual ordering.
+### W0.5 — Human Navigation — LOCKED
 
-## W0.1 owner test
+Only after metric calibration may movement use metres/second and human camera height.
 
-1. Open `URUCHOM_W0_WORLD_GROUNDING.cmd` and choose the same exact Luma ZIP/PLY.
-2. Use Survey to frame the school or another recognisable foreground feature.
-3. Click `Dodaj punkt`, then click a sharp recognisable surface (roof corner, wall edge, road marking, etc.).
-4. Repeat for at least three spatially separated surfaces.
-5. Orbit, pan and zoom aggressively.
-6. PASS only if the markers remain attached to the same visual locations. Any systematic drift, mirrored coordinates, picking of background/environment, or unstable points is evidence to stop and diagnose.
-7. Use `Kopiuj evidence` and provide the JSON plus screenshots if useful.
+## Safety boundary
 
-## Stop conditions
-
-- environment/background can be picked as calibration evidence;
-- markers drift relative to the selected surface under camera motion;
-- returned source coordinates are inconsistent with the known source transform;
-- WebGPU/WebGL-specific behavior creates conflicting picks (later comparison if needed);
-- W0.1 starts accumulating gravity/scale/physics logic before its own pass condition is satisfied.
+No collision, Box3D or gameplay tuning before W0.4. Appearance is still not physical truth.
