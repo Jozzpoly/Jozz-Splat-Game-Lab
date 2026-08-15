@@ -2,16 +2,12 @@
 
 Evidence-driven R&D and gameplay laboratory for turning real-world Gaussian Splatting captures into physically coherent, genuinely playable worlds.
 
-**Current status:** `R0-A LAB IMPLEMENTED / OWNER BROWSER EVIDENCE NEXT`
+**Current status:** `W0.2 GRAVITY IMPLEMENTED / OWNER EVIDENCE NEXT`
 
-The first campaign remains deliberately gated: **F0 Evidence Freeze → R0 Renderer Bake-Off → W0 World Contract**. No collision recipe, physics integration, streaming strategy or game mechanic is considered chosen until the relevant gate produces evidence.
+Accepted gates: **F0 source integrity → R0 renderer selection → W0.1 stable spatial probes**. Active runtime is PlayCanvas Engine `2.21.2`; Spark remains a validated fallback.
 
-F0 has verified the exact first Luma source and a deterministic source-coordinate foreground/environment partition. The structural split is `VERIFIED`; the semantic interpretation of the 50,000-record shell as Luma environment remains `LIKELY`.
+W0 is intentionally staged: **W0.1 Picking → W0.2 Gravity → W0.3 Scale → W0.4 ScanToWorld → W0.5 Human Navigation**. No collision or Box3D is accepted before the world transform has measured orientation and scale.
 
-R0-A now has an owner-testable local LAB containing two pinned renderer candidates over the same verified source: Spark 2.1.0 + Three.js 0.185.1 and PlayCanvas Engine 2.21.2. **No renderer has been selected yet.** Actual browser/GPU evidence is the next gate.
+Raw capture assets remain outside Git and are identified by SHA-256 receipts. The 50,000-record environment tail renders as appearance only and has no calibration/physical authority.
 
-This repository is intentionally separate from JV, HomeScan, JURE, VAW and other projects. Those repositories may provide verified patterns and evidence, but they are not dependencies or writable workspaces for Splat Game Lab.
-
-Raw capture assets and large derived PLYs remain outside Git and are identified by SHA-256 receipts.
-
-Start with `AI_PROJECT_MEMORY.md` and `docs/PROJECT_STATE.md`. To run the current R0 LAB on Windows, double-click `URUCHOM_R0_LAB.cmd`, choose the original Luma ZIP/PLY in the normal file picker, and use the browser UI. No terminal commands or npm install are required.
+Windows owner workflow: double-click `URUCHOM_W0_WORLD_GROUNDING.cmd`, choose the original verified Luma ZIP/PLY, and use the browser UI. No terminal or npm setup is required.
