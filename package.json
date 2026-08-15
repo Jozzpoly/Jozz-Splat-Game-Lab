@@ -16,6 +16,8 @@
     "check:w0-static": "node tools/check-w0-static.mjs",
     "check:w0-gravity": "node tools/check-w0-gravity.mjs",
     "w0:server": "node tools/w0-server.mjs",
-    "check": "node tools/check-foundation.mjs && node tools/check-f0-records.mjs && node tools/check-r0-static.mjs && node tools/check-w0-static.mjs && node tools/check-w0-gravity.mjs"
+    "check:r1-static": "node tools/check-r1-static.mjs",
+    "r1:server": "node tools/r1-server.mjs",
+    "check": "node tools/check-foundation.mjs && node tools/check-f0-records.mjs && node tools/check-r0-static.mjs && node tools/check-w0-static.mjs && node tools/check-w0-gravity.mjs && node tools/check-r1-static.mjs"
   }
 }

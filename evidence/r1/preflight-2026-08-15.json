@@ -1,0 +1,51 @@
+{
+  "gate": "R1.1_R1.2",
+  "recordedAt": "2026-08-15",
+  "status": "IMPLEMENTED_PRE_OWNER",
+  "sourceSha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+  "sourceBytes": 263655789,
+  "foregroundSha256": "a734ce660a9bfd08ad11605fb45f1691fee3fa0bfe87fbbdb32f4acc7748d112",
+  "environmentSha256": "b92d3782374dd945619a96024d7918252b5762d5e26c91fb67c21adafeca496c",
+  "runtime": {
+    "playcanvas": "2.21.2",
+    "profiles": ["quiet", "balanced", "continuous"],
+    "defaultProfile": "quiet",
+    "backendOptions": ["best", "webgl2"],
+    "defaultBackend": "best",
+    "antiAlias": false,
+    "maxPixelRatio": 1,
+    "splatQualityReduction": false,
+    "splatBudgetIntroduced": false,
+    "sogOrLodIntroduced": false
+  },
+  "renderPolicy": {
+    "initialLoad": "continuous_until_frame_ready_or_timeout",
+    "quiet": "autoRender_false_target_60_during_activity_then_idle",
+    "balanced": "autoRender_false_target_120_during_activity_then_idle",
+    "continuous": "autoRender_true_control",
+    "gsplatFrameRequestBridge": true
+  },
+  "backendPolicy": {
+    "best": "request_webgpu_then_webgl2_fallback",
+    "webgl2": "force_webgl2",
+    "gsplatRenderer": "AUTO",
+    "reportedEvidence": ["actual_graphics_backend", "actual_resolved_gsplat_renderer"]
+  },
+  "preflight": {
+    "jsMjsSyntax": "PASS",
+    "staticContract": "PASS",
+    "httpRoutes": "PASS",
+    "foreignHost": 403,
+    "encodedTraversal": 404,
+    "rawHttpSha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+    "foregroundHttpSha256": "a734ce660a9bfd08ad11605fb45f1691fee3fa0bfe87fbbdb32f4acc7748d112",
+    "environmentHttpSha256": "b92d3782374dd945619a96024d7918252b5762d5e26c91fb67c21adafeca496c"
+  },
+  "evidenceBoundary": {
+    "browserGpuRender": "PENDING_OWNER_DEVICE",
+    "fanNoiseThermalBehavior": "PENDING_OWNER_DEVICE",
+    "telemetryMeasuresWatts": false,
+    "telemetryMeasuresTemperature": false,
+    "claim": "No thermal improvement may be accepted from browser frame scheduling data alone."
+  }
+}

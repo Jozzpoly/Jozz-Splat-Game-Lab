@@ -1,96 +1,82 @@
 # Project State
 
 Date: 2026-08-15
-Milestone: `W0.2 GRAVITY — VERIFIED / W0.3 METRIC SCALE NEXT`
-Active branch: `agent/w0-2-gravity`
+Milestone: `R1 THERMAL RENDER BUDGET — IMPLEMENTED / OWNER EVIDENCE NEXT`
+Accepted main: `4cffaf3bd227fd66a0fd9fbbc8060118c5b6aea6` (W0.2)
+Active experiment branch: `agent/r1-thermal-render-budget`
 
-## Closed gates
+## Accepted gates
 
-### F0 — VERIFIED
+- F0 source/split — VERIFIED.
+- R0 renderer compatibility — CLOSED / REOPENABLE; PlayCanvas `2.21.2` active.
+- W0.1 foreground picking — VERIFIED.
+- W0.2 gravity/up — VERIFIED from two independent owner-device sampling runs.
+- Survey navigation — OWNER VERIFIED for current inspection needs.
 
-Exact source and deterministic foreground/environment byte partition remain verified.
+## Parked / rejected branches
 
-### R0 — CLOSED / REOPENABLE
+- W0.3 metric scale — PARKED / NOT ACCEPTED because trustworthy real-world distance ground truth is unavailable.
+- C0a simple splat-derived collision extraction — REJECTED METHOD / PRESERVE EVIDENCE after owner testing found the generated geometry unacceptably poor.
 
-PlayCanvas Engine `2.21.2` is active; Spark remains a validated fallback.
+No `unitsPerMetre`, metric `ScanToWorld`, accepted collision mesh, Box3D tuning or human-scale Walk exists.
 
-### W0.1 — VERIFIED
+## Active problem — sustained renderer load
 
-Owner-device evidence verified stable foreground spatial probes. Environment remains appearance-only and excluded from calibration authority.
+Owner reports that after the full splat runs for a while, the computer becomes very loud. Earlier R0 screenshots showed presentation near a ~240 Hz display refresh rate even for a static scene. The accepted W0.2 browser runtime also explicitly used WebGL2/high-performance graphics and rendered continuously.
 
-### W0.2 — VERIFIED
+R1 treats thermal/noise behavior as a product-quality constraint rather than merely chasing peak FPS.
 
-W0.2 now has two independent owner-device gravity sampling runs on the exact F0 source.
+## R1.1 — Idle Render Elimination
 
-First run:
+Implemented:
 
-- 5 real vertical references;
-- tilt candidate `7.6424°`;
-- axis coherence `99.939%`;
-- axis residual median `0.5149°`;
-- axis residual max `2.1871°`;
-- 3 entered directions agreed and 2 were reversed, which exposed the need to separate physical-axis agreement from endpoint direction semantics.
+- PlayCanvas `autoRender=false` for Quiet/Balanced profiles;
+- explicit `renderNextFrame` governor;
+- `Quiet 60`: at most ~60 requested render frames/s during interaction/settling, then idle;
+- `Balanced 120`: same policy with a higher interaction budget;
+- `Continuous`: control condition preserving continuous rendering;
+- GSplat `frame:request` is bridged into the governor so engine-requested updates remain visible;
+- actual rendered-frame telemetry over 2 s / 10 s windows;
+- idle-state and idle-render-count telemetry.
 
-The implementation was hardened accordingly: `axisResidualDeg` is independent of `directedResidualDeg`; `REVERSED` is explicit; endpoints are never silently swapped/deleted; manual reversal is auditable; preview cannot proceed with unresolved reversed direction evidence.
+R1.1 does not reduce Gaussian count or render resolution.
 
-Second independent run after hardening:
+## R1.2 — Backend Load Shift
 
-- 6 freshly collected vertical references;
-- all `6 / 6` bottom→top directions agree;
-- solved baseline up `[-0.0397223372, 0.9894921119, 0.1390233663]`;
-- tilt `8.31336°`;
-- axis coherence `99.906%`;
-- residual mean `1.6225°`, RMS `1.7537°`, median `1.5838°`, max `2.9150°`;
-- level preview applied on owner hardware.
+Implemented:
 
-The two independently recollected solved UP axes differ by only `0.7243°`; tilt differs by `0.6710°`. This repeatability is stronger evidence than either single fit alone.
+- `Best` requests WebGPU first with WebGL2 fallback;
+- `WebGL2` forces the old graphics backend for comparison;
+- GS renderer remains `GSPLAT_RENDERER_AUTO`;
+- UI reports the actual graphics backend and resolved CPU/GPU sorting mode.
 
-Owner-device screenshot after level preview was reviewed and shows no obvious over-correction; main-building verticals remain visually credible. The screenshot/location image is intentionally not committed to this public repository. Exact numeric evidence is stored in `evidence/w0/w0-2-owner-pass-2026-08-15.json`.
+R1.1/R1.2 preserve:
 
-### Spatial interpretation boundary
+- exact F0 source and foreground/environment split;
+- all 1,063,122 records across both appearance layers;
+- anti-aliasing disabled;
+- engine max pixel ratio = 1;
+- accepted W0.2 orientation;
+- owner-verified Survey navigation including focus-under-cursor.
 
-W0.2 verifies the gravity/up direction of the current reconstruction coordinate frame. It does **not** claim that every local surface across this imperfect splat is metrically rigid or free of local reconstruction distortion. A distant-structure gravity sample remains a useful later falsification check before broad physical use, but it is no longer a blocker for the coordinate-frame orientation gate.
+## Preflight
 
-## Survey navigation — OWNER VERIFIED
+Local preflight against the exact 263,655,789-byte source passed:
 
-Recovered Survey controls materially improved close-range inspection:
+- JS/MJS syntax;
+- R1 static contract;
+- browser/API routes;
+- loopback/Host/traversal security checks;
+- exact raw / foreground / environment F0 SHA-256 replay.
 
-- `MMB` orbit;
-- `Shift+MMB` view-plane pan;
-- cursor-anchored wheel zoom;
-- `Shift+wheel` faster travel;
-- `F` focuses the orbit pivot on the verified foreground point under the cursor without teleporting the camera;
-- `Home` fits the full scan;
-- `R` resets the original view;
-- initial-radius near/far navigation limits are removed except for a tiny numerical floor;
-- `LMB` / `RMB` remain free for world interaction.
+Actual WebGPU/WebGL browser rendering and machine/fan behavior still require owner-device evidence.
 
-Owner feedback explicitly confirmed focus-under-cursor works very well, Shift+wheel works, and approaching/inspecting building surfaces is no longer a fight with the camera. This remains Survey inspection, not W0.5 metric human movement.
+## Evidence boundary
 
-## Recovery/security state
+Browser telemetry does not measure watts or hardware temperature. Do not claim a thermal win merely because FPS is lower. Owner fan/noise behavior and visual/navigation quality are separate required evidence.
 
-The interrupted W0.2 session was recovered without modifying accepted `main`. Recovery validation repeated source/server/hash checks and hardened the owner LAB:
+## Next owner question
 
-- loopback-only HTTP;
-- Host allowlist (`127.0.0.1` / `localhost`);
-- malformed paths handled safely;
-- basic no-sniff/no-frame/no-referrer/same-origin response headers;
-- exact known F0 ZIP size + SHA-256 verified before extraction;
-- exact PLY size/hash still verified before serving;
-- temporary extracted capture cleanup attempted on normal launcher exit.
+Does `Quiet 60 + Best` materially reduce sustained machine/fan load while preserving correct image and responsive navigation, and does the render rate fall near zero once the camera settles?
 
-Raw/foreground/environment streams continue to reproduce the exact F0 hashes.
-
-## Next gate — W0.3 METRIC SCALE
-
-W0.3 must infer one metric scale from independently known real-world distances while preserving raw source evidence.
-
-Planned bounded stages:
-
-1. W0.3a — two-point foreground distance measurement;
-2. W0.3b — explicit entry of known real metres + provenance note;
-3. W0.3c — scale solver with per-measurement implied units/metre and residuals, no silent outlier removal;
-4. W0.3d — repeatability/consistency owner evidence from at least 2 measurements, preferably 3;
-5. only after W0.3 PASS may W0.4 promote a versioned `ScanToWorld`.
-
-Do not assume standard doors, roads, goals or other nominal dimensions unless their actual dimension for this site is known. No collision, Box3D or metre-valued gameplay tuning before W0.4.
+Only if R1.1/R1.2 are insufficient should the next slice introduce quality-affecting controls such as render resolution, Gaussian budgets, SOG or Streamed SOG LOD.
