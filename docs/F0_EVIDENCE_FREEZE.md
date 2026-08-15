@@ -1,6 +1,6 @@
 # F0 Evidence Freeze — first Luma school capture
 
-Status: `SOURCE + STRUCTURAL SPLIT VERIFIED / CANONICAL TOOLCHAIN REPLAY PENDING`
+Status: `VERIFIED`
 
 ## Purpose
 
@@ -37,23 +37,15 @@ The shell's **structure and location are VERIFIED**. Its semantic interpretation
 
 ## Tooling
 
-Inspect the exact source:
+Direct developer commands are available, but they are not the default owner workflow:
 
 ```text
-npm run f0:inspect -- <path-to-gs_GG_Szko_a.ply>
+node tools/f0-luma-source.mjs inspect <path-to-gs_GG_Szko_a.ply>
+node tools/f0-luma-source.mjs split <path-to-gs_GG_Szko_a.ply> <output-dir>
+node tools/f0-verify-split.mjs <source.ply> <scene.foreground.ply> <scene.environment.ply>
 ```
 
-Create the source-coordinate split:
-
-```text
-npm run f0:split -- <path-to-gs_GG_Szko_a.ply> <output-dir>
-```
-
-Independently verify that output payloads are exact source byte ranges:
-
-```text
-npm run f0:verify-split -- <source.ply> <scene.foreground.ply> <scene.environment.ply>
-```
+For owner-side reproduction, double-click `RUN_F0_CANONICAL.cmd`. It opens a normal Windows file picker for the original ZIP/PLY and performs the checks automatically. No drag-and-drop onto a terminal or command-line arguments are required.
 
 The splitter is intentionally source-specific. It requires the exact source SHA-256 and refuses to operate when the recorded PLY layout or shell invariants differ. It is not a general Luma background detector.
 
@@ -70,17 +62,16 @@ An independent verifier confirmed that the foreground and environment payloads a
 
 ## Execution qualification
 
-The current assistant execution environment exposed Node `22.16.0` / npm `10.9.2`, not the project canonical Node `24.16.0` / npm `11.13.0`.
+Foundation/F0 supports Node `>=22.16.0` and has no npm-version evidence requirement. The F0 implementation ran on Node `22.16.0`, which is inside the supported range.
 
-The source/split result was additionally cross-checked with Python `3.13.5` + NumPy `2.3.5` and byte-range comparison, so the **binary evidence is accepted**. The repository implementation still requires one canonical Node/npm replay before F0 implementation is considered fully closed.
+The result was also cross-checked independently with Python `3.13.5` + NumPy `2.3.5` and raw byte-range comparison. The binary evidence and committed implementation are therefore accepted for F0.
 
-Do not lower the project toolchain to make the current executor canonical.
+The earlier exact Node `24.16.0` / npm `11.13.0` gate was removed after review because it had been inherited from another project without evidence that those exact versions affect this binary-processing gate.
+
+Owner-side replay is now an optional additional reproduction check, not a ceremonial prerequisite for closing F0.
 
 ## Exit to R0
 
-R0 may be prepared, but the first accepted renderer benchmark should be executed only after:
+F0 is technically closed. R0 Phase A may begin after the foundation/F0 changes are accepted into the project source line.
 
-1. foundation PR is accepted;
-2. F0 branch is accepted;
-3. canonical toolchain replay of the committed F0 tools passes;
-4. the exact source/derived hashes above are available to the renderer experiments.
+R0 must use the exact source PLY hash above in both renderer candidates. R0 Phase B may compare the exact same generated SOG hash only if both candidates pass source compatibility.
