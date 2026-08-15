@@ -53,7 +53,11 @@ export function rotateVectorByQuat(v, q) {
 }
 
 function dominantAxis(directions) {
-  const matrix = [[0, 0, 0], [0, 0, 0], [0, 0, 0]];
+  const matrix = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0]
+  ];
   let signedSum = [0, 0, 0];
 
   for (const v of directions) {
@@ -96,7 +100,11 @@ export function solveGravity(references) {
   }
 
   if (valid.length < 2) {
-    return { status: 'INSUFFICIENT', referenceCount: valid.length, required: 2 };
+    return {
+      status: 'INSUFFICIENT',
+      referenceCount: valid.length,
+      required: 2
+    };
   }
 
   const up = dominantAxis(valid.map((ref) => ref.direction));
@@ -119,7 +127,12 @@ export function solveGravity(references) {
     up,
     tiltDeg,
     residuals,
-    residualStats: { meanDeg: mean, rmsDeg: rms, medianDeg: median, maxDeg: max },
+    residualStats: {
+      meanDeg: mean,
+      rmsDeg: rms,
+      medianDeg: median,
+      maxDeg: max
+    },
     correctionQuaternion,
     automaticAcceptance: false
   };
