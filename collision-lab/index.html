@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Jozz Splat Game Lab — C0a Collision Inspector</title>
+  <script type="importmap">
+  {
+    "imports": {
+      "playcanvas": "https://cdn.jsdelivr.net/npm/playcanvas@2.21.2/build/playcanvas.mjs"
+    }
+  }
+  </script>
+  <link rel="stylesheet" href="./collision.css" />
+</head>
+<body>
+  <main id="app" data-state="loading">
+    <canvas id="viewport"></canvas>
+
+    <header class="topbar">
+      <div class="brand"><strong>Jozz Splat Game Lab</strong><span>C0a · Non-Metric Collision Feasibility</span></div>
+      <div class="runtime"><span>PlayCanvas 2.21.2</span><span id="backendStatus">—</span><span class="verified">SOURCE VERIFIED</span><span class="warning">SOURCE UNITS</span></div>
+    </header>
+
+    <aside class="panel">
+      <div class="state"><span>PHYSICAL WORLD</span><strong>CANDIDATE ONLY</strong></div>
+
+      <section>
+        <h2>ROI · main school</h2>
+        <p>Badamy tylko mały fragment. Mesh jest hipotezą geometrii, nie colliderem i nie zna metrów.</p>
+        <button id="focusRoiButton" class="primary">Focus ROI</button>
+      </section>
+
+      <section>
+        <h2>Candidate</h2>
+        <div class="segmented" id="candidateButtons">
+          <button data-candidate="conservative">Conservative</button>
+          <button data-candidate="balanced" class="selected">Balanced</button>
+          <button data-candidate="permissive">Permissive</button>
+        </div>
+        <div class="readout">
+          <div><span>Voxel</span><strong id="voxelStatus">—</strong></div>
+          <div><span>Opacity ≥</span><strong id="alphaStatus">—</strong></div>
+          <div><span>Max splat scale</span><strong id="scaleStatus">—</strong></div>
+          <div><span>Faces</span><strong id="facesStatus">—</strong></div>
+          <div><span>Mesh SHA</span><code id="meshShaStatus">—</code></div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Overlay</h2>
+        <div class="segmented">
+          <button id="wireButton" class="selected">Wireframe</button>
+          <button id="solidButton">Solid</button>
+        </div>
+        <label class="slider">Opacity <input id="opacityInput" type="range" min="0.10" max="0.90" step="0.05" value="0.48" /></label>
+        <div class="toggles">
+          <label><input id="meshVisible" type="checkbox" checked /> candidate mesh</label>
+          <label><input id="foregroundVisible" type="checkbox" checked /> splat foreground</label>
+          <label><input id="environmentVisible" type="checkbox" checked /> environment</label>
+        </div>
+      </section>
+
+      <section>
+        <h2>Collision Probe</h2>
+        <p>Jeden piksel, dwa niezależne hity: splat foreground i candidate mesh.</p>
+        <button id="addProbeButton" class="primary">Dodaj compare probe</button>
+        <div class="readout compact">
+          <div><span>Probes</span><strong id="probeCount">0</strong></div>
+          <div><span>Latest</span><strong id="latestStatus">—</strong></div>
+          <div><span>Δ surface</span><strong id="latestDelta">—</strong></div>
+          <div><span>Δ depth</span><strong id="latestDepth">—</strong></div>
+          <div><span>Class</span><strong id="latestClass">UNCLASSIFIED</strong></div>
+        </div>
+        <div class="classification">
+          <button data-classification="GOOD">GOOD</button>
+          <button data-classification="FALSE_POSITIVE">FALSE +</button>
+          <button data-classification="MISSING">MISSING</button>
+          <button data-classification="UNCERTAIN">UNCERTAIN</button>
+        </div>
+        <div class="counts">
+          <span>BOTH <b id="bothCount">0</b></span>
+          <span>APP ONLY <b id="missingCount">0</b></span>
+          <span>MESH ONLY <b id="phantomCount">0</b></span>
+        </div>
+        <div class="button-row"><button id="clearProbeButton" disabled>Wyczyść probes</button><button id="copyEvidenceButton" disabled>Kopiuj evidence</button></div>
+      </section>
+
+      <section class="probe-list-section">
+        <h2>Probe evidence</h2>
+        <div id="probeList" class="probe-list"><p class="empty">Brak probe evidence.</p></div>
+      </section>
+    </aside>
+
+    <div class="modebar">
+      <button class="selected">Survey</button>
+      <button id="focusViewButton">Focus (F)</button>
+      <button id="fitViewButton">Fit (Home)</button>
+      <button id="resetViewButton">Reset (R)</button>
+    </div>
+
+    <div class="legend"><span class="dot appearance"></span>splat hit <span class="dot candidate"></span>mesh hit</div>
+    <div class="nav-hint">MMB orbit · Shift+MMB pan · scroll zoom · Shift+scroll szybciej · F focus foreground · Home fit · R reset</div>
+    <div id="probeHint" class="probe-hint" hidden></div>
+
+    <section id="loadingPanel" class="modal-status">
+      <strong id="loadingTitle">Uruchamiam C0a…</strong>
+      <span id="loadingDetail">Sprawdzam source + candidate receipts</span>
+      <div class="progress"><div id="progressBar"></div></div>
+    </section>
+
+    <section id="errorPanel" class="modal-status error" hidden>
+      <strong>C0a: FAIL</strong>
+      <pre id="errorText"></pre>
+    </section>
+  </main>
+  <script type="module" src="./collision-app.js"></script>
+</body>
+</html>
