@@ -1,7 +1,7 @@
 # AI Project Memory — Jozz Splat Game Lab
 
 Updated: 2026-08-15
-Status: `W0.2 GRAVITY IMPLEMENTED / OWNER EVIDENCE NEXT`
+Status: `W0.2 GRAVITY — STRONG AXIS EVIDENCE / DIRECTION + PREVIEW NEXT`
 
 This is a router, not canonical truth. Current Git, executable evidence and direct owner validation outrank it.
 
@@ -19,17 +19,49 @@ This is a router, not canonical truth. Current Git, executable evidence and dire
 
 1. W0.1 picking — VERIFIED;
 2. W0.2 gravity — ACTIVE;
-3. W0.3 metric scale;
-4. W0.4 authoritative `ScanToWorld`;
-5. W0.5 human-scale navigation.
+3. W0.3 metric scale — LOCKED;
+4. W0.4 authoritative `ScanToWorld` — LOCKED;
+5. W0.5 human-scale navigation — LOCKED.
 
-## W0.2 design
+## W0.2 real evidence
 
-The owner samples multiple genuinely vertical structures as bottom→top point pairs. Solver logic lives in `world-lab/gravity.mjs` and is independent of renderer state. It computes a dominant vertical axis, exposes every angular residual, and produces a reversible correction quaternion. It never auto-accepts the candidate.
+Owner collected five building-edge references on 2026-08-15. Reanalysis of the raw coordinates shows:
 
-All reference evidence is stored in raw source coordinates plus baseline runtime coordinates. Any preview rotation is applied only to a draft grounding root and is reset before new picks so measurements never mix coordinate frames. Metric scale remains absent.
+- tilt candidate `7.6424°` from baseline `+Y`;
+- axis coherence `99.939%`;
+- axis residual median `0.5149°`;
+- axis residual max `2.1871°`;
+- three entered bottom→top directions agree and two are reversed.
 
-Minimum evidence export: 3 vertical references. Strong evidence should use references from multiple structures/locations, have reasonably tight residuals, and visibly improve level when previewed. Do not invent a numeric residual threshold before seeing the actual capture noise.
+Therefore the physical vertical **axis** is strongly supported; the original huge mean/RMS directed residuals were mostly an endpoint-direction semantics problem, not contradictory geometry. Technical evidence: `evidence/w0/w0-2-owner-axis-2026-08-15.json`.
+
+## W0.2 hardened model
+
+- `gravity.mjs` fits an orientation-independent dominant axis and reports `axisCoherence`;
+- each reference records `axisResidualDeg`, `directedResidualDeg` and `directionStatus`;
+- no silent reversal/outlier deletion;
+- explicit owner `Odwróć` swaps endpoint roles and increments `manualFlipCount`;
+- preview stays blocked while intended bottom→top evidence has unresolved reversed pairs;
+- evidence schema v2 preserves axis, direction and manual-correction provenance;
+- real owner evidence is embedded in deterministic solver regression tests;
+- still no automatic acceptance or metric scale.
+
+## Survey navigation
+
+Inspection navigation was hardened after owner feedback:
+
+- MMB orbit;
+- Shift+MMB view-plane pan;
+- cursor-anchored wheel zoom with close-range floor reduced from `2.5%` of initial radius to a tiny numerical safety radius;
+- F fit; R reset;
+- LMB/RMB remain available for spatial/world interaction;
+- camera near clip reduced for close inspection.
+
+This is not W0.5 human navigation.
+
+## Immediate next evidence
+
+Run the hardened W0.2 workflow, resolve only visibly reversed endpoint pairs, then inspect the reversible level preview. If it visibly corrects the tilt without over-correction, W0.2 can be squash-merged and W0.3 may begin.
 
 ## Long-term direction
 
@@ -41,7 +73,7 @@ Future confidence/semantics/material systems should be justified by observed fai
 
 1. `docs/PROJECT_STATE.md`
 2. `docs/W0_WORLD_GROUNDING.md`
-3. `evidence/w0/w0-2-preflight-2026-08-15.json`
-4. `evidence/w0/w0-1-owner-2026-08-15.json`
+3. `evidence/w0/w0-2-owner-axis-2026-08-15.json`
+4. `evidence/w0/w0-2-preflight-2026-08-15.json`
 5. `docs/R0_DECISION.md`
 6. `AGENTS.md`
