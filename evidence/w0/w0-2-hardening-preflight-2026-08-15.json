@@ -1,0 +1,62 @@
+{
+  "gate": "W0.2",
+  "recordedAt": "2026-08-15",
+  "status": "HARDENING_PREFLIGHT_VERIFIED",
+  "trigger": "owner five-reference gravity evidence plus owner request for familiar close-range Survey navigation",
+  "sourceSha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+  "ownerEvidenceRegression": {
+    "referenceCount": 5,
+    "axisCoherenceMin": 0.9993,
+    "axisResidualMaxDegBound": 2.25,
+    "axisResidualMedianDegBound": 0.6,
+    "expectedReversedEndpointPairsBeforeManualCorrection": 2,
+    "candidateTiltDegRange": [7.0, 8.2],
+    "explicitFlipInvariant": "flipping the two reversed endpoint pairs resolves direction status without materially changing the solved physical axis",
+    "result": "PASS"
+  },
+  "solverHardening": {
+    "orientationIndependentDominantAxis": true,
+    "axisCoherence": true,
+    "axisResidualAndDirectedResidualSeparated": true,
+    "directionStatusExplicit": true,
+    "silentEndpointReversal": false,
+    "manualFlipAudited": true,
+    "previewBlockedWithUnresolvedReversedPairs": true,
+    "automaticAcceptance": false
+  },
+  "surveyNavigationHardening": {
+    "orbit": "MMB",
+    "pan": "Shift+MMB in camera view plane",
+    "zoom": "cursor-anchored exponential wheel dolly",
+    "oldMinimumRadius": "initialRadius * 0.025",
+    "newMinimumRadius": "max(1e-6, initialRadius * 1e-5)",
+    "fit": "F / Fit button",
+    "reset": "R / Reset button",
+    "leftMouseCameraBinding": false,
+    "rightMouseCameraBinding": false,
+    "cameraNearClip": 0.003,
+    "metricMovementClaimed": false
+  },
+  "checks": {
+    "nodeSyntaxAllW0Modules": "PASS",
+    "gravitySolverAndOwnerEvidenceRegression": "PASS",
+    "staticAndNavigationContract": "PASS",
+    "httpStaticRoot": 200,
+    "httpApp": 200,
+    "httpGravity": 200,
+    "httpGravityWorkflow": 200,
+    "httpMarkerSystem": 200,
+    "httpSpatialProbe": 200,
+    "httpSurvey": 200,
+    "httpStyles": 200,
+    "pathTraversal": 404,
+    "rawHttpSha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+    "foregroundHttpSha256": "a734ce660a9bfd08ad11605fb45f1691fee3fa0bfe87fbbdb32f4acc7748d112",
+    "environmentHttpSha256": "b92d3782374dd945619a96024d7918252b5762d5e26c91fb67c21adafeca496c"
+  },
+  "remainingEvidence": {
+    "explicitOwnerEndpointDirectionResolution": "PENDING",
+    "ownerLevelPreviewVisualConfirmation": "PENDING",
+    "metricScale": "LOCKED_UNTIL_W0_2_PASS"
+  }
+}
