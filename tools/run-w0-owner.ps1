@@ -4,7 +4,7 @@ Add-Type -AssemblyName System.Windows.Forms
 function Show-ErrorBox([string]$text) {
     [System.Windows.Forms.MessageBox]::Show(
         $text,
-        'Jozz Splat Game Lab - W0.1',
+        'Jozz Splat Game Lab - W0.2',
         [System.Windows.Forms.MessageBoxButtons]::OK,
         [System.Windows.Forms.MessageBoxIcon]::Error
     ) | Out-Null
@@ -48,16 +48,16 @@ try {
     }
 
     Write-Host ''
-    Write-Host 'Uruchamiam W0.1 World Grounding...'
-    Write-Host 'To jest test picking/markerow. Nie wymaga npm ani terminala.'
+    Write-Host 'Uruchamiam W0.2 World Grounding...'
+    Write-Host 'To jest test kalibracji pionu. Nie wymaga npm ani terminala.'
     Write-Host ''
     & node tools/w0-server.mjs $sourcePath
     exit $LASTEXITCODE
 }
 catch {
     Write-Host ''
-    Write-Host 'W0.1: FAIL'
+    Write-Host 'W0.2: FAIL'
     Write-Host $_.Exception.Message
-    Show-ErrorBox ("W0.1: FAIL`n`n" + $_.Exception.Message + "`n`nNie naprawiaj tego sam. Wyslij mi screenshot komunikatu.")
+    Show-ErrorBox ("W0.2: FAIL`n`n" + $_.Exception.Message + "`n`nNie naprawiaj tego sam. Wyslij mi screenshot komunikatu.")
     exit 1
 }
