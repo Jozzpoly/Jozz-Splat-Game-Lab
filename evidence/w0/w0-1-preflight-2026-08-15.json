@@ -1,0 +1,31 @@
+{
+  "evidenceVersion": 1,
+  "recordedAt": "2026-08-15",
+  "gate": "W0.1",
+  "status": "STATIC_SOURCE_PREFLIGHT_VERIFIED_GPU_PICKING_PENDING",
+  "runtime": { "playcanvas": "2.21.2", "backendBaseline": "webgl2" },
+  "source": {
+    "sha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+    "rawHttpSha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+    "foregroundHttpSha256": "a734ce660a9bfd08ad11605fb45f1691fee3fa0bfe87fbbdb32f4acc7748d112",
+    "environmentHttpSha256": "b92d3782374dd945619a96024d7918252b5762d5e26c91fb67c21adafeca496c"
+  },
+  "verified": [
+    "All local JS/MJS syntax checks pass.",
+    "W0.1 static contract check passes.",
+    "Static root/app/styles routes return HTTP 200.",
+    "Server rejects source with incorrect F0 size/hash.",
+    "Raw, foreground and environment HTTP streams reproduce exact recorded SHA-256 values.",
+    "Environment metadata explicitly sets physicalAuthority=false and calibrationAuthority=false.",
+    "W0.1 code enables GSplat IDs, creates a depth-enabled Picker, prepares the World layer, requests async world point and async selection.",
+    "Environment and existing marker entities are disabled while preparing the picker buffer.",
+    "A pick is accepted only when selection contains the foreground GSplat component.",
+    "Accepted runtime-world points are transformed back to foreground local/source coordinates.",
+    "W0.1 code contains no metric scale, gravity solver, collision or Box3D implementation."
+  ],
+  "pending": [
+    "Actual owner-device GSplat world-point picking.",
+    "Persistent marker visual stability after camera movement.",
+    "Visual confirmation that environment/background cannot contaminate calibration picks."
+  ]
+}
