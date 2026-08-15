@@ -38,6 +38,12 @@ export class MarkerSystem {
     return marker;
   }
 
+  setRole(marker, role) {
+    if (!marker?.render?.meshInstances) return;
+    const mat = role === 'bottom' ? this.bottomMaterial : this.topMaterial;
+    for (const mesh of marker.render.meshInstances) mesh.material = mat;
+  }
+
   remove(marker) {
     const index = this.entities.indexOf(marker);
     if (index >= 0) this.entities.splice(index, 1);
