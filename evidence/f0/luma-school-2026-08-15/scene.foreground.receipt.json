@@ -1,0 +1,17 @@
+{
+  "receiptVersion": 1,
+  "id": "luma-school-f0-foreground",
+  "inputs": [{"role": "immutable-source-ply", "sha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3"}],
+  "tool": {"name": "tools/f0-luma-source.mjs", "version": "1"},
+  "parameters": {"contract": "luma-school-2026-08-15", "partitionRole": "foreground", "recordCount": 1013122, "sourceCoordinatesPreserved": true},
+  "scanToWorldVersion": null,
+  "output": {
+    "path": "scene.foreground.ply",
+    "sha256": "a734ce660a9bfd08ad11605fb45f1691fee3fa0bfe87fbbdb32f4acc7748d112",
+    "bytes": 251255789,
+    "payloadSha256": "033c03b71eb9c9e294732d596d299862289c0543aad1381cf18446917d59800b",
+    "gitPolicy": "external-derived"
+  },
+  "evidenceStatus": "VERIFIED",
+  "verification": "tools/f0-verify-split.mjs plus independent Python byte-range comparison confirmed payload identity"
+}

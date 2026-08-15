@@ -1,60 +1,61 @@
 # Project State
 
 Date: 2026-08-15
-Milestone: `FOUNDATION GROUNDING`
-Next executable gate: `F0 Evidence Freeze`
+Milestone: `F0 EVIDENCE FREEZE — VERIFIED`
+Next executable gate: `R0 Renderer Bake-Off — Phase A`
 
 ## Source authority
 
-Current Git is the repository source of truth. This repository was intentionally created as a clean project rather than as a branch of JV, HomeScan, JURE or VAW.
+Current Git is the repository source of truth. Raw capture binaries remain external immutable inputs identified by SHA-256 receipts.
 
-The raw Luma capture is not stored in Git. Its known identity and observations are recorded separately in `evidence/sources/luma-school-2026-08-15.json` and must be revalidated against the binary before F0 can pass.
+The first Luma PLY has been independently reproduced from the exact uploaded binary. Detailed evidence is in `evidence/f0/luma-school-2026-08-15/reproduction.json` and `docs/F0_EVIDENCE_FREEZE.md`.
 
 ## VERIFIED
 
-- The repository is a new, separate project with no inherited runtime architecture.
-- The initial repository commit is `6baac6336ceadb47ca991120d87f8ce47238e2d9`.
-- The user-provided history identifies the first Luma PLY as a full 3DGS-style binary PLY with 1,063,122 records and a 50,000-record highly regular trailing shell; exact recorded values are in the source evidence receipt.
-- Current external baseline checked on 2026-08-15: PlayCanvas Engine `2.21.2`, SplatTransform `3.1.7`, Spark `2.1.0`, Box3D `0.1.0`.
-- Box3D `0.1.0` is explicitly described upstream as alpha software.
-- Current Box3D triangle meshes are intended for static geometry.
-- Current Box3D character mover API is explicitly experimental.
+- Exact PLY SHA-256: `8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3`.
+- Exact PLY size: 263,655,789 bytes.
+- Layout: binary little-endian, 1,533-byte header, 1,063,122 records, 62 float32 fields, 248 bytes/record.
+- Every float field is finite; all `nxx/ny/nz` values are zero.
+- Exactly the final 50,000 records satisfy the recorded strict shell structure and form one contiguous tail.
+- Structural partition at record 1,013,122 is verified.
+- Generated foreground SHA-256: `a734ce660a9bfd08ad11605fb45f1691fee3fa0bfe87fbbdb32f4acc7748d112`.
+- Generated environment SHA-256: `b92d3782374dd945619a96024d7918252b5762d5e26c91fb67c21adafeca496c`.
+- Independent byte-range verification proved both output payloads are exact ordered subsets of the immutable source; no Gaussian record is rewritten.
+- F0 implementation executed on supported Node `22.16.0` and was independently reproduced with Python/NumPy byte analysis.
+- Current external technology baseline remains PlayCanvas Engine `2.21.2`, SplatTransform `3.1.7`, Spark `2.1.0`, Box3D `0.1.0` as recorded by the foundation research snapshot.
 
 ## LIKELY / STRONG INFERENCE
 
-- The final 50,000 Luma records are an environment/background shell rather than physical school geometry. Their regularity strongly supports this, but the exported PLY does not retain an authoritative semantic label proving origin.
-- The school capture is suitable for a first renderer and collision experiment. Suitability for a good physical world is not yet established.
+- The final 50,000 records are Luma environment/background rather than physical school geometry. Their structure is proven, their semantic label is not present in the exported PLY.
+- The foreground is suitable for R0 renderer testing. Suitability for collision remains unproven.
 
 ## UNCERTAIN
 
 - Source units per metre.
-- Exact canonical up axis/orientation after runtime import.
-- Whether Spark or PlayCanvas is the better runtime for this project.
-- Whether an automatically derived collision representation is sufficiently faithful in a useful ROI.
-- Whether conventional dynamic meshes can be visually integrated well enough without a dedicated relighting pass.
-- Whether the first physics-sandbox concept produces genuine open-ended play rather than a short technology demo.
+- Canonical runtime orientation/up axis after actual renderer import.
+- Spark versus PlayCanvas decision.
+- Collision reconstruction quality.
+- Dynamic-mesh visual integration/relighting needs.
+- First physics-sandbox product value.
+- Redistribution rights for the source capture; therefore source/derived binaries remain outside public Git.
 
-## Accepted foundation decisions
+## Toolchain policy
 
-1. Keep the project independent from existing repositories.
-2. Preserve raw captures as immutable external inputs identified by hashes.
-3. Separate appearance from physical evidence.
-4. Do not choose Spark or PlayCanvas before R0 evidence.
-5. Do not choose a streaming format before measurement.
-6. Do not tune collision or Box3D before measured `ScanToWorld` calibration.
-7. Keep `LAB` diagnostics conceptually separate from a low-UI `PLAY` experience.
-8. Avoid feature-count development; G0 must test emergent player behaviour with very few systems.
+Foundation/F0 supports Node `>=22.16.0`; npm version is not an evidence variable for these dependency-free binary tools.
 
-## Current stop conditions
+Exact dependency/tool pins remain required when they affect experiment reproducibility. R0 therefore still pins Spark, Three.js and PlayCanvas candidates explicitly.
 
-Stop and diagnose rather than advancing when:
+Owner-side checks should use normal browser/UI flows or double-clickable launchers with file pickers by default. Terminal workflows are developer tools, not the expected owner interface.
 
-- the source binary does not reproduce the recorded structure/hash;
-- both R0 candidates render the source incorrectly;
-- calibration evidence is internally inconsistent;
-- collision requires broad manual remodelling to become usable;
-- a later gate depends on an unverified earlier representation.
+## Current decisions
+
+1. Keep raw capture and large derived PLYs external to Git.
+2. Structural split is source-specific and hash-gated; do not generalize it into a Luma detector yet.
+3. Shell semantics remain `LIKELY`; collision policy excludes it unless later evidence proves physical meaning.
+4. `ScanToWorld` remains draft/unmeasured. No metres, Box3D or collision tuning yet.
+5. R0 still has two candidates. No renderer dependency is accepted into the project foundation.
+6. F0 owner reproduction is optional additional evidence, not a blocker for technical gate closure.
 
 ## Immediate next action
 
-F0 should obtain the exact raw PLY, independently reproduce its structural analysis and implement a deterministic, receipt-producing split only after the expected shell invariants are verified. If the binary is not accessible in the execution environment, request the exact source ZIP/PLY from the owner rather than substituting another capture.
+Begin R0 Phase A with the exact same source PLY hash in Spark/Three and PlayCanvas. Keep the two experiments minimal and independent. Do not introduce renderer abstraction or gameplay while source compatibility and benchmark instrumentation are being established.
