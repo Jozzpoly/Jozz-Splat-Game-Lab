@@ -1,0 +1,16 @@
+node_modules/
+dist/
+coverage/
+*.log
+.DS_Store
+
+# Raw captures and generated experiment outputs stay local unless an explicit
+# evidence decision promotes a small fixture into Git.
+local-data/
+derived/
+
+# Local editor/environment files
+.vscode/
+.idea/
+.env
+.env.*
