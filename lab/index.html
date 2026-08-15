@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Jozz Splat Game Lab — R0</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js",
+      "@sparkjsdev/spark": "https://sparkjs.dev/releases/spark/2.1.0/spark.module.js",
+      "playcanvas": "https://cdn.jsdelivr.net/npm/playcanvas@2.21.2/build/playcanvas.mjs"
+    }
+  }
+  </script>
+</head>
+<body>
+  <main id="app" class="app-shell" data-state="booting">
+    <canvas id="viewport" aria-label="Widok Gaussian Splatting"></canvas>
+
+    <header class="topbar" aria-label="R0 laboratory controls">
+      <div class="brand">
+        <strong>Jozz Splat Game Lab</strong>
+        <span>R0 · Renderer Bake-Off</span>
+      </div>
+      <div class="top-controls">
+        <div class="segmented" aria-label="Renderer">
+          <button type="button" data-runtime="spark">Spark</button>
+          <button type="button" data-runtime="playcanvas">PlayCanvas</button>
+        </div>
+        <div class="segmented source-switch" aria-label="Źródło splata">
+          <button type="button" data-source="foreground">Foreground</button>
+          <button type="button" data-source="raw">Raw PLY</button>
+        </div>
+        <div class="segmented backend-switch" aria-label="Backend PlayCanvas">
+          <button type="button" data-backend="webgl2">WebGL2</button>
+          <button type="button" data-backend="best">Best</button>
+        </div>
+      </div>
+    </header>
+
+    <nav class="toolrail" aria-label="Nawigacja">
+      <button type="button" id="orbitButton" class="tool-button is-active">Orbit</button>
+      <button type="button" id="flyButton" class="tool-button">Fly</button>
+      <button type="button" id="resetButton" class="tool-button">Reset</button>
+    </nav>
+
+    <aside class="status-panel" aria-live="polite">
+      <div class="status-title">LAB STATUS</div>
+      <dl>
+        <div><dt>Source</dt><dd id="sourceStatus">checking…</dd></div>
+        <div><dt>Runtime</dt><dd id="runtimeStatus">booting…</dd></div>
+        <div><dt>Backend</dt><dd id="backendStatus">—</dd></div>
+        <div><dt>Splats</dt><dd id="splatStatus">—</dd></div>
+        <div><dt>Asset load</dt><dd id="loadStatus">—</dd></div>
+        <div><dt>FPS</dt><dd id="fpsStatus">—</dd></div>
+        <div><dt>p95 interval</dt><dd id="p95Status">—</dd></div>
+      </dl>
+      <p id="orientationStatus" class="status-note">World orientation: uncalibrated</p>
+      <button type="button" id="copyReportButton" class="report-button">Kopiuj raport</button>
+    </aside>
+
+    <div id="flyHint" class="fly-hint" hidden>
+      Kliknij widok · WASD ruch · Q/E dół/góra · Shift szybciej · Esc uwalnia mysz
+    </div>
+
+    <section id="loadingPanel" class="loading-panel">
+      <div class="loading-copy">
+        <strong id="loadingTitle">Uruchamiam R0 LAB…</strong>
+        <span id="loadingDetail">Sprawdzam źródło.</span>
+      </div>
+      <div class="progress-track" aria-hidden="true"><div id="progressBar"></div></div>
+    </section>
+
+    <section id="errorPanel" class="error-panel" hidden>
+      <strong>R0 nie wystartowało</strong>
+      <p id="errorText"></p>
+      <p class="error-help">Nie naprawiaj tego ręcznie. Zrób screenshot i wyślij mi ten ekran.</p>
+    </section>
+  </main>
+
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
