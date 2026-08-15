@@ -29,63 +29,65 @@ Exact first source and deterministic foreground/environment source-coordinate pa
 
 PlayCanvas Engine `2.21.2` is the active runtime. Spark `2.1.0` + Three `0.185.1` is a validated fallback/reference path. Reopen R0 only on material contradictory evidence. Do not maintain a renderer abstraction merely to preserve both paths.
 
-### W0 — ACTIVE
+### W0.1 / W0.2 — VERIFIED
 
-W0 must create one measured world authority. It is explicitly staged:
+Foreground picking and reconstruction-frame gravity/up are accepted from owner-device evidence. Survey navigation is accepted for current engineering inspection needs.
 
-- W0.1 picking;
-- W0.2 gravity/up calibration;
-- W0.3 metric scale;
-- W0.4 authoritative `ScanToWorld`;
-- W0.5 human-scale navigation.
+### W0.3 — PARKED / NOT ACCEPTED
 
-Do not collapse these stages for convenience. `ScanToWorld` remains `draft` until real orientation and scale evidence pass. No collision, Box3D or metre-valued gameplay tuning before W0.4.
+Metric scale has no trustworthy real-world ground truth for the current capture. The parked metric-scale branch may be resumed later, but no value from a visual/nominal estimate has authority.
 
-#### W0.2 hard boundaries
+Do not create `unitsPerMetre`, metric `ScanToWorld`, human-scale Walk or physics tuning from guessed dimensions.
 
-- W0.1 picking is accepted and reused; do not redesign the picker while solving gravity unless contradictory evidence appears;
-- a physical vertical **axis** and its entered `bottom → top` **direction** are separate evidence dimensions;
-- preserve raw source coordinates and one baseline runtime coordinate frame for every endpoint;
-- all references contribute to the axis candidate; never silently delete or trim outliers;
-- report `axisResidualDeg` independently from `directedResidualDeg` / `directionStatus`;
-- never silently reverse endpoints; explicit owner reversal must remain auditable (`manualFlipCount`);
-- level preview stays blocked while intended bottom→top evidence contains unresolved `REVERSED` references;
-- `axisCoherence` is evidence, not an automatic acceptance threshold;
-- level correction is a reversible preview on a temporary draft grounding root, not accepted `ScanToWorld`;
-- reset preview before collecting new evidence so coordinate frames cannot mix;
-- require at least three references before owner evidence export;
-- no metric scale, collision, Box3D or gameplay in W0.2.
+### C0a — ACTIVE EXPERIMENT
+
+C0a is **non-metric structural feasibility**, not accepted C0 collision. It is allowed before W0.3 only because its claims are invariant to a later uniform scale.
+
+Hard boundaries:
+
+- every result must carry `metricStatus: UNCALIBRATED_SOURCE_UNITS`;
+- operate on a bounded ROI, never the whole capture by default;
+- candidate meshes are hypotheses and remain derived external assets identified by receipts/hashes;
+- evaluate visible topology/shape, missing surfaces, phantom surfaces and source-unit appearance-vs-mesh separation;
+- preserve exact F0 source/foreground/environment identity;
+- reuse accepted W0.2 orientation only; do not invent a second orientation correction;
+- no Box3D, player body, physical gravity magnitude, metre-valued tolerance or gameplay tuning;
+- do not silently choose one extraction candidate because it looks cleaner;
+- record failure data before considering manual collision repair.
+
+Current candidate generator is deliberately a simple CPU center-voxel prototype. Its use of centers/opacity/scale filters instead of full anisotropic Gaussian density is a known experimental limitation, not production architecture.
+
+See `docs/C0A_NON_METRIC_STRUCTURAL_FEASIBILITY.md`.
 
 #### Survey navigation contract
 
-Survey is an inspection camera, not human-scale movement. Preserve the editor-style interaction contract unless owner evidence requests otherwise:
+Survey is an inspection camera, not human-scale movement:
 
 - `MMB` orbit;
-- `Shift + MMB` pan in the view plane;
+- `Shift + MMB` pan;
 - wheel cursor-anchored zoom; `Shift + wheel` accelerates long travel;
-- `F` focuses the orbit pivot on the verified **foreground** surface under the last canvas cursor position while preserving camera position;
-- `Home` fits the full scan while preserving current orientation;
-- `R` resets the original survey view;
-- `LMB` and `RMB` remain free for world/model interaction;
-- close inspection is limited only by a tiny numerical radius floor, never by a fraction of the initial scan radius.
-
-Do not use Survey freedom as evidence that W0.5 metric Walk is complete.
+- `F` focuses the orbit pivot on verified foreground under the cursor;
+- `Home` fits the current experiment view;
+- `R` resets;
+- `LMB` / `RMB` remain free for world/model interaction;
+- no initial-scan-radius near/far lock beyond numerical safety.
 
 #### Local owner-lab security contract
 
-The local LAB can expose the owner's raw capture bytes and must therefore stay fail-closed:
+The local LAB can expose raw capture and derived geometry bytes and must remain fail-closed:
 
 - bind only to loopback;
 - accept only `127.0.0.1` / `localhost` Host headers;
-- reject malformed request paths rather than crashing;
+- reject malformed/traversal request paths;
 - preserve same-origin / no-sniff response hardening;
-- verify the exact known F0 ZIP hash **before** extraction;
-- direct PLY input still passes the exact F0 byte/hash gate in the Node server;
+- verify the exact known F0 ZIP hash before extraction;
+- verify exact PLY hash before serving;
+- verify each derived candidate GLB against the committed receipt before serving;
 - temporary ZIP extraction should be cleaned up after normal launcher exit.
 
 ### Later gates
 
-C0/C1 collision evidence, P0 physical inhabitance and G0 gameplay remain downstream. See `docs/FOUNDATION_PLAN.md`.
+Full C0/C1 collision acceptance, P0 physical inhabitance and G0 gameplay remain downstream. C0a may justify those gates; it cannot silently become them.
 
 ## Owner workflow
 
@@ -95,8 +97,8 @@ The repository owner is not expected to operate the project like a software engi
 
 - Prefer small falsifiable slices over broad frameworks.
 - Pin experiment versions; no `latest` aliases for evidence-producing runtime paths.
-- Preserve one canonical world transform. Later layers must consume `ScanToWorld`, never invent independent corrections.
-- If required files cannot be accessed reliably, ask the owner for the exact file/package rather than spending long effort bypassing constraints.
+- Preserve one canonical world transform. Later layers must consume accepted evidence rather than invent local corrections.
+- If required source files cannot be accessed reliably, ask the owner for the exact file/package rather than spending long effort bypassing constraints.
 - If a check cannot be run, say so. Never promote `PENDING` to `PASS` by inference.
 
 ## Publish discipline
