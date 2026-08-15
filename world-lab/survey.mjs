@@ -44,7 +44,11 @@ export class SurveyController {
     const dy = position[1] - target[1];
     const dz = position[2] - target[2];
     const radius = Math.max(this.minRadius ?? 1e-6, Math.hypot(dx, dy, dz));
-    return { radius, yaw: Math.atan2(dx, dz), pitch: Math.asin(clamp(dy / radius, -1, 1)) };
+    return {
+      radius,
+      yaw: Math.atan2(dx, dz),
+      pitch: Math.asin(clamp(dy / radius, -1, 1))
+    };
   }
 
   #position() {
@@ -61,7 +65,10 @@ export class SurveyController {
     const cy = Math.cos(this.yaw);
     const sp = Math.sin(this.pitch);
     const cp = Math.cos(this.pitch);
-    return { right: [cy, 0, -sy], up: [-sy * sp, cp, -cy * sp] };
+    return {
+      right: [cy, 0, -sy],
+      up: [-sy * sp, cp, -cy * sp]
+    };
   }
 
   #pointerInsideCanvas(x, y) {
@@ -93,7 +100,7 @@ export class SurveyController {
   }
 
   focus(target) {
-    if (!Array.isArray(target) || target.length !== 3 || target.some((value) => !Number.isFinite(value))) return false;
+    if (!Array.isArray(target) || target.length !== 3 || target.some((v) => !Number.isFinite(v))) return false;
     const currentPosition = this.#position();
     const orbit = this.#derive(currentPosition, target);
     this.target = [...target];
@@ -107,9 +114,12 @@ export class SurveyController {
   async focusAtCursor() {
     if (!this.enabled || !this.focusResolver || this.focusInFlight) return false;
     const rect = this.canvas.getBoundingClientRect();
-    const hasCanvasPointer = Number.isFinite(this.pointerX) && this.#pointerInsideCanvas(this.pointerX, this.pointerY);
-    const x = hasCanvasPointer ? this.pointerX : rect.left + rect.width * 0.5;
-    const y = hasCanvasPointer ? this.pointerY : rect.top + rect.height * 0.5;
+    const x = Number.isFinite(this.pointerX) && this.#pointerInsideCanvas(this.pointerX, this.pointerY)
+      ? this.pointerX
+      : rect.left + rect.width * 0.5;
+    const y = Number.isFinite(this.pointerY) && this.#pointerInsideCanvas(this.pointerX, this.pointerY)
+      ? this.pointerY
+      : rect.top + rect.height * 0.5;
 
     this.focusInFlight = true;
     try {
@@ -156,7 +166,9 @@ export class SurveyController {
     this.#apply();
   }
 
-  onPointerUp() { this.dragging = false; }
+  onPointerUp() {
+    this.dragging = false;
+  }
 
   onWheel(event) {
     if (!this.enabled) return;
@@ -209,7 +221,9 @@ export class SurveyController {
     }
   }
 
-  #apply() { this.setCamera(this.#position(), this.target); }
+  #apply() {
+    this.setCamera(this.#position(), this.target);
+  }
 
   destroy() {
     this.canvas.removeEventListener('pointerdown', this.onPointerDown);
