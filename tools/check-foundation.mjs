@@ -32,14 +32,22 @@ assert(pkg.engines?.node === '24.16.0', 'unexpected Node pin');
 assert(pkg.engines?.npm === '11.13.0', 'unexpected npm engine pin');
 
 const source = JSON.parse(await text('evidence/sources/luma-school-2026-08-15.json'));
-assert(/^[a-f0-9]{64}$/.test(source.source.archiveSha256), 'invalid archive SHA-256');
-assert(/^[a-f0-9]{64}$/.test(source.source.plySha256), 'invalid PLY SHA-256');
+assert(source.receiptVersion === 1, 'unexpected source receipt version');
+assert(/^[a-f0-9]{64}$/.test(source.source.sha256), 'invalid PLY SHA-256');
+assert(/^[a-f0-9]{64}$/.test(source.source.container?.sha256 ?? ''), 'invalid archive SHA-256');
+assert(source.source.bytes === 263_655_789, 'unexpected historical PLY byte count');
 assert(source.ply.vertexCount === 1_063_122, 'unexpected historical vertex count');
 assert(
   source.foregroundObservation.recordCount + source.environmentShellInference.recordCount === source.ply.vertexCount,
   'foreground + environment counts do not equal total records'
 );
 assert(source.environmentShellInference.claimState === 'LIKELY', 'environment shell must not be promoted to VERIFIED before F0 reproduction');
+
+const sourceSchema = JSON.parse(await text('contracts/source-receipt.schema.json'));
+assert(sourceSchema.required.includes('source'), 'source receipt schema must require source');
+for (const required of sourceSchema.properties.source.required) {
+  assert(Object.hasOwn(source.source, required), `source receipt does not satisfy required source field: ${required}`);
+}
 
 for (const path of [
   'contracts/source-receipt.schema.json',

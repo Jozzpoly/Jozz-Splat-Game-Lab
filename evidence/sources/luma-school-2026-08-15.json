@@ -3,19 +3,19 @@
   "id": "luma-school-2026-08-15",
   "recordedAt": "2026-08-15",
   "status": "historical-analysis-to-be-reproduced-in-f0",
-  "provenance": {
-    "provider": "Luma AI",
-    "providedBy": "repository owner via ChatGPT conversation",
-    "redistributionLicense": "not-recorded",
-    "gitPolicy": "external-only"
-  },
   "source": {
-    "archiveName": "GG_Szko_a_gaussian_splatting_point_cloud.ply.zip",
-    "archiveBytes": 238020735,
-    "archiveSha256": "2390ffd6a324ee015d27e95a878e07710e347a3f31fa418ddfd819bc730547a7",
-    "plyName": "gs_GG_Szko_a.ply",
-    "plyBytes": 263655789,
-    "plySha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3"
+    "name": "gs_GG_Szko_a.ply",
+    "sha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+    "bytes": 263655789,
+    "provider": "Luma AI",
+    "redistributionLicense": null,
+    "gitPolicy": "external-only",
+    "container": {
+      "name": "GG_Szko_a_gaussian_splatting_point_cloud.ply.zip",
+      "sha256": "2390ffd6a324ee015d27e95a878e07710e347a3f31fa418ddfd819bc730547a7",
+      "bytes": 238020735
+    },
+    "providedBy": "repository owner via ChatGPT conversation"
   },
   "ply": {
     "format": "binary_little_endian 1.0",
