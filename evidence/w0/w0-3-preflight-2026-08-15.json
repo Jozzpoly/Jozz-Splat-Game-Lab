@@ -1,0 +1,53 @@
+{
+  "gate": "W0.3",
+  "recordedAt": "2026-08-15",
+  "status": "IMPLEMENTATION_PREFLIGHT_VERIFIED_OWNER_METRIC_INPUT_NEXT",
+  "baseMain": "4cffaf3bd227fd66a0fd9fbbc8060118c5b6aea6",
+  "sourceSha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+  "acceptedGravityEvidence": "evidence/w0/w0-2-owner-pass-2026-08-15.json",
+  "acceptedGravity": {
+    "tiltDeg": 8.313355975736457,
+    "correctionQuaternion": [-0.06969501109561521, 0, -0.01991354981873241, 0.9973695683957874]
+  },
+  "implementation": {
+    "foregroundABPicking": true,
+    "rawSourceCoordinatesPreserved": true,
+    "knownMetresExplicitOwnerInput": true,
+    "provenanceExplicitOwnerInput": true,
+    "commonScaleSolver": "ORIGIN_CONSTRAINED_LEAST_SQUARES_ALL_VALID_MEASUREMENTS",
+    "perMeasurementImpliedUnitsPerMetre": true,
+    "perMeasurementRelativeResidual": true,
+    "silentOutlierRemoval": false,
+    "automaticAcceptance": false,
+    "minimumCandidateMeasurements": 2,
+    "preferredOwnerEvidenceMeasurements": 3,
+    "scanToWorldPromoted": false,
+    "collisionOrBox3DAdded": false
+  },
+  "checks": {
+    "scaleSolverSynthetic": "PASS",
+    "conflictingScaleMeasurementRemainsVisible": "PASS",
+    "staticMetricScaleContract": "PASS",
+    "nodeSyntax": "PASS",
+    "httpRoot": 200,
+    "httpApp": 200,
+    "httpScale": 200,
+    "httpScaleWorkflow": 200,
+    "httpAcceptedOrientation": 200,
+    "httpSpatialProbe": 200,
+    "httpMarkerSystem": 200,
+    "httpSurvey": 200,
+    "httpStyles": 200,
+    "foreignHost": 403,
+    "encodedTraversal": 404,
+    "rawHttpSha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
+    "foregroundHttpSha256": "a734ce660a9bfd08ad11605fb45f1691fee3fa0bfe87fbbdb32f4acc7748d112",
+    "environmentHttpSha256": "b92d3782374dd945619a96024d7918252b5762d5e26c91fb67c21adafeca496c"
+  },
+  "pendingOwnerEvidence": {
+    "knownRealDistances": "REQUIRED",
+    "atLeastTwoIndependentMeasurements": "REQUIRED",
+    "thirdIndependentMeasurement": "PREFERRED",
+    "renderedMetricScaleWorkflow": "PENDING_OWNER_DEVICE"
+  }
+}
