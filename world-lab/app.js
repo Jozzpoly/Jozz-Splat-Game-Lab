@@ -1,217 +1,51 @@
-import {
-  Application,
-  Asset,
-  Color,
-  DEVICETYPE_WEBGL2,
-  Entity,
-  FILLMODE_FILL_WINDOW,
-  Picker,
-  RESOLUTION_AUTO,
-  StandardMaterial,
-  createGraphicsDevice
-} from 'playcanvas';
+import { Application, Asset, Color, DEVICETYPE_WEBGL2, Entity, FILLMODE_FILL_WINDOW, RESOLUTION_AUTO, createGraphicsDevice } from 'playcanvas';
 import { SurveyController } from './survey.mjs';
-import { solveGravity } from './gravity.mjs';
+import { SpatialProbe } from './spatial-probe.mjs';
+import { MarkerSystem } from './marker-system.mjs';
+import { GravityWorkflow, sourceToBaseline } from './gravity-workflow.mjs';
 
-const $ = (selector) => document.querySelector(selector);
-const canvas = $('#viewport');
-const appElement = $('#app');
-const loadingPanel = $('#loadingPanel');
-const loadingTitle = $('#loadingTitle');
-const loadingDetail = $('#loadingDetail');
-const progressBar = $('#progressBar');
-const errorPanel = $('#errorPanel');
-const errorText = $('#errorText');
-const backendStatus = $('#backendStatus');
-const addVerticalButton = $('#addVerticalButton');
-const undoVerticalButton = $('#undoVerticalButton');
-const clearVerticalButton = $('#clearVerticalButton');
-const previewButton = $('#previewButton');
-const resetPreviewButton = $('#resetPreviewButton');
-const copyEvidenceButton = $('#copyEvidenceButton');
-const resetViewButton = $('#resetViewButton');
-const pickHint = $('#pickHint');
-const verticalCount = $('#verticalCount');
-const solverStatus = $('#solverStatus');
-const tiltStatus = $('#tiltStatus');
-const medianResidualStatus = $('#medianResidualStatus');
-const maxResidualStatus = $('#maxResidualStatus');
-const previewStatus = $('#previewStatus');
-const upVectorStatus = $('#upVectorStatus');
-const quatStatus = $('#quatStatus');
-const verticalList = $('#verticalList');
+const $=s=>document.querySelector(s);
+const SOURCE_SHA='8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3';
+const canvas=$('#viewport'),appElement=$('#app'),loadingPanel=$('#loadingPanel'),loadingTitle=$('#loadingTitle'),loadingDetail=$('#loadingDetail'),progressBar=$('#progressBar'),errorPanel=$('#errorPanel'),errorText=$('#errorText'),backendStatus=$('#backendStatus');
+let app,camera,groundingRoot,foreground,environment,survey,probe;
 
-const SOURCE_SHA = '8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3';
-const BASELINE_ORIENTATION = 'source -> baseline runtime: 180deg around Z; NOT calibrated world orientation';
-const MARKER_DIAMETER_PX = 16;
-const MARKER_SCALE_MIN = 0.001;
-const MARKER_SCALE_MAX = 8.0;
-const LINE_COLOR = new Color(1.0, 0.72, 0.34);
-
-let app = null;
-let camera = null;
-let groundingRoot = null;
-let foreground = null;
-let environment = null;
-let picker = null;
-let survey = null;
-let bottomMaterial = null;
-let topMaterial = null;
-let pickPhase = null;
-let pickInFlight = false;
-let pendingBottom = null;
-let gravityResult = null;
-let previewApplied = false;
-const verticals = [];
-const markerEntities = [];
-
-const clamp = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
-const formatVec = (v, digits = 5) => Array.isArray(v) ? v.map((n) => Number(n).toFixed(digits)).join(', ') : '—';
-const distance = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
-const sourceToBaseline = ([x, y, z]) => [-x, -y, z];
-
-function sourceFromWorld(worldPoint) {
-  const inverse = foreground.getWorldTransform().clone().invert();
-  const source = inverse.transformPoint(worldPoint.clone());
-  return [source.x, source.y, source.z];
+async function loadGsplat(name,url,onProgress){
+  const asset=new Asset(name,'gsplat',{url}); app.assets.add(asset); asset.on('progress',(received,total)=>onProgress?.(received,total));
+  await new Promise((resolve,reject)=>{asset.ready(resolve);asset.once('error',e=>reject(new Error(String(e))));app.assets.load(asset);});
+  return asset;
 }
 
-function createMaterial(color) {
-  const material = new StandardMaterial();
-  material.useLighting = false;
-  material.diffuse = color;
-  material.emissive = color;
-  material.emissiveIntensity = 2.0;
-  material.update();
-  return material;
+function ui(){return{
+  app:appElement,hint:$('#pickHint'),add:$('#addVerticalButton'),undo:$('#undoVerticalButton'),clear:$('#clearVerticalButton'),preview:$('#previewButton'),resetPreview:$('#resetPreviewButton'),copy:$('#copyEvidenceButton'),count:$('#verticalCount'),solver:$('#solverStatus'),tilt:$('#tiltStatus'),median:$('#medianResidualStatus'),max:$('#maxResidualStatus'),previewStatus:$('#previewStatus'),up:$('#upVectorStatus'),quat:$('#quatStatus'),list:$('#verticalList')
+};}
+
+async function boot(){
+  const meta=await fetch('/api/source',{cache:'no-store'}).then(r=>{if(!r.ok)throw new Error(`Source metadata HTTP ${r.status}`);return r.json();});
+  if(!meta.verified||meta.sourceSha256!==SOURCE_SHA)throw new Error('Źródło nie spełnia F0 SHA-256 contract.');
+
+  const device=await createGraphicsDevice(canvas,{deviceTypes:[DEVICETYPE_WEBGL2],antialias:false,powerPreference:'high-performance'});
+  app=new Application(canvas,{graphicsDevice:device}); app.graphicsDevice.maxPixelRatio=1; app.setCanvasFillMode(FILLMODE_FILL_WINDOW); app.setCanvasResolution(RESOLUTION_AUTO); app.scene.gsplat.enableIds=true; app.start(); backendStatus.textContent=app.graphicsDevice.deviceType;
+
+  camera=new Entity('W0 Survey Camera'); camera.addComponent('camera',{clearColor:new Color(0.027,0.035,0.043),nearClip:0.01,farClip:2500,fov:58}); app.root.addChild(camera);
+  groundingRoot=new Entity('W0 Draft Grounding Root'); app.root.addChild(groundingRoot);
+
+  loadingTitle.textContent='Ładuję foreground…';
+  const fgAsset=await loadGsplat('W0 Foreground','/asset/foreground.ply',(loaded,total)=>{if(total>0)progressBar.style.width=`${Math.min(86,8+loaded/total*78)}%`;loadingDetail.textContent=total>0?`${Math.round(loaded/1048576)} / ${Math.round(total/1048576)} MiB`:'Ładowanie foreground';});
+  foreground=new Entity('W0 Foreground'); foreground.setLocalEulerAngles(0,0,180); foreground.addComponent('gsplat',{asset:fgAsset}); groundingRoot.addChild(foreground);
+
+  loadingTitle.textContent='Ładuję environment appearance…';
+  const envAsset=await loadGsplat('W0 Environment','/asset/environment.ply');
+  environment=new Entity('W0 Environment appearance only'); environment.setLocalEulerAngles(0,0,180); environment.addComponent('gsplat',{asset:envAsset}); groundingRoot.addChild(environment);
+
+  const bounds=meta.foreground.bounds,centerSource=bounds.min.map((v,i)=>(v+bounds.max[i])*0.5),size=bounds.min.map((v,i)=>bounds.max[i]-v),extent=Math.max(...size),center=sourceToBaseline(centerSource),radius=extent*0.42,position=[center[0]-radius*0.28,center[1]+radius*0.34,center[2]+radius*0.88];
+  survey=new SurveyController({canvas,target:center,position,setCamera(p,t){camera.setPosition(p[0],p[1],p[2]);camera.lookAt(t[0],t[1],t[2]);}});
+  const markers=new MarkerSystem({root:groundingRoot,camera,canvas});
+  probe=new SpatialProbe({app,camera,foreground,environment,markers});
+  new GravityWorkflow({app,canvas,root:groundingRoot,survey,probe,markers,ui:ui(),sourceSha:SOURCE_SHA});
+  $('#resetViewButton').addEventListener('click',()=>survey.reset());
+
+  progressBar.style.width='100%'; loadingPanel.hidden=true; appElement.dataset.state='ready';
 }
 
-function createMarker(sourcePoint, role, name) {
-  const baseline = sourceToBaseline(sourcePoint);
-  const marker = new Entity(name);
-  marker.addComponent('render', { type: 'sphere' });
-  marker.setLocalPosition(baseline[0], baseline[1], baseline[2]);
-  for (const meshInstance of marker.render.meshInstances) meshInstance.material = role === 'bottom' ? bottomMaterial : topMaterial;
-  groundingRoot.addChild(marker);
-  markerEntities.push(marker);
-  updateMarkerScale(marker);
-  return marker;
-}
-
-function removeMarker(marker) {
-  const index = markerEntities.indexOf(marker);
-  if (index >= 0) markerEntities.splice(index, 1);
-  marker?.destroy();
-}
-
-function updateMarkerScale(marker) {
-  if (!camera || !marker?.enabled) return;
-  const cameraPosition = camera.getPosition();
-  const markerPosition = marker.getPosition();
-  const dist = Math.max(0.001, cameraPosition.distance(markerPosition));
-  const viewportHeight = Math.max(1, canvas.clientHeight || canvas.height || 1);
-  const worldHeight = 2 * dist * Math.tan(camera.camera.fov * Math.PI / 360);
-  const scale = clamp((worldHeight / viewportHeight) * MARKER_DIAMETER_PX, MARKER_SCALE_MIN, MARKER_SCALE_MAX);
-  marker.setLocalScale(scale, scale, scale);
-}
-
-function updateMarkersAndLines() {
-  for (const marker of markerEntities) updateMarkerScale(marker);
-  for (const ref of verticals) {
-    if (ref.bottomMarker?.enabled && ref.topMarker?.enabled) {
-      app.drawLine(ref.bottomMarker.getPosition(), ref.topMarker.getPosition(), LINE_COLOR, false);
-    }
-  }
-}
-
-function setPickPhase(phase) {
-  pickPhase = phase;
-  const armed = Boolean(phase);
-  appElement.dataset.pickArmed = armed ? 'true' : 'false';
-  survey?.setEnabled(!armed);
-  pickHint.hidden = !armed;
-  if (phase === 'bottom') {
-    addVerticalButton.textContent = 'Anuluj pion';
-    addVerticalButton.classList.add('armed');
-    pickHint.textContent = 'W0.2 GRAVITY · kliknij DÓŁ rzeczywiście pionowej krawędzi · Esc anuluje';
-  } else if (phase === 'top') {
-    addVerticalButton.textContent = 'Anuluj pion';
-    addVerticalButton.classList.add('armed');
-    pickHint.textContent = 'W0.2 GRAVITY · teraz kliknij GÓRĘ tej samej pionowej krawędzi · Esc anuluje';
-  } else {
-    addVerticalButton.textContent = 'Dodaj pion';
-    addVerticalButton.classList.remove('armed');
-  }
-}
-
-function cancelPendingVertical() {
-  if (pendingBottom?.marker) removeMarker(pendingBottom.marker);
-  pendingBottom = null;
-  setPickPhase(null);
-}
-
-function resetPreview() {
-  previewApplied = false;
-  groundingRoot?.setLocalRotation(0, 0, 0, 1);
-  previewStatus.textContent = 'OFF';
-  resetPreviewButton.disabled = true;
-  previewButton.disabled = gravityResult?.status !== 'CANDIDATE';
-}
-
-function startVertical() {
-  if (pickPhase) {
-    cancelPendingVertical();
-    return;
-  }
-  if (previewApplied) resetPreview();
-  setPickPhase('bottom');
-}
-
-async function pickForeground(event) {
-  const rect = canvas.getBoundingClientRect();
-  const width = Math.max(1, Math.round(rect.width));
-  const height = Math.max(1, Math.round(rect.height));
-  picker.resize(width, height);
-  const x = (event.clientX - rect.left) * width / rect.width;
-  const y = (event.clientY - rect.top) * height / rect.height;
-
-  environment.enabled = false;
-  for (const marker of markerEntities) marker.enabled = false;
-  try {
-    const worldLayer = app.scene.layers.getLayerByName('World');
-    picker.prepare(camera.camera, app.scene, [worldLayer]);
-    const worldPoint = await picker.getWorldPointAsync(x, y);
-    const selection = await picker.getSelectionAsync(x, y, 1, 1);
-    if (!worldPoint || !selection.includes(foreground.gsplat)) return null;
-    return {
-      source: sourceFromWorld(worldPoint),
-      pickedWorld: [worldPoint.x, worldPoint.y, worldPoint.z]
-    };
-  } finally {
-    environment.enabled = true;
-    for (const marker of markerEntities) marker.enabled = true;
-  }
-}
-
-async function handleCanvasPick(event) {
-  if (!pickPhase || pickInFlight || !picker) return;
-  pickInFlight = true;
-  try {
-    const picked = await pickForeground(event);
-    if (!picked) {
-      pickHint.textContent = 'MISS / NOT FOREGROUND · wybierz widoczną powierzchnię foreground';
-      return;
-    }
-
-    if (pickPhase === 'bottom') {
-      const marker = createMarker(picked.source, 'bottom', `Gravity pending bottom ${verticals.length + 1}`);
-      pendingBottom = { source: picked.source, marker };
-      setPickPhase('top');
-      return;
-    }
-
-    if (pickPhase === 'top' && pendingBottom) {
-      const baselineBottom = sourceToBaseline(pendingBottom.source);
-      const baselineTop = sourceToBaseline(picked.source);
-      if (distance(baselineBottom, baselineTop) < 1e-6) {
-        pickHint.textContent = 'ODCINEK ZBYT KRÓTKI · wybierz
+boot().catch(error=>{console.error(error);loadingPanel.hidden=true;errorPanel.hidden=false;errorText.textContent=error?.stack||error?.message||String(error);});
+window.addEventListener('beforeunload',()=>{survey?.destroy();probe?.destroy();app?.destroy();});
