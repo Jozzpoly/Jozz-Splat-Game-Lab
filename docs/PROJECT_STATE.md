@@ -1,96 +1,55 @@
 # Project State
 
 Date: 2026-08-15
-Milestone: `W0.2 GRAVITY — VERIFIED / W0.3 METRIC SCALE NEXT`
-Active branch: `agent/w0-2-gravity`
+Milestone: `C0a NON-METRIC STRUCTURAL FEASIBILITY — IMPLEMENTED / OWNER EVIDENCE NEXT`
+Accepted main: `4cffaf3bd227fd66a0fd9fbbc8060118c5b6aea6` (W0.2)
+Active experiment branch: `agent/c0a-structural-feasibility`
 
-## Closed gates
+## Accepted gates
 
-### F0 — VERIFIED
+- F0 source/split — VERIFIED.
+- R0 renderer choice — CLOSED / REOPENABLE; PlayCanvas `2.21.2` active.
+- W0.1 foreground picking — VERIFIED.
+- W0.2 gravity/up — VERIFIED from two independent owner sampling runs.
+- Survey navigation — OWNER VERIFIED for current inspection needs.
 
-Exact source and deterministic foreground/environment byte partition remain verified.
+## Parked metric gate
 
-### R0 — CLOSED / REOPENABLE
+W0.3 Metric Scale is **PARKED / NOT ACCEPTED**. The owner currently has no trustworthy real-world distance ground truth for this capture. The parked branch preserves the metric-scale instrument, but no scale value from it has authority.
 
-PlayCanvas Engine `2.21.2` is active; Spark remains a validated fallback.
+No `unitsPerMetre`, metric `ScanToWorld`, human-scale Walk or Box3D tuning exists.
 
-### W0.1 — VERIFIED
+## Active pivot — C0a
 
-Owner-device evidence verified stable foreground spatial probes. Environment remains appearance-only and excluded from calibration authority.
+Lack of metric ground truth must not be bypassed, but it also does not invalidate scale-invariant structural questions. C0a therefore investigates candidate geometry in raw source units only.
 
-### W0.2 — VERIFIED
+First ROI: main school building, source bounds X `[-1.90, 0.82]`, Y `[1.08, 1.86]`, Z `[-0.62, 0.52]`.
 
-W0.2 now has two independent owner-device gravity sampling runs on the exact F0 source.
+Implemented locally/preflighted before publication:
 
-First run:
+- deterministic CPU prototype generator;
+- three parameter-bounded GLB candidates: conservative / balanced / permissive;
+- complete hashes/receipts, derived assets kept outside Git;
+- accepted W0.2 orientation applied to splat + mesh display;
+- candidate wireframe/solid overlay and visibility controls;
+- retained owner-verified Survey controls;
+- dual-depth compare probe: foreground appearance vs candidate mesh at one screen pixel;
+- explicit owner classifications `GOOD`, `FALSE_POSITIVE`, `MISSING`, `UNCERTAIN`;
+- evidence export in raw source units;
+- exact F0 raw/foreground/environment hashes replayed through the new server;
+- all three GLB hashes verified before serving;
+- loopback/Host/traversal security boundary retained.
 
-- 5 real vertical references;
-- tilt candidate `7.6424°`;
-- axis coherence `99.939%`;
-- axis residual median `0.5149°`;
-- axis residual max `2.1871°`;
-- 3 entered directions agreed and 2 were reversed, which exposed the need to separate physical-axis agreement from endpoint direction semantics.
+Evidence: `evidence/c0/c0a-preflight-2026-08-15.json`.
+Candidate receipt: `evidence/c0/c0a-candidates-2026-08-15.json`.
+Protocol: `docs/C0A_NON_METRIC_STRUCTURAL_FEASIBILITY.md`.
 
-The implementation was hardened accordingly: `axisResidualDeg` is independent of `directedResidualDeg`; `REVERSED` is explicit; endpoints are never silently swapped/deleted; manual reversal is auditable; preview cannot proceed with unresolved reversed direction evidence.
+## Evidence boundary
 
-Second independent run after hardening:
+C0a is not accepted collision. Candidate geometry is explicitly a hypothesis. Source-unit distances are not metres. No physics behavior may be tuned from them as if they were metric values.
 
-- 6 freshly collected vertical references;
-- all `6 / 6` bottom→top directions agree;
-- solved baseline up `[-0.0397223372, 0.9894921119, 0.1390233663]`;
-- tilt `8.31336°`;
-- axis coherence `99.906%`;
-- residual mean `1.6225°`, RMS `1.7537°`, median `1.5838°`, max `2.9150°`;
-- level preview applied on owner hardware.
+## Next owner evidence
 
-The two independently recollected solved UP axes differ by only `0.7243°`; tilt differs by `0.6710°`. This repeatability is stronger evidence than either single fit alone.
+Inspect all three candidate overlays on the real GPU. Focus on long walls, corners, ground transitions and obvious empty space. Collect a small set of compare probes and manual classifications.
 
-Owner-device screenshot after level preview was reviewed and shows no obvious over-correction; main-building verticals remain visually credible. The screenshot/location image is intentionally not committed to this public repository. Exact numeric evidence is stored in `evidence/w0/w0-2-owner-pass-2026-08-15.json`.
-
-### Spatial interpretation boundary
-
-W0.2 verifies the gravity/up direction of the current reconstruction coordinate frame. It does **not** claim that every local surface across this imperfect splat is metrically rigid or free of local reconstruction distortion. A distant-structure gravity sample remains a useful later falsification check before broad physical use, but it is no longer a blocker for the coordinate-frame orientation gate.
-
-## Survey navigation — OWNER VERIFIED
-
-Recovered Survey controls materially improved close-range inspection:
-
-- `MMB` orbit;
-- `Shift+MMB` view-plane pan;
-- cursor-anchored wheel zoom;
-- `Shift+wheel` faster travel;
-- `F` focuses the orbit pivot on the verified foreground point under the cursor without teleporting the camera;
-- `Home` fits the full scan;
-- `R` resets the original view;
-- initial-radius near/far navigation limits are removed except for a tiny numerical floor;
-- `LMB` / `RMB` remain free for world interaction.
-
-Owner feedback explicitly confirmed focus-under-cursor works very well, Shift+wheel works, and approaching/inspecting building surfaces is no longer a fight with the camera. This remains Survey inspection, not W0.5 metric human movement.
-
-## Recovery/security state
-
-The interrupted W0.2 session was recovered without modifying accepted `main`. Recovery validation repeated source/server/hash checks and hardened the owner LAB:
-
-- loopback-only HTTP;
-- Host allowlist (`127.0.0.1` / `localhost`);
-- malformed paths handled safely;
-- basic no-sniff/no-frame/no-referrer/same-origin response headers;
-- exact known F0 ZIP size + SHA-256 verified before extraction;
-- exact PLY size/hash still verified before serving;
-- temporary extracted capture cleanup attempted on normal launcher exit.
-
-Raw/foreground/environment streams continue to reproduce the exact F0 hashes.
-
-## Next gate — W0.3 METRIC SCALE
-
-W0.3 must infer one metric scale from independently known real-world distances while preserving raw source evidence.
-
-Planned bounded stages:
-
-1. W0.3a — two-point foreground distance measurement;
-2. W0.3b — explicit entry of known real metres + provenance note;
-3. W0.3c — scale solver with per-measurement implied units/metre and residuals, no silent outlier removal;
-4. W0.3d — repeatability/consistency owner evidence from at least 2 measurements, preferably 3;
-5. only after W0.3 PASS may W0.4 promote a versioned `ScanToWorld`.
-
-Do not assume standard doors, roads, goals or other nominal dimensions unless their actual dimension for this site is known. No collision, Box3D or metre-valued gameplay tuning before W0.4.
+If none is structurally useful, stop and improve extraction. If one is promising, harden C1a appearance-vs-candidate evidence before any physics integration.
