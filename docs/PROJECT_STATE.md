@@ -1,65 +1,61 @@
 # Project State
 
 Date: 2026-08-15
-Milestone: `W0.1 SPATIAL PROBE — VERIFIED / W0.2 GRAVITY NEXT`
-Active branch: `agent/w0-1-spatial-probe` until W0.1 merge
+Milestone: `W0.2 GRAVITY — IMPLEMENTED / OWNER EVIDENCE NEXT`
+Active branch: `agent/w0-2-gravity`
 
-## Closed evidence gates
+## Closed gates
 
 ### F0 — VERIFIED
 
-- source SHA-256 `8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3`;
-- foreground 1,013,122 records / SHA-256 `a734ce660a9bfd08ad11605fb45f1691fee3fa0bfe87fbbdb32f4acc7748d112`;
-- environment tail 50,000 records / SHA-256 `b92d3782374dd945619a96024d7918252b5762d5e26c91fb67c21adafeca496c`;
-- derived payloads are exact source byte ranges.
+Exact source and deterministic foreground/environment byte partition remain verified.
 
 ### R0 — CLOSED / REOPENABLE
 
-Owner browser testing verified Spark WebGL2, PlayCanvas WebGL2 and PlayCanvas WebGPU (`Best`) can render the exact source. PlayCanvas `2.21.2` is active for W0; Spark remains a validated fallback. Current presentation-interval telemetry is not a GPU benchmark ranking.
+PlayCanvas Engine `2.21.2` is active; Spark remains a validated fallback.
 
-## W0.1 implementation
+### W0.1 — VERIFIED
 
-Goal: prove stable foreground world-point picking before adding any calibration solver.
+Owner evidence recovered seven foreground probes that remained spatially coherent across materially different camera views. Adaptive constant-screen-size marker hardening was merged with W0.1. Environment remains appearance-only and excluded from calibration authority.
+
+## W0.2 implementation
+
+Question: can multiple independently sampled real-world verticals produce one credible gravity/up direction before any metric scale is introduced?
 
 Implemented:
 
-- PlayCanvas `2.21.2` WebGL2 baseline;
-- `app.scene.gsplat.enableIds = true` before splat rendering;
-- depth-enabled `Picker`;
-- foreground and environment loaded as separate GSplat components;
-- deterministic environment endpoint reproduces exact F0 SHA-256;
-- environment metadata explicitly sets `physicalAuthority=false` and `calibrationAuthority=false`;
-- picker disables environment and existing marker entities while preparing the ID/depth buffer;
-- accepted pick requires the returned selection to contain the foreground GSplat component;
-- `getWorldPointAsync()` records runtime-world point;
-- inverse foreground transform records raw source point;
-- persistent 3D marker created at each accepted runtime-world point;
-- Survey-only navigation; no WASD/Fly while units are uncalibrated;
-- evidence export records source/runtime coordinates and the W0.1 pass question.
-
-Preflight: `evidence/w0/w0-1-preflight-2026-08-15.json`.
-Protocol: `docs/W0_WORLD_GROUNDING.md`.
+- bottom→top vertical reference workflow using the verified foreground picker;
+- separate cyan bottom / amber top endpoint markers with constant screen-space size;
+- immediate world-space reference lines;
+- pure-math `solveGravity()` module independent of PlayCanvas rendering;
+- dominant-axis fit across all normalized vertical directions;
+- signed residual angle for every reference, so reversed or contradictory verticals remain visible;
+- mean/RMS/median/max angular residual statistics;
+- tilt angle relative to baseline runtime +Y;
+- minimal quaternion mapping the solved up vector to +Y;
+- reversible `Draft Grounding Root` preview applied equally to foreground, environment and reference markers;
+- preview automatically resets before collecting another vertical, keeping all evidence in one baseline coordinate frame;
+- evidence export remains `DRAFT_ORIENTATION_CANDIDATE_NO_SCALE`;
+- evidence export is disabled until at least three references exist;
+- no automatic acceptance of solver output.
 
 ## VERIFIED preflight
 
-- local JS/MJS syntax checks PASS;
-- W0.1 static contract PASS;
-- static root/app/styles HTTP 200;
-- raw HTTP SHA matches F0 source;
-- foreground HTTP SHA matches F0 foreground;
-- environment HTTP SHA matches F0 environment;
-- no metric scale, gravity solver, collision or Box3D exists in W0.1.
+- W0.2 static contract PASS;
+- W0.2 gravity solver deterministic synthetic tests PASS;
+- synthetic truth is recovered within the required angular tolerance;
+- correction quaternion maps solved up to +Y;
+- intentionally reversed vertical remains a large residual instead of being silently discarded;
+- one reference remains insufficient;
+- no `unitsPerMetre`, collision or Box3D code exists in W0.2;
+- full source/server HTTP hash reproduction PASSes for raw, foreground and environment exact F0 SHA-256 values.
 
-## W0.1 owner evidence — VERIFIED
+## Owner evidence required
 
-Owner testing produced seven foreground probes and screenshots from materially different camera views. Marker persistence/parallax is consistent with the same recovered surfaces, so the core W0.1 question passes. Screenshot evidence remains outside the public repository because it exposes a real-world location.
+Use at least three real vertical references, preferably on more than one structure and spread across the useful capture. For each reference click the lower point first and the upper point second. Do not use terrain, roofs or tree trunks unless their real-world verticality is genuinely known.
 
-A visualization defect was found: world-unit marker spheres became too large at close range. Adaptive constant-screen-size marker scaling is now part of W0.1 hardening; it changes marker presentation, not recovered coordinates.
+W0.2 should not pass from solver numbers alone. Owner evidence must include the copied gravity JSON plus a visual judgment of the reversible level preview.
 
-Environment pick rejection was not explicitly demonstrated in the supplied owner report. The runtime still excludes environment from the picker contract and this safeguard should be incidentally rechecked in later owner runs.
+## Next only after W0.2 PASS
 
-Evidence: `evidence/w0/w0-1-owner-2026-08-15.json`.
-
-## Next gate
-
-W0.2 gravity/up calibration from multiple known-vertical references. Do not infer level from terrain or manually type a correction angle.
+W0.3 metric scale from 2–3 independently known real-world distances.
