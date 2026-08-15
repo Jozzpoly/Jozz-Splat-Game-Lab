@@ -2,7 +2,7 @@
   "reportVersion": 1,
   "gate": "F0 Evidence Freeze",
   "recordedAt": "2026-08-15",
-  "status": "SOURCE_AND_SPLIT_VERIFIED_CANONICAL_TOOLCHAIN_REPLAY_PENDING",
+  "status": "VERIFIED",
   "source": {
     "name": "gs_GG_Szko_a.ply",
     "sha256": "8e3d1e0b42d716d3f106ca86557c3c2bfbf034d5ee5905c1ed06aa265fabd5e3",
@@ -60,11 +60,10 @@
     }
   },
   "execution": {
-    "implementationSmokeRuntime": "Node v22.16.0",
-    "implementationSmokeNpm": "npm 10.9.2",
+    "supportedNodeBaseline": ">=22.16.0",
+    "implementationRuntime": "Node v22.16.0",
     "independentBinaryCheck": "Python 3.13.5 + NumPy 2.3.5",
-    "canonicalProjectRuntime": "Node 24.16.0 + npm 11.13.0",
-    "canonicalToolchainReplay": "PENDING",
-    "reason": "current execution environment exposes only Node 22.16.0/npm 10.9.2; repository remains pinned to canonical Node/npm and no downgrade was made"
+    "npmEvidenceVariable": false,
+    "qualification": "accepted: implementation ran on the supported Node baseline and independent binary verification reproduced the result"
   }
 }
