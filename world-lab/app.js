@@ -48,6 +48,9 @@ let pickInFlight = false;
 let markerMaterial = null;
 const probes = [];
 const markerEntities = [];
+const MARKER_DIAMETER_PX = 18;
+const MARKER_SCALE_MIN = 0.002;
+const MARKER_SCALE_MAX = 8.0;
 
 function formatVec(v) {
   if (!v) return '—';
@@ -94,14 +97,30 @@ function renderProbeList() {
   `).join('');
 }
 
-function createMarker(worldPoint, index, markerScale) {
+function createMarker(worldPoint, index) {
   const marker = new Entity(`W0 Probe ${index + 1}`);
   marker.addComponent('render', { type: 'sphere' });
   marker.setPosition(worldPoint);
-  marker.setLocalScale(markerScale, markerScale, markerScale);
   for (const meshInstance of marker.render.meshInstances) meshInstance.material = markerMaterial;
   app.root.addChild(marker);
   markerEntities.push(marker);
+  updateMarkerScale(marker);
+}
+
+function updateMarkerScale(marker) {
+  if (!camera) return;
+  const cameraPosition = camera.getPosition();
+  const markerPosition = marker.getPosition();
+  const distance = Math.max(0.001, cameraPosition.distance(markerPosition));
+  const viewportHeight = Math.max(1, canvas.clientHeight || canvas.height || 1);
+  const worldHeight = 2 * distance * Math.tan(camera.camera.fov * Math.PI / 360);
+  const worldPerPixel = worldHeight / viewportHeight;
+  const scale = Math.min(MARKER_SCALE_MAX, Math.max(MARKER_SCALE_MIN, worldPerPixel * MARKER_DIAMETER_PX));
+  marker.setLocalScale(scale, scale, scale);
+}
+
+function updateMarkerScales() {
+  for (const marker of markerEntities) updateMarkerScale(marker);
 }
 
 function removeLastProbe() {
@@ -151,7 +170,7 @@ async function copyEvidence() {
   }
 }
 
-async function handlePick(event, markerScale) {
+async function handlePick(event) {
   if (!pickArmed || pickInFlight || !picker) return;
   pickInFlight = true;
   pickStatus.textContent = 'PICKING…';
@@ -185,7 +204,7 @@ async function handlePick(event, markerScale) {
       world: [worldPoint.x, worldPoint.y, worldPoint.z]
     };
     probes.push(probe);
-    createMarker(worldPoint, probes.length - 1, markerScale);
+    createMarker(worldPoint, probes.length - 1);
     pickStatus.textContent = 'VALID FOREGROUND PICK';
     renderProbeList();
     setPickArmed(false);
@@ -268,7 +287,6 @@ async function boot() {
   const centerWorld = [-centerSource[0], -centerSource[1], centerSource[2]];
   const surveyRadius = maxExtent * 0.42;
   const positionWorld = [centerWorld[0] - surveyRadius * 0.28, centerWorld[1] + surveyRadius * 0.34, centerWorld[2] + surveyRadius * 0.88];
-  const markerScale = maxExtent * 0.0016;
 
   survey = new SurveyController({
     canvas,
@@ -286,10 +304,12 @@ async function boot() {
   copyEvidenceButton.addEventListener('click', copyEvidence);
   resetViewButton.addEventListener('click', () => survey.reset());
   window.addEventListener('keydown', (event) => { if (event.key === 'Escape' && pickArmed) setPickArmed(false); });
-  canvas.addEventListener('pointerup', (event) => handlePick(event, markerScale).catch((error) => {
+  canvas.addEventListener('pointerup', (event) => handlePick(event).catch((error) => {
     console.error(error);
     pickStatus.textContent = 'PICK ERROR';
   }));
+
+  app.on('update', updateMarkerScales);
 
   progressBar.style.width = '100%';
   loadingPanel.hidden = true;
