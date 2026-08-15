@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://jozzpoly.github.io/Jozz-Splat-Game-Lab/contracts/scan-to-world.schema.json",
+  "title": "Splat Game Lab ScanToWorld",
+  "type": "object",
+  "required": ["version", "status", "sourceSha256", "transform"],
+  "properties": {
+    "version": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["draft", "calibrated", "rejected"] },
+    "sourceSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "sourceCoordinateSystem": { "type": "string" },
+    "upAxis": { "enum": ["+X", "-X", "+Y", "-Y", "+Z", "-Z"] },
+    "handedness": { "enum": ["right", "left", "unknown"] },
+    "transform": {
+      "type": "object",
+      "required": ["translation", "rotationQuaternion", "uniformScale"],
+      "properties": {
+        "translation": {
+          "type": "array",
+          "prefixItems": [{"type":"number"},{"type":"number"},{"type":"number"}],
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "rotationQuaternion": {
+          "type": "array",
+          "prefixItems": [{"type":"number"},{"type":"number"},{"type":"number"},{"type":"number"}],
+          "minItems": 4,
+          "maxItems": 4
+        },
+        "uniformScale": { "type": "number", "exclusiveMinimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "unitsPerMetre": { "type": ["number", "null"], "exclusiveMinimum": 0 },
+    "calibrationEvidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["sourceDistance", "realDistanceMetres"],
+        "properties": {
+          "label": { "type": "string" },
+          "sourceDistance": { "type": "number", "exclusiveMinimum": 0 },
+          "realDistanceMetres": { "type": "number", "exclusiveMinimum": 0 }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "calibrated" } } },
+      "then": {
+        "required": ["unitsPerMetre", "calibrationEvidence"],
+        "properties": {
+          "unitsPerMetre": { "type": "number", "exclusiveMinimum": 0 },
+          "calibrationEvidence": { "minItems": 2 }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}
