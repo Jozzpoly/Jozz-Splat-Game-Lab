@@ -44,14 +44,30 @@ Do not collapse these stages for convenience. `ScanToWorld` remains `draft` unti
 #### W0.2 hard boundaries
 
 - W0.1 picking is accepted and reused; do not redesign the picker while solving gravity unless contradictory evidence appears;
-- collect references as **bottom → top** pairs on genuinely vertical foreground structures;
+- a physical vertical **axis** and its entered `bottom → top` **direction** are separate evidence dimensions;
 - preserve raw source coordinates and one baseline runtime coordinate frame for every endpoint;
-- all vertical references contribute to the candidate solver; never silently delete or trim outliers;
-- report residual angle for every reference and keep `automaticAcceptance=false`;
+- all references contribute to the axis candidate; never silently delete or trim outliers;
+- report `axisResidualDeg` independently from `directedResidualDeg` / `directionStatus`;
+- never silently reverse endpoints; explicit owner reversal must remain auditable (`manualFlipCount`);
+- level preview stays blocked while intended bottom→top evidence contains unresolved `REVERSED` references;
+- `axisCoherence` is evidence, not an automatic acceptance threshold;
 - level correction is a reversible preview on a temporary draft grounding root, not accepted `ScanToWorld`;
 - reset preview before collecting new evidence so coordinate frames cannot mix;
 - require at least three references before owner evidence export;
 - no metric scale, collision, Box3D or gameplay in W0.2.
+
+#### Survey navigation contract
+
+Survey is an inspection camera, not human-scale movement. Preserve the familiar editor convention unless owner evidence requests otherwise:
+
+- `MMB` orbit;
+- `Shift + MMB` pan in the view plane;
+- wheel cursor-anchored zoom with close-range inspection allowed;
+- `F` fit;
+- `R` reset;
+- `LMB` and `RMB` remain free for world/model interaction.
+
+Do not use Survey freedom as evidence that W0.5 metric Walk is complete.
 
 ### Later gates
 
