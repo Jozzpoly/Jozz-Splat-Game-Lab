@@ -58,16 +58,30 @@ Do not collapse these stages for convenience. `ScanToWorld` remains `draft` unti
 
 #### Survey navigation contract
 
-Survey is an inspection camera, not human-scale movement. Preserve the familiar editor convention unless owner evidence requests otherwise:
+Survey is an inspection camera, not human-scale movement. Preserve the editor-style interaction contract unless owner evidence requests otherwise:
 
 - `MMB` orbit;
 - `Shift + MMB` pan in the view plane;
-- wheel cursor-anchored zoom with close-range inspection allowed;
-- `F` fit;
-- `R` reset;
-- `LMB` and `RMB` remain free for world/model interaction.
+- wheel cursor-anchored zoom; `Shift + wheel` accelerates long travel;
+- `F` focuses the orbit pivot on the verified **foreground** surface under the last canvas cursor position while preserving camera position;
+- `Home` fits the full scan while preserving current orientation;
+- `R` resets the original survey view;
+- `LMB` and `RMB` remain free for world/model interaction;
+- close inspection is limited only by a tiny numerical radius floor, never by a fraction of the initial scan radius.
 
 Do not use Survey freedom as evidence that W0.5 metric Walk is complete.
+
+#### Local owner-lab security contract
+
+The local LAB can expose the owner's raw capture bytes and must therefore stay fail-closed:
+
+- bind only to loopback;
+- accept only `127.0.0.1` / `localhost` Host headers;
+- reject malformed request paths rather than crashing;
+- preserve same-origin / no-sniff response hardening;
+- verify the exact known F0 ZIP hash **before** extraction;
+- direct PLY input still passes the exact F0 byte/hash gate in the Node server;
+- temporary ZIP extraction should be cleaned up after normal launcher exit.
 
 ### Later gates
 
@@ -87,4 +101,4 @@ The repository owner is not expected to operate the project like a software engi
 
 ## Publish discipline
 
-Use bounded branches and intentional commits. Prefer draft PRs for active experiments. Keep `main` as accepted source truth.
+Use bounded branches and intentional commits. Prefer draft PRs for active experiments. Keep `main` as accepted source truth. Experimental branch commit noise must be squash-merged when the gate is accepted.
